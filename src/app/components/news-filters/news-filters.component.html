@@ -1,0 +1,174 @@
+<div class="space-y-4">
+  <div class="flex flex-col sm:flex-row gap-3">
+    <div class="relative flex-1">
+      <input type="text" [value]="filters().searchTerm" (input)="onSearchChange($event)"
+        placeholder="Buscar noticias..." class="w-full px-3 py-2 bg-input border border-border rounded-lg" />
+    </div>
+
+    <button (click)="toggleFilters()"
+      class="px-4 py-2 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80">
+      Filtros
+    </button>
+  </div>
+
+  @if (showFilters()) {
+  <div class="bg-card border border-border rounded-lg p-4 space-y-4">
+    <div class="space-y-2">
+      <button (click)="toggleSourcesExpanded()" class="w-full flex items-center justify-between text-sm font-medium">
+        <span>Fuentes</span>
+      </button>
+
+      @if (sourcesExpanded()) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        @for (source of availableSources; track source) {
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" [checked]="filters().sources.includes(source)" (change)="toggleSource(source)"
+            class="h-4 w-4" />
+          <span class="text-sm">{{ source }}</span>
+        </label>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="space-y-2">
+      <button (click)="toggleCategoriesExpanded()" class="w-full flex items-center justify-between text-sm font-medium">
+        <span>Categorías</span>
+      </button>
+
+      @if (categoriesExpanded()) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        @for (category of availableCategories; track category) {
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" [checked]="filters().categories.includes(category)" (change)="toggleCategory(category)"
+            class="h-4 w-4" />
+          <span class="text-sm">{{ category }}</span>
+        </label>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="space-y-1.5">
+        <label class="text-sm font-medium" for="date-from">Fecha desde</label>
+        <input id="date-from" type="date" [value]="filters().dateFrom" (change)="onDateFromChange($event)"
+          class="w-full px-3 py-2 bg-input border border-border rounded-lg" />
+      </div>
+      <div class="space-y-1.5">
+        <label class="text-sm font-medium" for="date-to">Fecha hasta</label>
+        <input id="date-to" type="date" [value]="filters().dateTo" (change)="onDateToChange($event)"
+          class="w-full px-3 py-2 bg-input border border-border rounded-lg" />
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-medium">Palabras clave</span>
+        <button (click)="toggleKeywordsManager()" class="text-xs text-primary hover:underline">
+          Gestionar
+        </button>
+      </div>
+
+      @if (keywords().length > 0) {
+      <div class="flex flex-wrap gap-2">
+        @for (keyword of keywords(); track keyword) {
+        <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary text-xs rounded">
+          {{ keyword }}
+          <button (click)="removeKeyword(keyword)">×</button>
+        </span>
+        }
+      </div>
+      } @else {
+      <p class="text-xs text-muted-foreground">No hay palabras clave activas</p>
+      }
+    </div>
+
+    @if (filters().sources.length > 0 || filters().categories.length > 0 || keywords().length > 0 || filters().dateFrom
+    || filters().dateTo) {
+    <button (click)="clearFilters()" class="w-full px-4 py-2 bg-destructive text-destructive-foreground rounded-lg">
+      Limpiar filtros
+    </button>
+    }
+  </div>
+  }
+
+  @if (filters().sources.length > 0 || filters().categories.length > 0 || keywords().length > 0 || filters().dateFrom ||
+  filters().dateTo) {
+  <div class="flex flex-wrap gap-2">
+    @for (source of filters().sources; track source) {
+    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary text-xs rounded-full">
+      {{ source }}
+      <button (click)="toggleSource(source)">×</button>
+    </span>
+    }
+
+    @for (category of filters().categories; track category) {
+    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary text-xs rounded-full">
+      {{ category }}
+      <button (click)="toggleCategory(category)">×</button>
+    </span>
+    }
+
+    @if (filters().dateFrom) {
+    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary text-xs rounded-full">
+      Desde: {{ formatDateLabel(filters().dateFrom) }}
+      <button (click)="clearDateFrom()">×</button>
+    </span>
+    }
+
+    @if (filters().dateTo) {
+    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary text-xs rounded-full">
+      Hasta: {{ formatDateLabel(filters().dateTo) }}
+      <button (click)="clearDateTo()">×</button>
+    </span>
+    }
+  </div>
+  }
+
+  @if (showKeywordsManager()) {
+  <div class="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-card rounded-lg border border-border w-full max-w-md shadow-lg">
+      <div class="p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold">Gestionar Palabras Clave</h2>
+          <button (click)="toggleKeywordsManager()">×</button>
+        </div>
+
+        <p class="text-sm text-muted-foreground">
+          Añade o elimina palabras clave para filtrar noticias.
+        </p>
+
+        <div class="flex gap-2">
+          <input type="text" [(ngModel)]="newKeywordInput" (keyup.enter)="addKeyword()"
+            placeholder="Nueva palabra clave..." class="flex-1 px-3 py-2 bg-input border border-border rounded-lg" />
+          <button (click)="addKeyword()" class="px-4 py-2 bg-primary text-primary-foreground rounded-lg">
+            +
+          </button>
+        </div>
+
+        @if (keywords().length > 0) {
+        <div class="space-y-2 max-h-60 overflow-y-auto">
+          @for (keyword of keywords(); track keyword) {
+          <div class="flex items-center justify-between p-2 bg-secondary/50 rounded-lg">
+            <span class="text-sm">{{ keyword }}</span>
+            <button (click)="removeKeyword(keyword)" class="text-destructive">×</button>
+          </div>
+          }
+        </div>
+        } @else {
+        <p class="text-sm text-muted-foreground text-center py-4">
+          No hay palabras clave definidas
+        </p>
+        }
+
+        <div class="flex justify-end">
+          <button (click)="toggleKeywordsManager()" class="px-4 py-2 bg-primary text-primary-foreground rounded-lg">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>

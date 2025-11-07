@@ -1,0 +1,30 @@
+<div>
+  <div class="flex items-center justify-end mb-6">
+    @if (selectedNews().length > 0) {
+    <button (click)="handleExport()"
+      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="lucide lucide-download">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" x2="12" y1="15" y2="3" />
+      </svg>
+      Exportar ({{ selectedNews().length }})
+    </button>
+    }
+  </div>
+
+  @if (selectedNews().length === 0) {
+  <div class="text-center py-12 text-muted-foreground">
+    <p>No has seleccionado ninguna noticia aún.</p>
+    <p class="mt-2">Marca las noticias que te interesen en la pestaña Resultados.</p>
+  </div>
+  } @else {
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    @for (news of selectedNews(); track news.id) {
+    <app-news-card [news]="news" (remove)="onRemove($event)" />
+    }
+  </div>
+  }
+</div>

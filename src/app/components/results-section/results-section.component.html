@@ -1,0 +1,15 @@
+<div>
+  <app-news-filters
+    [filters]="filters()"
+    [keywords]="keywords()"
+    (filtersChange)="onFiltersChange($event)"
+    (keywordsChange)="onKeywordsChange($event)"
+  />
+  <div class="mt-6">
+    <app-news-table
+      [news]="filteredNews()"
+      [selectedIds]="selectedNewsIds()"
+      (toggleNews)="onToggleNews($event)"
+    />
+  </div>
+</div>

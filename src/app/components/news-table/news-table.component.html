@@ -1,0 +1,159 @@
+@if (news().length === 0) {
+<div class="text-center py-12 text-muted-foreground border border-border rounded-lg">
+  <p>No se encontraron noticias con los filtros aplicados.</p>
+</div>
+} @else {
+<div>
+  <!-- Desktop Table View (hidden on mobile) -->
+  <div class="hidden md:block border border-border rounded-lg overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-muted/50">
+          <tr>
+            <th class="w-12 p-4">
+              <div class="flex items-center justify-center">
+                <input type="checkbox"
+                  class="h-4 w-4 rounded border-border bg-background ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" />
+              </div>
+            </th>
+            <th class="text-left p-4 font-medium">Título</th>
+            <th class="text-left p-4 font-medium">Fuente</th>
+            <th class="text-left p-4 font-medium">Fecha</th>
+            <th class="text-left p-4 font-medium">Categoría</th>
+            <th class="text-center p-4 font-medium">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (newsItem of currentNews(); track newsItem.id) {
+          <tr class="border-t border-border hover:bg-muted/50 transition-colors">
+            <td class="p-4">
+              <div class="flex items-center justify-center">
+                <input type="checkbox" [checked]="isSelected(newsItem.id)" (change)="onToggle(newsItem.id)"
+                  class="h-4 w-4 rounded border-border bg-background ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer" />
+              </div>
+            </td>
+            <td class="p-4">
+              <div class="max-w-md">
+                <h4 class="font-medium line-clamp-2">{{ newsItem.title }}</h4>
+                <p class="text-sm text-muted-foreground line-clamp-1 mt-1">
+                  {{ newsItem.excerpt }}
+                </p>
+              </div>
+            </td>
+            <td class="p-4 text-sm">{{ newsItem.source }}</td>
+            <td class="p-4 text-sm text-muted-foreground">
+              {{ formatDate(newsItem.date) }}
+            </td>
+            <td class="p-4">
+              <span
+                class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-secondary text-secondary-foreground">
+                {{ newsItem.category }}
+              </span>
+            </td>
+            <td class="p-4">
+              <div class="flex justify-center">
+                <a [href]="newsItem.link" target="_blank" rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 px-3 py-1.5 text-sm border border-border rounded-md hover:bg-accent hover:text-accent-foreground transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-external-link">
+                    <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  </svg>
+                  Ver
+                </a>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Mobile Card View (visible only on mobile) -->
+  <div class="md:hidden space-y-4">
+    @for (newsItem of currentNews(); track newsItem.id) {
+    <div class="border border-border rounded-lg p-4 bg-card hover:bg-muted/50 transition-colors">
+      <div class="flex items-start gap-3">
+        <!-- Checkbox -->
+        <input type="checkbox" [checked]="isSelected(newsItem.id)" (change)="onToggle(newsItem.id)"
+          class="h-5 w-5 rounded border-border bg-background ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer mt-0.5 shrink-0" />
+
+        <!-- Content -->
+        <div class="flex-1 min-w-0">
+          <!-- Title -->
+          <h4 class="font-medium line-clamp-2 mb-2">{{ newsItem.title }}</h4>
+
+          <!-- Metadata -->
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <span
+              class="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium bg-secondary text-secondary-foreground">
+              {{ newsItem.category }}
+            </span>
+            <span class="text-xs text-muted-foreground">{{ newsItem.source }}</span>
+            <span class="text-xs text-muted-foreground">{{ formatDate(newsItem.date) }}</span>
+          </div>
+
+          <!-- Excerpt -->
+          <p class="text-sm text-muted-foreground line-clamp-2 mb-3">
+            {{ newsItem.excerpt }}
+          </p>
+
+          <!-- Action Button -->
+          <a [href]="newsItem.link" target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-3 py-1.5 text-sm border border-border rounded-md hover:bg-accent hover:text-accent-foreground transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-external-link">
+              <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            </svg>
+            Leer más
+          </a>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- Pagination -->
+  @if (totalPages() > 1) {
+  <div class="flex items-center justify-center gap-2 mt-6">
+    <button (click)="previousPage()" [disabled]="currentPage() === 1"
+      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 md:px-4 gap-1">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="lucide lucide-chevron-left">
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+      <span class="hidden sm:inline">Anterior</span>
+    </button>
+
+    <!-- Page numbers - show fewer on mobile -->
+    <div class="flex items-center gap-1">
+      @for (item of paginationItems(); track $index) {
+      @if (item === 'ellipsis') {
+      <span class="px-2 text-muted-foreground">...</span>
+      } @else {
+      <button (click)="goToPage(item)" [class]="'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-9 w-9 ' +
+                  (currentPage() === item
+                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                    : 'border border-border bg-background hover:bg-accent hover:text-accent-foreground')">
+        {{ item }}
+      </button>
+      }
+      }
+    </div>
+
+    <button (click)="nextPage()" [disabled]="currentPage() === totalPages()"
+      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 md:px-4 gap-1">
+      <span class="hidden sm:inline">Siguiente</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="lucide lucide-chevron-right">
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+    </button>
+  </div>
+  }
+</div>
+}
