@@ -10,9 +10,9 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class HeaderComponent {
   private themeService = inject(ThemeService);
-  private router = inject(Router);
 
-  isDark = this.themeService.theme;
+  currentTheme = this.themeService.theme;
+  actualTheme = this.themeService.actualTheme;
   mobileMenuOpen = signal(false);
 
   toggleTheme(): void {

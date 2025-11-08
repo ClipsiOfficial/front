@@ -33,8 +33,16 @@
         <!-- Theme Toggle -->
         <button (click)="toggleTheme()" type="button"
           class="inline-flex items-center justify-center rounded-md p-2 hover:bg-accent transition-colors"
-          [attr.aria-label]="isDark() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
-          @if (isDark() === 'dark') {
+          [attr.aria-label]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+          @if (currentTheme() === 'system') {
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-monitor">
+            <rect width="20" height="14" x="2" y="3" rx="2"/>
+            <line x1="8" x2="16" y1="21" y2="21"/>
+            <line x1="12" x2="12" y1="17" y2="21"/>
+          </svg>
+          } @else if (actualTheme() === 'dark') {
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="lucide lucide-moon">
@@ -74,8 +82,16 @@
         <!-- Theme Toggle Mobile -->
         <button (click)="toggleTheme()" type="button"
           class="inline-flex items-center justify-center rounded-md p-2 hover:bg-accent transition-colors"
-          [attr.aria-label]="isDark() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
-          @if (isDark() === 'dark') {
+          [attr.aria-label]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+          @if (currentTheme() === 'system') {
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-monitor">
+            <rect width="20" height="14" x="2" y="3" rx="2"/>
+            <line x1="8" x2="16" y1="21" y2="21"/>
+            <line x1="12" x2="12" y1="17" y2="21"/>
+          </svg>
+          } @else if (actualTheme() === 'dark') {
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             class="lucide lucide-moon">
