@@ -10,30 +10,21 @@
       <nav class="hidden md:flex flex-1 justify-center">
         <div
           class="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground max-w-2xl">
-          <button (click)="onTabClick('results')" [class]="
-              'inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ' +
-              (activeTab() === 'results'
-                ? 'bg-background text-foreground shadow'
-                : 'hover:bg-background/50')
-            ">
+          <a routerLink="/results" routerLinkActive="bg-background text-foreground shadow"
+            [routerLinkActiveOptions]="{ exact: false }"
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
             Resultados
-          </button>
-          <button (click)="onTabClick('my-news')" [class]="
-              'inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ' +
-              (activeTab() === 'my-news'
-                ? 'bg-background text-foreground shadow'
-                : 'hover:bg-background/50')
-            ">
+          </a>
+          <a routerLink="/my-news" routerLinkActive="bg-background text-foreground shadow"
+            [routerLinkActiveOptions]="{ exact: false }"
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
             Mis Noticias
-          </button>
-          <button (click)="onTabClick('statistics')" [class]="
-              'inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ' +
-              (activeTab() === 'statistics'
-                ? 'bg-background text-foreground shadow'
-                : 'hover:bg-background/50')
-            ">
+          </a>
+          <a routerLink="/statistics" routerLinkActive="bg-background text-foreground shadow"
+            [routerLinkActiveOptions]="{ exact: false }"
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
             Estadísticas
-          </button>
+          </a>
         </div>
       </nav>
 
@@ -135,26 +126,21 @@
     @if (mobileMenuOpen()) {
     <nav class="md:hidden pb-4 border-t border-border mt-0 pt-4">
       <div class="space-y-1">
-        <button (click)="onTabClick('results')" [class]="
-            'w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors ' +
-            (activeTab() === 'results' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent')
-          ">
+        <a routerLink="/results" routerLinkActive="bg-primary text-primary-foreground"
+          [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
+          class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
           Resultados
-        </button>
-        <button (click)="onTabClick('my-news')" [class]="
-            'w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors ' +
-            (activeTab() === 'my-news' ? 'bg-primary text-primary-foreground' : 'hover:bg-accent')
-          ">
+        </a>
+        <a routerLink="/my-news" routerLinkActive="bg-primary text-primary-foreground"
+          [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
+          class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
           Mis Noticias
-        </button>
-        <button (click)="onTabClick('statistics')" [class]="
-            'w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors ' +
-            (activeTab() === 'statistics'
-              ? 'bg-primary text-primary-foreground'
-              : 'hover:bg-accent')
-          ">
+        </a>
+        <a routerLink="/statistics" routerLinkActive="bg-primary text-primary-foreground"
+          [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
+          class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
           Estadísticas
-        </button>
+        </a>
       </div>
     </nav>
     }

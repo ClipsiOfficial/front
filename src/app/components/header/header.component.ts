@@ -1,27 +1,19 @@
-import { Component, output, input, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
-
-export type Tab = 'results' | 'my-news' | 'statistics';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {
   private themeService = inject(ThemeService);
-
-  activeTab = input.required<Tab>();
-  tabChange = output<Tab>();
+  private router = inject(Router);
 
   isDark = this.themeService.theme;
   mobileMenuOpen = signal(false);
-
-  onTabClick(tab: Tab): void {
-    this.tabChange.emit(tab);
-    this.mobileMenuOpen.set(false); // Close mobile menu after selection
-  }
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
@@ -31,13 +23,8 @@ export class HeaderComponent {
     this.mobileMenuOpen.update((v) => !v);
   }
 
-  getTabLabel(tab: Tab): string {
-    const labels = {
-      results: 'Resultados',
-      'my-news': 'Mis Noticias',
-      statistics: 'Estadísticas',
-    };
-    return labels[tab];
+  closeMobileMenu(): void {
+    this.mobileMenuOpen.set(false);
   }
 }
 

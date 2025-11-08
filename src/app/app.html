@@ -1,21 +1,9 @@
 <div class="size-full min-h-screen flex flex-col bg-background">
-  <app-header [activeTab]="activeTab()" (tabChange)="onTabChange($event)" />
+  <app-header />
+
   <main class="flex-1">
     <div class="container mx-auto px-4 py-8">
-      @switch (activeTab()) {
-        @case ('results') {
-          <app-results-section />
-        }
-        @case ('my-news') {
-          <app-my-news-section />
-        }
-        @case ('statistics') {
-          <app-statistics-section />
-        }
-      }
+      <router-outlet />
     </div>
   </main>
 </div>
-
-<router-outlet />
-

@@ -17,11 +17,11 @@ interface TopNews {
 }
 
 @Component({
-  selector: 'app-statistics-section',
+  selector: 'app-statistics-page',
   imports: [CommonModule],
-  templateUrl: './statistics-section.component.html',
+  templateUrl: './statistics.page.html',
 })
-export class StatisticsSectionComponent {
+export class StatisticsPage {
   private newsService = inject(NewsService);
 
   selectedNews = this.newsService.selectedNews;

@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewsService } from '../../services/news.service';
-import { NewsCardComponent } from '../news-card/news-card.component';
+import { NewsCardComponent } from '../../components/news-card/news-card.component';
 
 @Component({
-  selector: 'app-my-news-section',
+  selector: 'app-my-news-page',
   imports: [CommonModule, NewsCardComponent],
-  templateUrl: './my-news-section.component.html',
+  templateUrl: './my-news.page.html',
 })
-export class MyNewsSectionComponent {
+export class MyNewsPage {
   private newsService = inject(NewsService);
 
   selectedNews = this.newsService.selectedNews;

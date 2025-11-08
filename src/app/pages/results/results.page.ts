@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewsService } from '../../services/news.service';
-import { NewsFiltersComponent } from '../news-filters/news-filters.component';
-import { NewsTableComponent } from '../news-table/news-table.component';
+import { NewsFiltersComponent } from '../../components/news-filters/news-filters.component';
+import { NewsTableComponent } from '../../components/news-table/news-table.component';
 import { FilterState } from '../../models/news.model';
 
 @Component({
-  selector: 'app-results-section',
+  selector: 'app-results-page',
   imports: [CommonModule, NewsFiltersComponent, NewsTableComponent],
-  templateUrl: './results-section.component.html',
+  templateUrl: './results.page.html',
 })
-export class ResultsSectionComponent {
+export class ResultsPage {
   private newsService = inject(NewsService);
 
   filteredNews = this.newsService.filteredNews;
