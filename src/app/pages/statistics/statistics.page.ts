@@ -1,5 +1,6 @@
 import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 import { NewsService } from '../../services/news.service';
 
 interface SourceStat {
@@ -18,7 +19,7 @@ interface TopNews {
 
 @Component({
   selector: 'app-statistics-page',
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './statistics.page.html',
 })
 export class StatisticsPage {

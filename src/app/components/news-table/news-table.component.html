@@ -52,13 +52,8 @@
             </td>
             <td class="p-4">
               <div class="flex justify-center">
-                <a [href]="newsItem.link" target="_blank" rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 px-3 py-1.5 text-sm border border-border rounded-md hover:bg-accent hover:text-accent-foreground transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="lucide lucide-external-link">
-                    <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                  </svg>
+                <a mat-stroked-button [href]="newsItem.link" target="_blank" rel="noopener noreferrer">
+                  <mat-icon>open_in_new</mat-icon>
                   Ver
                 </a>
               </div>
@@ -100,13 +95,8 @@
           </p>
 
           <!-- Action Button -->
-          <a [href]="newsItem.link" target="_blank" rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 px-3 py-1.5 text-sm border border-border rounded-md hover:bg-accent hover:text-accent-foreground transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="lucide lucide-external-link">
-              <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-            </svg>
+          <a mat-stroked-button [href]="newsItem.link" target="_blank" rel="noopener noreferrer">
+            <mat-icon>open_in_new</mat-icon>
             Leer más
           </a>
         </div>
@@ -118,13 +108,8 @@
   <!-- Pagination -->
   @if (totalPages() > 1) {
   <div class="flex items-center justify-center gap-2 mt-6">
-    <button (click)="previousPage()" [disabled]="currentPage() === 1"
-      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 md:px-4 gap-1">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-chevron-left">
-        <path d="m15 18-6-6 6-6" />
-      </svg>
+    <button mat-stroked-button (click)="previousPage()" [disabled]="currentPage() === 1">
+      <mat-icon>chevron_left</mat-icon>
       <span class="hidden sm:inline">Anterior</span>
     </button>
 
@@ -134,24 +119,19 @@
       @if (item === 'ellipsis') {
       <span class="px-2 text-muted-foreground">...</span>
       } @else {
-      <button (click)="goToPage(item)" [class]="'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-9 w-9 ' +
-                  (currentPage() === item
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                    : 'border border-border bg-background hover:bg-accent hover:text-accent-foreground')">
+      <button mat-stroked-button (click)="goToPage(item)" [color]="currentPage() === item ? 'primary' : undefined"
+              [class.bg-primary]="currentPage() === item"
+              [class.text-primary-foreground]="currentPage() === item"
+              class="w-9 min-w-0 px-0">
         {{ item }}
       </button>
       }
       }
     </div>
 
-    <button (click)="nextPage()" [disabled]="currentPage() === totalPages()"
-      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3 md:px-4 gap-1">
+    <button mat-stroked-button (click)="nextPage()" [disabled]="currentPage() === totalPages()">
       <span class="hidden sm:inline">Siguiente</span>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-chevron-right">
-        <path d="m9 18 6-6-6-6" />
-      </svg>
+      <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
   }

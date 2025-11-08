@@ -31,108 +31,53 @@
       <!-- Desktop Actions (hidden on mobile) -->
       <div class="hidden md:flex items-center gap-3">
         <!-- Theme Toggle -->
-        <button (click)="toggleTheme()" type="button"
-          class="inline-flex items-center justify-center rounded-md p-2 hover:bg-accent transition-colors"
-          [attr.aria-label]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+        <button
+          mat-icon-button
+          (click)="toggleTheme()"
+          [matTooltip]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
           @if (currentTheme() === 'system') {
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-monitor">
-            <rect width="20" height="14" x="2" y="3" rx="2"/>
-            <line x1="8" x2="16" y1="21" y2="21"/>
-            <line x1="12" x2="12" y1="17" y2="21"/>
-          </svg>
+            <mat-icon>monitor</mat-icon>
           } @else if (actualTheme() === 'dark') {
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-moon">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-          </svg>
+            <mat-icon>dark_mode</mat-icon>
           } @else {
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-sun">
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2" />
-            <path d="M12 20v2" />
-            <path d="m4.93 4.93 1.41 1.41" />
-            <path d="m17.66 17.66 1.41 1.41" />
-            <path d="M2 12h2" />
-            <path d="M20 12h2" />
-            <path d="m6.34 17.66-1.41 1.41" />
-            <path d="m19.07 4.93-1.41 1.41" />
-          </svg>
+            <mat-icon>light_mode</mat-icon>
           }
         </button>
 
         <!-- User Button -->
-        <div
-          class="h-9 w-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-user">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-        </div>
+        <button
+          mat-icon-button
+          matTooltip="Perfil de usuario"
+          class="!bg-primary !text-primary-foreground">
+          <mat-icon>account_circle</mat-icon>
+        </button>
       </div>
 
       <!-- Mobile Actions -->
       <div class="flex md:hidden items-center gap-2">
         <!-- Theme Toggle Mobile -->
-        <button (click)="toggleTheme()" type="button"
-          class="inline-flex items-center justify-center rounded-md p-2 hover:bg-accent transition-colors"
-          [attr.aria-label]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+        <button
+          mat-icon-button
+          (click)="toggleTheme()"
+          [matTooltip]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
           @if (currentTheme() === 'system') {
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-monitor">
-            <rect width="20" height="14" x="2" y="3" rx="2"/>
-            <line x1="8" x2="16" y1="21" y2="21"/>
-            <line x1="12" x2="12" y1="17" y2="21"/>
-          </svg>
+            <mat-icon>monitor</mat-icon>
           } @else if (actualTheme() === 'dark') {
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-moon">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-          </svg>
+            <mat-icon>dark_mode</mat-icon>
           } @else {
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-sun">
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2" />
-            <path d="M12 20v2" />
-            <path d="m4.93 4.93 1.41 1.41" />
-            <path d="m17.66 17.66 1.41 1.41" />
-            <path d="M2 12h2" />
-            <path d="M20 12h2" />
-            <path d="m6.34 17.66-1.41 1.41" />
-            <path d="m19.07 4.93-1.41 1.41" />
-          </svg>
+            <mat-icon>light_mode</mat-icon>
           }
         </button>
 
         <!-- Hamburger Menu Button -->
-        <button (click)="toggleMobileMenu()" type="button"
-          class="inline-flex items-center justify-center rounded-md p-2 hover:bg-accent transition-colors"
-          aria-label="Abrir menú">
+        <button
+          mat-icon-button
+          (click)="toggleMobileMenu()"
+          [attr.aria-label]="mobileMenuOpen() ? 'Cerrar menú' : 'Abrir menú'">
           @if (!mobileMenuOpen()) {
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-menu">
-            <line x1="4" x2="20" y1="12" y2="12" />
-            <line x1="4" x2="20" y1="6" y2="6" />
-            <line x1="4" x2="20" y1="18" y2="18" />
-          </svg>
+            <mat-icon>menu</mat-icon>
           } @else {
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-x">
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
+            <mat-icon>close</mat-icon>
           }
         </button>
       </div>
