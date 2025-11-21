@@ -1,11 +1,11 @@
 import { Component, input, output, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { FilterState, AVAILABLE_SOURCES, AVAILABLE_CATEGORIES } from '../../models/news.model';
 
 @Component({
   selector: 'app-news-filters',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './news-filters.component.html',
 })
 export class NewsFiltersComponent {

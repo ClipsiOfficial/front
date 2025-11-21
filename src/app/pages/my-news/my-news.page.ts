@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NewsService } from '../../services/news.service';
@@ -7,7 +7,7 @@ import { NewsCardComponent } from '../../components/news-card/news-card.componen
 
 @Component({
   selector: 'app-my-news-page',
-  imports: [CommonModule, NewsCardComponent, MatButtonModule, MatIconModule],
+  imports: [NewsCardComponent, MatButtonModule, MatIconModule],
   templateUrl: './my-news.page.html',
 })
 export class MyNewsPage {

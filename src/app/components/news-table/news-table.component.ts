@@ -1,5 +1,5 @@
 import { Component, input, output, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NewsItem } from '../../models/news.model';
@@ -8,7 +8,7 @@ const ITEMS_PER_PAGE = 10;
 
 @Component({
   selector: 'app-news-table',
-  imports: [CommonModule, MatIconModule, MatButtonModule],
+  imports: [MatIconModule, MatButtonModule],
   templateUrl: './news-table.component.html',
 })
 export class NewsTableComponent {

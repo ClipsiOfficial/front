@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,13 +9,12 @@ import { ThemeService } from '../../services/theme.service';
 @Component({
   selector: 'app-header',
   imports: [
-    CommonModule,
     RouterLink,
     RouterLinkActive,
     MatIconModule,
     MatButtonModule,
-    MatTooltipModule,
-  ],
+    MatTooltipModule
+],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent {
