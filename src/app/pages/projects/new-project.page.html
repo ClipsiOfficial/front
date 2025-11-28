@@ -1,0 +1,45 @@
+<div class="wrapper">
+  <div class="card">
+
+    <h2>Crear nuevo proyecto</h2>
+
+    <form [formGroup]="projectForm" class="form">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre del proyecto</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput rows="3" formControlName="description"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Topic</mat-label>
+        <input matInput formControlName="topic">
+      </mat-form-field>
+
+      <!-- Botones -->
+      <div class="buttons">
+        <button
+          mat-stroked-button
+          color="basic"
+          class="cancel-btn"
+          (click)="cancel()">
+          Cancelar
+        </button>
+
+        <button
+          mat-flat-button
+          color="primary"
+          class="create-btn"
+          (click)="submit()">
+          Crear proyecto
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

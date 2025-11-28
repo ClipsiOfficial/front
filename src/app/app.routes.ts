@@ -22,6 +22,21 @@ export const routes: Routes = [
       import('./pages/statistics/statistics.page').then((m) => m.StatisticsPage),
   },
   {
+    path: 'projects',
+    loadComponent: () =>
+      import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
+  },
+  {
+    path: 'projects',
+    loadComponent: () =>
+      import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
+  },
+  {
+    path: 'projects/new',
+    loadComponent: () =>
+      import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
+  },
+  {
     path: '**',
     redirectTo: '/results',
   },

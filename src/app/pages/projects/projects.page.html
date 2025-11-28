@@ -1,0 +1,20 @@
+<!-- Cargando -->
+<div *ngIf="loading" class="loading">
+  <mat-icon>hourglass_empty</mat-icon>
+  <p>Cargando...</p>
+</div>
+
+<!-- Estado sin proyectos -->
+<div *ngIf="!loading && !hasProjects" class="empty-container">
+
+  <h1 class="title">Todavía no tienes ningún proyecto</h1>
+
+  <p class="subtitle">
+    Crea tu primer proyecto para empezar a recibir resultados de clipping.
+  </p>
+
+  <button mat-raised-button color="primary" class="create-btn" (click)="createProject()">
+    <mat-icon>add</mat-icon>
+    Crear proyecto
+  </button>
+</div>
