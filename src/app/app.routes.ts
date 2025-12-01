@@ -37,6 +37,11 @@ export const routes: Routes = [
       import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
   },
   {
+  path: 'projects-page',
+  loadComponent: () =>
+    import('./pages/projects/projects-page.page').then((m) => m.ProjectsPage)
+  },
+  {
     path: '**',
     redirectTo: '/results',
   },
