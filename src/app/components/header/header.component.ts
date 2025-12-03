@@ -19,11 +19,45 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class HeaderComponent {
   private themeService = inject(ThemeService);
+<<<<<<< Updated upstream
 
   currentTheme = this.themeService.theme;
   actualTheme = this.themeService.actualTheme;
   mobileMenuOpen = signal(false);
 
+=======
+  private layout = inject(LayoutService);
+
+  // signals locales
+  private _mobileMenuOpen = signal(false);
+
+  // suscripción para sincronizar con LayoutService
+  private sub = new Subscription();
+
+  private _mode = signal<'full' | 'minimal' | 'login'>('full');
+
+  constructor() {
+    this.sub.add(
+      this.layout.headerMode$.subscribe(v => {
+        this._mode.set(v);
+        if (v !== 'full') {
+          this._mobileMenuOpen.set(false);
+        }
+      })
+    );
+  }
+
+  get mode(): 'full' | 'minimal' | 'login' {
+    return this._mode();
+  }
+
+
+  get isMobileOpen(): boolean {
+    return this._mobileMenuOpen();
+  }
+
+  // wrappers para la plantilla
+>>>>>>> Stashed changes
   toggleTheme(): void {
     this.themeService.toggleTheme();
   }

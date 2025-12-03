@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <div class="size-full min-h-screen flex flex-col bg-background">
   <app-header />
 
@@ -7,3 +8,16 @@
     </div>
   </main>
 </div>
+=======
+<ng-container [ngSwitch]="layout.headerModeValue">
+  <app-header *ngSwitchCase="'full'" mode="full"></app-header>
+  <app-header *ngSwitchCase="'minimal'" mode="minimal"></app-header>
+  <app-header *ngSwitchCase="'login'" mode="login"></app-header>
+</ng-container>
+
+<main class="flex-1">
+  <div class="container mx-auto px-4 py-8">
+    <router-outlet></router-outlet>
+  </div>
+</main>
+>>>>>>> Stashed changes
