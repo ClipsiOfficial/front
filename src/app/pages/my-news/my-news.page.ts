@@ -21,6 +21,5 @@ export class MyNewsPage {
 
   handleExport(): void {
     console.log('Export', this.selectedNews().length, 'news');
-    // Show export dialog
   }
 }

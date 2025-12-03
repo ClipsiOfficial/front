@@ -14,14 +14,13 @@ import { LayoutService } from '../../services/layout.service';
 export class ResultsPage {
   private newsService = inject(NewsService);
   private layout = inject(LayoutService);
-  
+
   filteredNews = this.newsService.filteredNews;
   selectedNewsIds = this.newsService.selectedNewsIds;
   filters = this.newsService.filters;
   keywords = this.newsService.keywords;
 
-   ngOnInit(): void {
-    //  Ejecutar después de la inicialización para que el AsyncPipe detecte el cambio
+  ngOnInit(): void {
     this.layout.showFullHeader();
   }
 
