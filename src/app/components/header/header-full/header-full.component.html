@@ -34,9 +34,10 @@
 
     <!-- Tema -->
     <button mat-icon-button (click)="toggleTheme()"
-            [matTooltip]="actualTheme() === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro'">
-      <mat-icon *ngIf="actualTheme() === 'dark'">dark_mode</mat-icon>
-      <mat-icon *ngIf="actualTheme() !== 'dark'">light_mode</mat-icon>
+            [matTooltip]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+      <mat-icon *ngIf="currentTheme() === 'system'">monitor</mat-icon>
+      <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() === 'dark'">dark_mode</mat-icon>
+      <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() !== 'dark'">light_mode</mat-icon>
     </button>
 
     <!-- Usuario -->
@@ -60,9 +61,10 @@
 
     <!-- Tema -->
     <button mat-icon-button (click)="toggleTheme()"
-            [matTooltip]="actualTheme() === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro'">
-      <mat-icon *ngIf="actualTheme() === 'dark'">dark_mode</mat-icon>
-      <mat-icon *ngIf="actualTheme() !== 'dark'">light_mode</mat-icon>
+            [matTooltip]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+      <mat-icon *ngIf="currentTheme() === 'system'">monitor</mat-icon>
+      <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() === 'dark'">dark_mode</mat-icon>
+      <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() !== 'dark'">light_mode</mat-icon>
     </button>
 
     <!-- Menú hamburguesa -->

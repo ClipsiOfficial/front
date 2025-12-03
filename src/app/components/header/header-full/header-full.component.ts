@@ -18,6 +18,7 @@ export class HeaderFullComponent {
   private authService = inject(AuthService);
 
   actualTheme = this.themeService.actualTheme;
+  currentTheme = this.themeService.theme;
   mobileMenuOpen = signal(false);
 
   toggleTheme(): void {

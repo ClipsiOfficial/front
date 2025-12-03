@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 export class HeaderLoginComponent {
   private themeService = inject(ThemeService);
   actualTheme = this.themeService.actualTheme;
+  currentTheme = this.themeService.theme;
 
   toggleTheme(): void {
     this.themeService.toggleTheme();

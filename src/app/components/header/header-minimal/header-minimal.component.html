@@ -17,13 +17,9 @@
         mat-icon-button
         (click)="toggleTheme()"
         [matTooltip]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
-        @if (currentTheme() === 'system') {
-          <mat-icon>monitor</mat-icon>
-        } @else if (actualTheme() === 'dark') {
-          <mat-icon>dark_mode</mat-icon>
-        } @else {
-          <mat-icon>light_mode</mat-icon>
-        }
+        <mat-icon *ngIf="currentTheme() === 'system'">monitor</mat-icon>
+        <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() === 'dark'">dark_mode</mat-icon>
+        <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() !== 'dark'">light_mode</mat-icon>
       </button>
 
       <!-- User Button -->
@@ -42,13 +38,9 @@
         mat-icon-button
         (click)="toggleTheme()"
         [matTooltip]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
-        @if (currentTheme() === 'system') {
-          <mat-icon>monitor</mat-icon>
-        } @else if (actualTheme() === 'dark') {
-          <mat-icon>dark_mode</mat-icon>
-        } @else {
-          <mat-icon>light_mode</mat-icon>
-        }
+        <mat-icon *ngIf="currentTheme() === 'system'">monitor</mat-icon>
+        <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() === 'dark'">dark_mode</mat-icon>
+        <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() !== 'dark'">light_mode</mat-icon>
       </button>
     </div>
   </div>
