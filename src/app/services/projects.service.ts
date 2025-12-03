@@ -1,19 +1,33 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Project } from '../models/project.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ProjectsService {
 
-  constructor() {}
+  private http = inject(HttpClient);
 
-  // Datos simulados para mostrar la página
+  private API_URL = 'http://localhost:8787/projects';
+  // Ajusta esto según la URL real de tu backend
+
   getProjects(): Observable<Project[]> {
-    return of([
-      { id: 1, name: 'Proyecto Clipsi', description: 'Sistema de noticias con IA', topic: 'Tecnología' },
-      { id: 2, name: 'Proyecto Universidad', description: 'Trabajo final de carrera', topic: 'Educación' }
-    ]);
+    return this.http.get<Project[]>(this.API_URL);
+  }
+
+  getProject(id: number): Observable<Project> {
+    return this.http.get<Project>(`${this.API_URL}/${id}`);
+  }
+
+  createProject(data: {
+    name: string;
+    description?: string;
+    topic: string;
+    ownerId: number;
+    members: number[];
+  }): Observable<Project> {
+    return this.http.post<Project>(this.API_URL, data);
   }
 }

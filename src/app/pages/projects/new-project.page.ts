@@ -7,7 +7,9 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { LayoutService } from '../../services/layout.service'; 
+
+import { LayoutService } from '../../services/layout.service';
+import { ProjectsService } from '../../services/projects.service';
 
 @Component({
   selector: 'app-new-project',
@@ -29,13 +31,15 @@ export class NewProjectComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private layout: LayoutService
+    private layout: LayoutService,
+    private projectsService: ProjectsService    //  AÑADIDO
   ) {
     this.projectForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(30)]],
       description: [''],
       topic: ['', Validators.required],
     });
+
     this.layout.showMinimalHeader();
   }
 
@@ -46,13 +50,18 @@ export class NewProjectComponent {
     }
 
     const payload = this.projectForm.value;
-    console.log("Proyecto creado:", payload);
 
-    // Aquí harás: this.projectService.createProject(payload).subscribe(...)
-    
-    // Simulación:
-    alert("Proyecto creado con éxito!");
-    this.router.navigate(['/projects']);
+    //  REAL PETICIÓN AL BACKEND
+    this.projectsService.createProject(payload).subscribe({
+      next: (project) => {
+        console.log("Proyecto creado:", project);
+        this.router.navigate(['/projects']);
+      },
+      error: (err) => {
+        console.error("Error creando proyecto", err);
+        alert("Hubo un error al crear el proyecto.");
+      }
+    });
   }
 
   cancel() {
