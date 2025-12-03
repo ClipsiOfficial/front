@@ -1,0 +1,14 @@
+<div class="h-16 flex items-center justify-between">
+  <!-- Logo -->
+  <div class="flex items-center">
+    <img src="/clipsi-logo.png" alt="Clipsi" class="h-7 md:h-8" />
+  </div>
+
+  <div class="flex items-center gap-3">
+    <button mat-icon-button (click)="toggleTheme()"
+            [matTooltip]="actualTheme() === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro'">
+      <mat-icon *ngIf="actualTheme() === 'dark'">dark_mode</mat-icon>
+      <mat-icon *ngIf="actualTheme() !== 'dark'">light_mode</mat-icon>
+    </button>
+  </div>
+</div>

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LayoutService } from '../../services/layout.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,22 +13,32 @@ import { LayoutService } from '../../services/layout.service';
   styleUrls: ['./login.page.css']
 })
 export class LoginPage {
-  username: string = '';
+  email: string = '';
   password: string = '';
+  errorMessage: string = '';
 
-  constructor(private router: Router, private layout: LayoutService) {
+  private router = inject(Router);
+  private layout = inject(LayoutService);
+  private authService = inject(AuthService);
+
+  constructor() {
     this.layout.showLoginHeader();
   }
 
   onLogin() {
-    if (this.username && this.password) {
-      console.log('Usuario:', this.username);
-      console.log('Contraseña:', this.password);
-      alert('Login exitoso (simulado)');
-      this.layout.showFullHeader();
-      this.router.navigate(['/results']);
+    if (this.email && this.password) {
+      this.authService.login({ email: this.email, password: this.password }).subscribe({
+        next: () => {
+          this.layout.showFullHeader();
+          this.router.navigate(['/results']);
+        },
+        error: (err) => {
+          console.error('Login error', err);
+          this.errorMessage = 'Credenciales inválidas o error en el servidor';
+        }
+      });
     } else {
-      alert('Por favor, completa todos los campos');
+      this.errorMessage = 'Por favor, completa todos los campos';
     }
   }
 }

@@ -6,11 +6,11 @@
     <form (ngSubmit)="onLogin()" #loginForm="ngForm">
       <div class="form-group">
         <input
-          type="text"
-          id="username"
-          name="username"
-          [(ngModel)]="username"
-          placeholder="Usuario"
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="Email"
           required
         />
       </div>
@@ -24,6 +24,10 @@
           placeholder="Contraseña"
           required
         />
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
       </div>
 
       <button class="login-btn" type="submit" [disabled]="!loginForm.form.valid">

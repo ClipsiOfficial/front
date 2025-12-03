@@ -1,0 +1,100 @@
+<div class="h-16 flex items-center justify-between">
+  <!-- Logo -->
+  <div class="flex items-center">
+    <img src="/clipsi-logo.png" alt="Clipsi" class="h-7 md:h-8" />
+  </div>
+
+  <!-- NAV DESKTOP -->
+  <nav class="hidden md:flex flex-1 justify-center">
+    <div class="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground max-w-2xl">
+      <a routerLink="/results" routerLinkActive="bg-background text-foreground shadow"
+         [routerLinkActiveOptions]="{ exact: false }"
+         class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
+        Resultados
+      </a>
+      <a routerLink="/my-news" routerLinkActive="bg-background text-foreground shadow"
+         [routerLinkActiveOptions]="{ exact: false }"
+         class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
+        Mis Noticias
+      </a>
+      <a routerLink="/statistics" routerLinkActive="bg-background text-foreground shadow"
+         [routerLinkActiveOptions]="{ exact: false }"
+         class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
+        Estadísticas
+      </a>
+    </div>
+  </nav>
+
+  <!-- ACCIONES DESKTOP -->
+  <div class="hidden md:flex items-center gap-3">
+    <!-- Proyectos -->
+    <button mat-icon-button [routerLink]="['/projects-page']" matTooltip="Mis proyectos">
+      <mat-icon>folder_open</mat-icon>
+    </button>
+
+    <!-- Tema -->
+    <button mat-icon-button (click)="toggleTheme()"
+            [matTooltip]="actualTheme() === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro'">
+      <mat-icon *ngIf="actualTheme() === 'dark'">dark_mode</mat-icon>
+      <mat-icon *ngIf="actualTheme() !== 'dark'">light_mode</mat-icon>
+    </button>
+
+    <!-- Usuario -->
+    <button mat-icon-button matTooltip="Perfil de usuario"
+            class="!bg-primary !text-primary-foreground">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+    <!-- Logout -->
+    <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+
+  <!-- ACCIONES MÓVIL -->
+  <div class="flex md:hidden items-center gap-2">
+    <!-- Proyectos -->
+    <button mat-icon-button [routerLink]="['/projects']" matTooltip="Mis proyectos">
+      <mat-icon>folder_open</mat-icon>
+    </button>
+
+    <!-- Tema -->
+    <button mat-icon-button (click)="toggleTheme()"
+            [matTooltip]="actualTheme() === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro'">
+      <mat-icon *ngIf="actualTheme() === 'dark'">dark_mode</mat-icon>
+      <mat-icon *ngIf="actualTheme() !== 'dark'">light_mode</mat-icon>
+    </button>
+
+    <!-- Menú hamburguesa -->
+    <button mat-icon-button (click)="toggleMobileMenu()"
+            [attr.aria-label]="mobileMenuOpen() ? 'Cerrar menú' : 'Abrir menú'">
+      <mat-icon *ngIf="!mobileMenuOpen()">menu</mat-icon>
+      <mat-icon *ngIf="mobileMenuOpen()">close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<!-- MENÚ MÓVIL DESPLEGABLE -->
+<nav *ngIf="mobileMenuOpen()" class="md:hidden pb-4 border-t border-border mt-4 pt-4 w-full">
+  <div class="space-y-1">
+    <a routerLink="/results" routerLinkActive="bg-primary text-primary-foreground"
+      [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
+      class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
+      Resultados
+    </a>
+    <a routerLink="/my-news" routerLinkActive="bg-primary text-primary-foreground"
+      [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
+      class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
+      Mis Noticias
+    </a>
+    <a routerLink="/statistics" routerLinkActive="bg-primary text-primary-foreground"
+      [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
+      class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
+      Estadísticas
+    </a>
+    <button (click)="logout(); closeMobileMenu()"
+      class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent text-red-500">
+      Cerrar Sesión
+    </button>
+  </div>
+</nav>
