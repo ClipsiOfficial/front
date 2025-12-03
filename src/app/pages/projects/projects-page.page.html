@@ -1,0 +1,60 @@
+<div class="page-container">
+
+  <!-- Título -->
+  <div class="header-row">
+    <h1>Mis Proyectos</h1>
+  </div>
+
+  <!-- Cargando -->
+  <div class="loading" *ngIf="loading">
+    <mat-icon>sync</mat-icon>
+    <p>Cargando proyectos...</p>
+  </div>
+
+  <!-- Sin proyectos -->
+  <div class="empty" *ngIf="!loading && projects.length === 0">
+    <mat-icon class="icon">folder_open</mat-icon>
+    <h2>No tienes proyectos aún</h2>
+    <p>Crea tu primer proyecto para comenzar.</p>
+
+    <button mat-raised-button color="primary" routerLink="/projects/new">
+      Crear proyecto
+    </button>
+  </div>
+
+  <!-- Grid de proyectos -->
+  <div class="grid" *ngIf="!loading && projects.length > 0">
+
+    <div
+      class="card"
+      *ngFor="let project of projects"
+      [routerLink]="['/projects', project.id]"
+    >
+      <!-- Icono + Título -->
+      <div class="card-header">
+        <mat-icon class="icon">folder</mat-icon>
+        <h3>{{ project.name }}</h3>
+      </div>
+
+      <!-- Topic -->
+      <span class="topic-pill">{{ project.topic }}</span>
+
+      <!-- Descripción -->
+      <p class="description">
+        {{ project.description }}
+      </p>
+    </div>
+
+  </div>
+
+  <!-- FAB flotante -->
+  <button
+    mat-fab
+    color="primary"
+    routerLink="/projects/new"
+    class="fab-btn"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+
+</div>

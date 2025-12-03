@@ -1,0 +1,113 @@
+:host {
+  display: flex;
+  height: 100%;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+
+  padding: 32px;
+  border-radius: 16px;
+
+  /* Antes: background: white */
+  background: var(--card);
+
+  /* Antes: border: 1px solid #e6e6e6 */
+  border: 1px solid var(--border);
+
+  /* Texto adaptable */
+  color: var(--foreground);
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+  color: var(--foreground);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.cancel-btn {
+  border-radius: 10px;
+
+  /* botón neutro adaptable */
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.create-btn {
+  border-radius: 10px;
+  padding: 10px 24px;
+  font-size: 15px;
+
+  /* botón primario adaptable */
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+
+
+/* El contenedor del input */
+.mat-mdc-text-field-wrapper {
+  background-color: var(--input-background) !important;
+  color: var(--foreground) !important;
+  border-radius: 10px !important;
+}
+
+/* El borde del modo outline */
+.mat-mdc-form-field-outline {
+  color: var(--border) !important;
+}
+
+/* El borde cuando está enfocado */
+.mat-mdc-form-field-outline-thick {
+  color: var(--primary) !important;
+}
+
+/* El texto del input */
+input.mat-input-element, 
+textarea.mat-input-element {
+  color: var(--foreground) !important;
+}
+
+/* El label */
+.mat-mdc-floating-label {
+  color: var(--muted-foreground) !important;
+}
+
+/* Iconos dentro del input */
+.mat-icon {
+  color: var(--muted-foreground) !important;
+}
+
+/* Placeholder */
+::placeholder {
+  color: var(--muted-foreground) !important;
+  opacity: 0.7;
+}
