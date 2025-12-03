@@ -1,138 +1,16 @@
 <header class="border-b border-border bg-card sticky top-0 z-50">
   <div class="container mx-auto px-4">
-    <div class="h-16 flex items-center justify-between">
-
-      <!-- LOGO -->
-      <div class="flex items-center">
-        <img src="/clipsi-logo.png" alt="Clipsi" class="h-7 md:h-8" />
-      </div>
-
-      <!-- ============================ -->
-      <!--  HEADER MINIMAL (solo iconos) -->
-      <!-- ============================ -->
-      <div class="flex items-center gap-3" *ngIf="isMinimal">
-
-        <!-- Proyectos -->
-        <button mat-icon-button [routerLink]="['/projects-page']" matTooltip="Mis proyectos">
-          <mat-icon>folder_open</mat-icon>
-        </button>
-
-        <!-- Tema -->
-        <button mat-icon-button (click)="toggleTheme()"
-                [matTooltip]="actualTheme() === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro'">
-          <mat-icon *ngIf="actualTheme() === 'dark'">dark_mode</mat-icon>
-          <mat-icon *ngIf="actualTheme() !== 'dark'">light_mode</mat-icon>
-        </button>
-
-        <!-- Usuario -->
-        <button mat-icon-button matTooltip="Perfil de usuario"
-                class="!bg-primary !text-primary-foreground">
-          <mat-icon>account_circle</mat-icon>
-        </button>
-
-      </div>
-
-      <!-- ====================================== -->
-      <!--  HEADER COMPLETO (NO minimal) -->
-      <!-- ====================================== -->
-      <ng-container *ngIf="!isMinimal">
-
-        <!-- NAV DESKTOP -->
-        <nav class="hidden md:flex flex-1 justify-center">
-          <div class="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground max-w-2xl">
-            
-            <a routerLink="/results" routerLinkActive="bg-background text-foreground shadow"
-               class="inline-flex items-center rounded-md px-4 py-1.5 text-sm font-medium">
-              Resultados
-            </a>
-
-            <a routerLink="/my-news" routerLinkActive="bg-background text-foreground shadow"
-               class="inline-flex items-center rounded-md px-4 py-1.5 text-sm font-medium">
-              Mis Noticias
-            </a>
-
-            <a routerLink="/statistics" routerLinkActive="bg-background text-foreground shadow"
-               class="inline-flex items-center rounded-md px-4 py-1.5 text-sm font-medium">
-              Estadísticas
-            </a>
-
-          </div>
-        </nav>
-
-        <!-- ACCIONES DESKTOP -->
-        <div class="hidden md:flex items-center gap-3">
-
-          <!-- Proyectos -->
-          <button mat-icon-button [routerLink]="['/projects-page']" matTooltip="Mis proyectos">
-            <mat-icon>folder_open</mat-icon>
-          </button>
-
-          <!-- Tema -->
-          <button mat-icon-button (click)="toggleTheme()" 
-                  [matTooltip]="actualTheme() === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro'">
-            <mat-icon *ngIf="actualTheme() === 'dark'">dark_mode</mat-icon>
-            <mat-icon *ngIf="actualTheme() !== 'dark'">light_mode</mat-icon>
-          </button>
-
-          <!-- Usuario -->
-          <button mat-icon-button matTooltip="Perfil de usuario"
-                  class="!bg-primary !text-primary-foreground">
-            <mat-icon>account_circle</mat-icon>
-          </button>
-
-        </div>
-
-        <!-- ACCIONES MÓVIL -->
-        <div class="flex md:hidden items-center gap-2">
-
-          <!-- Proyectos -->
-          <button mat-icon-button [routerLink]="['/projects']" matTooltip="Mis proyectos">
-            <mat-icon>folder_open</mat-icon>
-          </button>
-
-          <!-- Tema -->
-          <button mat-icon-button (click)="toggleTheme()"
-                  [matTooltip]="actualTheme() === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro'">
-            <mat-icon *ngIf="actualTheme() === 'dark'">dark_mode</mat-icon>
-            <mat-icon *ngIf="actualTheme() !== 'dark'">light_mode</mat-icon>
-          </button>
-
-          <!-- Menú hamburguesa -->
-          <button mat-icon-button (click)="toggleMobileMenu()">
-            <mat-icon *ngIf="!isMobileOpen">menu</mat-icon>
-            <mat-icon *ngIf="isMobileOpen">close</mat-icon>
-          </button>
-
-        </div>
-
-      </ng-container>
-
-    </div>
-
-    <!-- MENÚ MÓVIL DESPLEGABLE -->
-    <ng-container *ngIf="!isMinimal && isMobileOpen">
-      <nav class="md:hidden pb-4 border-t border-border pt-4">
-
-        <a routerLink="/results" routerLinkActive="bg-primary text-primary-foreground"
-           (click)="closeMobileMenu()"
-           class="block w-full px-4 py-3 rounded-md text-sm font-medium">
-          Resultados
-        </a>
-
-        <a routerLink="/my-news" routerLinkActive="bg-primary text-primary-foreground"
-           (click)="closeMobileMenu()"
-           class="block w-full px-4 py-3 rounded-md text-sm font-medium">
-          Mis Noticias
-        </a>
-
-        <a routerLink="/statistics" routerLinkActive="bg-primary text-primary-foreground"
-           (click)="closeMobileMenu()"
-           class="block w-full px-4 py-3 rounded-md text-sm font-medium">
-          Estadísticas
-        </a>
-
-      </nav>
-    </ng-container>
-
+      <!-- Components based on mode -->
+      @switch (mode()) {
+        @case ('login') {
+          <app-header-login />
+        }
+        @case ('minimal') {
+          <app-header-minimal />
+        }
+        @case ('full') {
+          <app-header-full />
+        }
+      }
   </div>
 </header>

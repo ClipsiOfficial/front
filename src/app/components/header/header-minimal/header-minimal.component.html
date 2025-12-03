@@ -1,0 +1,47 @@
+<div class="h-16 flex items-center justify-between">
+  <!-- Logo -->
+  <div class="flex items-center">
+    <img src="/clipsi-logo.png" alt="Clipsi" class="h-7 md:h-8" />
+  </div>
+
+  <div class="flex items-center gap-3">
+    <!-- Proyectos -->
+    <button mat-icon-button [routerLink]="['/projects-page']" matTooltip="Mis proyectos">
+      <mat-icon>folder_open</mat-icon>
+    </button>
+
+    <!-- Desktop Actions (hidden on mobile) -->
+    <div class="hidden md:flex items-center gap-3">
+      <!-- Theme Toggle -->
+      <button
+        mat-icon-button
+        (click)="toggleTheme()"
+        [matTooltip]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+        <mat-icon *ngIf="currentTheme() === 'system'">monitor</mat-icon>
+        <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() === 'dark'">dark_mode</mat-icon>
+        <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() !== 'dark'">light_mode</mat-icon>
+      </button>
+
+      <!-- User Button -->
+      <button
+        mat-icon-button
+        matTooltip="Perfil de usuario"
+        class="!bg-primary !text-primary-foreground">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </div>
+
+    <!-- Mobile Actions -->
+    <div class="flex md:hidden items-center gap-2">
+      <!-- Theme Toggle Mobile -->
+      <button
+        mat-icon-button
+        (click)="toggleTheme()"
+        [matTooltip]="currentTheme() === 'system' ? 'Usar tema del sistema' : actualTheme() === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+        <mat-icon *ngIf="currentTheme() === 'system'">monitor</mat-icon>
+        <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() === 'dark'">dark_mode</mat-icon>
+        <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() !== 'dark'">light_mode</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

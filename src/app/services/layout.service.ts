@@ -1,20 +1,26 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+type HeaderMode = 'full' | 'minimal' | 'login';
+
 @Injectable({ providedIn: 'root' })
 export class LayoutService {
-  private _minimalHeader = new BehaviorSubject<boolean>(false);
-  minimalHeader$ = this._minimalHeader.asObservable();
+  private _headerMode = new BehaviorSubject<HeaderMode>('full');
+  headerMode$ = this._headerMode.asObservable();
 
-  get minimalHeaderValue() {
-    return this._minimalHeader.value;
+  get headerModeValue() {
+    return this._headerMode.value;
   }
 
   showFullHeader() {
-    this._minimalHeader.next(false);
+    this._headerMode.next('full');
   }
 
   showMinimalHeader() {
-    this._minimalHeader.next(true);
+    this._headerMode.next('minimal');
+  }
+
+  showLoginHeader() {
+    this._headerMode.next('login');
   }
 }

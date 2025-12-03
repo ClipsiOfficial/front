@@ -1,0 +1,38 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="title">Bienvenido/a a Clipsi!</h2>
+    <p class="subtitle">Accede con tu cuenta para continuar</p>
+
+    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+      <div class="form-group">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="Email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Contraseña"
+          required
+        />
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <button class="login-btn" type="submit" [disabled]="!loginForm.form.valid">
+        Iniciar Sesión
+      </button>
+    </form>
+  </div>
+</div>
