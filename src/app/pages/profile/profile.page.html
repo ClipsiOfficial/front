@@ -1,0 +1,31 @@
+<div class="profile-container">
+  <!-- Header con icono y nombre -->
+  <div class="profile-header">
+    <mat-icon class="user-icon">account_circle</mat-icon>
+    <h2 class="username">{{ username }}</h2>
+  </div>
+
+  <!-- Campos editables -->
+  <div class="profile-field">
+    <label class="field-label">Username:</label>
+    <input [(ngModel)]="username" type="text" class="field-input" />
+  </div>
+
+  <div class="profile-field">
+    <label class="field-label">Email:</label>
+    <input [(ngModel)]="email" type="email" class="field-input" />
+  </div>
+
+  <!-- Campo fijo -->
+  <div class="profile-field">
+    <label class="field-label">Subscription Type:</label>
+    <p class="field-static">{{ subscriptionType }}</p>
+  </div>
+
+  <!-- Botón Update -->
+  <div class="profile-actions">
+    <button mat-raised-button color="primary" (click)="updateProfile()">
+      Update Profile
+    </button>
+  </div>
+</div>
