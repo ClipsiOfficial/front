@@ -94,4 +94,31 @@ export class NewsTableComponent {
       day: 'numeric',
     }).format(date);
   }
+
+  areAllSelected(): boolean {
+    const current = this.currentNews();
+    return current.every(item => this.selectedIds().includes(item.id));
+  }
+
+  toggleAll(event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    const current = this.currentNews();
+
+    if (checked) {
+      // Emitir todos los ids que no estén seleccionados aún
+      current.forEach(item => {
+        if (!this.selectedIds().includes(item.id)) {
+          this.toggleNews.emit(item.id);
+        }
+      });
+    } else {
+      // Emitir todos los ids que sí están seleccionados
+      current.forEach(item => {
+        if (this.selectedIds().includes(item.id)) {
+          this.toggleNews.emit(item.id);
+        }
+      });
+    }
+  }
+
 }

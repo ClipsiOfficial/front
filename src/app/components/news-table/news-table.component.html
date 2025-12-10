@@ -12,8 +12,12 @@
           <tr>
             <th class="w-12 p-4">
               <div class="flex items-center justify-center">
-                <input type="checkbox"
-                  class="h-4 w-4 rounded border-border bg-background ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" />
+                <input
+                  type="checkbox"
+                  [checked]="areAllSelected()"
+                  (change)="toggleAll($event)"
+                  class="h-4 w-4 rounded border-border bg-background ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer"
+                />
               </div>
             </th>
             <th class="text-left p-4 font-medium">Título</th>
@@ -28,8 +32,11 @@
           <tr class="border-t border-border hover:bg-muted/50 transition-colors">
             <td class="p-4">
               <div class="flex items-center justify-center">
-                <input type="checkbox" [checked]="isSelected(newsItem.id)" (change)="onToggle(newsItem.id)"
-                  class="h-4 w-4 rounded border-border bg-background ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer" />
+                <button mat-icon-button (click)="onToggle(newsItem.id)">
+                  <mat-icon>
+                    {{ isSelected(newsItem.id) ? 'bookmark' : 'bookmark_border' }}
+                  </mat-icon>
+                </button>
               </div>
             </td>
             <td class="p-4">
@@ -71,8 +78,11 @@
     <div class="border border-border rounded-lg p-4 bg-card hover:bg-muted/50 transition-colors">
       <div class="flex items-start gap-3">
         <!-- Checkbox -->
-        <input type="checkbox" [checked]="isSelected(newsItem.id)" (change)="onToggle(newsItem.id)"
-          class="h-5 w-5 rounded border-border bg-background ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer mt-0.5 shrink-0" />
+        <button mat-icon-button (click)="onToggle(newsItem.id)" class="mt-0.5 shrink-0">
+          <mat-icon>
+            {{ isSelected(newsItem.id) ? 'bookmark' : 'bookmark_border' }}
+          </mat-icon>
+        </button>
 
         <!-- Content -->
         <div class="flex-1 min-w-0">

@@ -1,7 +1,30 @@
 <div>
-  <app-news-filters [filters]="filters()" [keywords]="keywords()" (filtersChange)="onFiltersChange($event)"
+  <app-news-filters [filters]="filters()" [keywords]="keywords()" 
+    (filtersChange)="onFiltersChange($event)"
     (keywordsChange)="onKeywordsChange($event)" />
-  <div class="mt-6">
-    <app-news-table [news]="filteredNews()" [selectedIds]="selectedNewsIds()" (toggleNews)="onToggleNews($event)" />
+
+  <!-- Grid de tarjetas -->
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
+    @for (news of paginatedNews(); track news.id) {
+      <app-results-news-card [news]="news"
+                            [isSelected]="selectedNewsIds().includes(news.id)"
+                            (bookmark)="onToggleNews($event)" />
+    }
+  </div>
+
+
+  <!-- Controles de paginación -->
+  <div class="flex justify-center items-center gap-2 mt-8">
+    <button mat-icon-button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+    <span class="px-4 py-2 rounded-md bg-muted text-foreground font-semibold">
+      Page {{ currentPage() }} of {{ totalPages() }}
+    </span>
+
+    <button mat-icon-button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
   </div>
 </div>
