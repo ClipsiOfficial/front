@@ -44,27 +44,32 @@ export class NewProjectComponent {
   }
 
   submit() {
-    if (this.projectForm.invalid) {
-      this.projectForm.markAllAsTouched();
-      return;
-    }
-
-    const payload = this.projectForm.value;
-
-    //  REAL PETICIÓN AL BACKEND
-    this.projectsService.createProject(payload).subscribe({
-      next: (project) => {
-        console.log("Proyecto creado:", project);
-        this.router.navigate(['/projects']);
-      },
-      error: (err) => {
-        console.error("Error creando proyecto", err);
-        alert("Hubo un error al crear el proyecto.");
-      }
-    });
+  if (this.projectForm.invalid) {
+    this.projectForm.markAllAsTouched();
+    return;
   }
 
+  const payload = {
+    name: this.projectForm.value.name,
+    description: this.projectForm.value.description,
+    topic: this.projectForm.value.topic,
+    ownerId: 1,      // <-- TEMPORAL hasta que tengas login real
+    members: null      // <-- requerido por tu servicio
+  };
+
+  this.projectsService.createProject(payload).subscribe({
+    next: (project) => {
+      console.log("Proyecto creado:", project);
+      this.router.navigate(['/projects-page']);
+    },
+    error: (err) => {
+      console.error("Error creando proyecto", err);
+      alert("Hubo un error al crear el proyecto.");
+    }
+  });
+}
+
   cancel() {
-    this.router.navigate(['/projects']);
+    this.router.navigate(['/projects-page']);
   }
 }

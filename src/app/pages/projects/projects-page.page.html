@@ -30,10 +30,43 @@
       *ngFor="let project of projects"
       [routerLink]="['/projects', project.id]"
     >
-      <!-- Icono + Título -->
+      <!-- Icono + Título + Acciones -->
       <div class="card-header">
-        <mat-icon class="icon">folder</mat-icon>
-        <h3>{{ project.name }}</h3>
+        <div class="header-content">
+          <mat-icon class="icon">folder</mat-icon>
+          <h3>{{ project.name }}</h3>
+        </div>
+        <div class="card-actions">
+          <button
+            mat-icon-button
+            (click)="manageKeywords(project, $event)"
+            title="Gestionar palabras clave"
+          >
+            <mat-icon>label</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="manageMembers(project, $event)"
+            title="Gestionar miembros"
+          >
+            <mat-icon>people</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="editProject(project, $event)"
+            title="Editar proyecto"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteProject(project, $event)"
+            title="Eliminar proyecto"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </div>
 
       <!-- Topic -->

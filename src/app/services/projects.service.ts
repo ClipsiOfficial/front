@@ -26,8 +26,44 @@ export class ProjectsService {
     description?: string;
     topic: string;
     ownerId: number;
-    members: number[];
+    members: number[]|null;
   }): Observable<Project> {
     return this.http.post<Project>(this.API_URL, data);
+  }
+
+  updateProject(id: number, data: {
+    name?: string;
+    description?: string;
+  }): Observable<Project> {
+    return this.http.patch<Project>(`${this.API_URL}/${id}`, data);
+  }
+
+  deleteProject(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
+  }
+
+  addMember(projectId: number, email: string): Observable<any> {
+    return this.http.post(`${this.API_URL}/${projectId}/members`, { email });
+  }
+
+  removeMember(projectId: number, userId: number): Observable<any> {
+    return this.http.delete(`${this.API_URL}/${projectId}/members`, { body: { userId } });
+  }
+
+  getProjectMembers(projectId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/${projectId}/members`);
+  }
+
+  // Keywords
+  getKeywords(projectId: number): Observable<{ id: number; content: string; searches: number; projectId: number }[]> {
+    return this.http.get<{ id: number; content: string; searches: number; projectId: number }[]>(`${this.API_URL}/${projectId}/keywords`);
+  }
+
+  addKeyword(projectId: number, content: string): Observable<any> {
+    return this.http.post(`${this.API_URL}/${projectId}/keywords`, { content });
+  }
+
+  deleteKeyword(projectId: number, keywordId: number): Observable<any> {
+    return this.http.delete(`${this.API_URL}/${projectId}/keywords/${keywordId}`);
   }
 }
