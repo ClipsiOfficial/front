@@ -28,7 +28,7 @@
     <div
       class="card"
       *ngFor="let project of projects"
-      [routerLink]="['/projects', project.id]"
+      (click)="selectProject(project)"
     >
       <!-- Icono + Título + Acciones -->
       <div class="card-header">

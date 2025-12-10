@@ -5,6 +5,7 @@ import { NewsFiltersComponent } from '../../components/news-filters/news-filters
 import { NewsTableComponent } from '../../components/news-table/news-table.component';
 import { FilterState } from '../../models/news.model';
 import { LayoutService } from '../../services/layout.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-results-page',
@@ -19,9 +20,12 @@ export class ResultsPage {
   selectedNewsIds = this.newsService.selectedNewsIds;
   filters = this.newsService.filters;
   keywords = this.newsService.keywords;
+  
+  currentProject = toSignal(this.layout.currentProject$);
 
   ngOnInit(): void {
     this.layout.showFullHeader();
+    // El título se establece automáticamente cuando se selecciona un proyecto
   }
 
   onFiltersChange(filters: FilterState): void {

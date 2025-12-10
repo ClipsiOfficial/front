@@ -127,4 +127,9 @@ export class ProjectsPage implements OnInit {
       width: '600px'
     });
   }
+
+  selectProject(project: Project): void {
+    this.layout.setCurrentProject(project);
+    this.router.navigate(['/results']);
+  }
 }
