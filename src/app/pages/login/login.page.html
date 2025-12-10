@@ -1,7 +1,7 @@
 <div class="login-container">
   <div class="login-card">
-    <h2 class="title">Bienvenido/a a Clipsi!</h2>
-    <p class="subtitle">Accede con tu cuenta para continuar</p>
+    <h2 class="title">Welcome to Clipsi!</h2>
+    <p class="subtitle">Sign in with your account to continue</p>
 
     <form (ngSubmit)="onLogin()" #loginForm="ngForm">
       <div class="form-group">
@@ -21,7 +21,7 @@
           id="password"
           name="password"
           [(ngModel)]="password"
-          placeholder="Contraseña"
+          placeholder="Password"
           required
         />
       </div>
@@ -31,7 +31,7 @@
       </div>
 
       <button class="login-btn" type="submit" [disabled]="!loginForm.form.valid">
-        Iniciar Sesión
+        Sign In
       </button>
     </form>
   </div>

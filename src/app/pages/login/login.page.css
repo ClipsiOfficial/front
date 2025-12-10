@@ -1,27 +1,21 @@
-/* Contenedor principal: ocupa toda la pantalla */
 .login-container {
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Fondo adaptado */
-  background: var(--background); /* puedes definir un color distinto */
+  background: var(--app-background); /* sigue usando tu fondo global */
 }
 
-/* Tarjeta central */
 .login-card {
-  background: var(--card);
-  padding: 60px;              /* más espacio interno */
+  background: var(--app-background);
+  padding: 60px;
   border-radius: var(--radius-lg);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 100%;                /* ocupa todo el ancho disponible */
-  max-width: 420px;           /* pero no más de 480px */
+  width: 100%;
+  max-width: 420px;
 }
 
-
-/* Título y subtítulo adaptados al estilo projects */
 .title {
   font-size: 24px;
   font-weight: 600;
@@ -36,7 +30,6 @@
   color: var(--muted-foreground);
 }
 
-/* Inputs */
 .form-group {
   margin-bottom: 16px;
 }
@@ -55,9 +48,10 @@ input:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 4px var(--primary);
+  transform: scale(1.02);
+  transition: all 0.2s ease;
 }
 
-/* Botón adaptado */
 .login-btn {
   width: 100%;
   padding: 12px;
@@ -67,11 +61,14 @@ input:focus {
   color: var(--primary-foreground);
   border: none;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
+/* Hover effect visible en ambos modos */
 .login-btn:hover {
-  background: var(--primary-hover);
+  background: #ff8000; /* azul más oscuro */
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
 }
 
 .login-btn:disabled {
@@ -83,4 +80,10 @@ input:focus {
   color: #ef4444;
   margin-bottom: 16px;
   font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.error-message.ng-star-inserted {
+  opacity: 1;
 }
