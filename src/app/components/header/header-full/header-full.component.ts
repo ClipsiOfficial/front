@@ -5,7 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ThemeService } from '../../../services/theme.service';
 import { AuthService } from '../../../services/auth.service';
+import { LayoutService } from '../../../services/layout.service';
 import { CommonModule } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header-full',
@@ -16,10 +18,12 @@ import { CommonModule } from '@angular/common';
 export class HeaderFullComponent {
   private themeService = inject(ThemeService);
   private authService = inject(AuthService);
+  private layoutService = inject(LayoutService);
 
   actualTheme = this.themeService.actualTheme;
   currentTheme = this.themeService.theme;
   mobileMenuOpen = signal(false);
+  projectTitle = toSignal(this.layoutService.projectTitle$);
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
