@@ -13,13 +13,17 @@
 
   <!-- Sin proyectos -->
   <div class="empty" *ngIf="!loading && projects.length === 0">
-    <mat-icon class="icon">folder_open</mat-icon>
-    <h2>No tienes proyectos aún</h2>
-    <p>Crea tu primer proyecto para comenzar.</p>
-
-    <button mat-raised-button color="primary" routerLink="/projects/new">
-      Crear proyecto
-    </button>
+    <div class="empty-content">
+      <div class="empty-icon-wrapper">
+        <mat-icon class="empty-icon">folder_open</mat-icon>
+      </div>
+      <h2 class="empty-title">No tienes proyectos aún</h2>
+      <p class="empty-description">Crea tu primer proyecto para comenzar a recopilar y analizar noticias.</p>
+      <button mat-raised-button color="primary" routerLink="/projects/new" class="empty-cta">
+        <mat-icon>add</mat-icon>
+        Crear primer proyecto
+      </button>
+    </div>
   </div>
 
   <!-- Grid de proyectos -->
