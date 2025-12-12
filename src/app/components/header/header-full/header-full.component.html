@@ -1,7 +1,10 @@
 <div class="h-16 flex items-center justify-between">
   <!-- Logo -->
-  <div class="flex items-center">
+  <div class="flex items-center gap-3">
     <img src="/clipsi-logo.png" alt="Clipsi" class="h-7 md:h-8" />
+    <span *ngIf="projectTitle()" class="hidden md:inline-flex items-center px-3 py-1.5 rounded-md bg-muted text-sm font-medium">
+      {{ projectTitle() }}
+    </span>
   </div>
 
   <!-- NAV DESKTOP -->
@@ -28,7 +31,7 @@
   <!-- ACCIONES DESKTOP -->
   <div class="hidden md:flex items-center gap-3">
     <!-- Proyectos -->
-    <button mat-icon-button [routerLink]="['/projects-page']" matTooltip="Mis proyectos">
+    <button mat-icon-button [routerLink]="['/projects']" matTooltip="Mis proyectos">
       <mat-icon>folder_open</mat-icon>
     </button>
 

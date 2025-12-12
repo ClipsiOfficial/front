@@ -2,6 +2,7 @@ import { Component, inject, computed } from '@angular/core';
 
 import { MatIconModule } from '@angular/material/icon';
 import { NewsService } from '../../services/news.service';
+import { LayoutService } from '../../services/layout.service';
 
 interface SourceStat {
   name: string;
@@ -24,8 +25,13 @@ interface TopNews {
 })
 export class StatisticsPage {
   private newsService = inject(NewsService);
+  private layout = inject(LayoutService);
 
   selectedNews = this.newsService.selectedNews;
+
+  ngOnInit(): void {
+    this.layout.showFullHeader();
+  }
 
   sourceDistribution = computed(() => {
     const news = this.selectedNews();

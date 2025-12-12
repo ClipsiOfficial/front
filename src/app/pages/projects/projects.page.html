@@ -1,20 +1,98 @@
-<!-- Cargando -->
-<div *ngIf="loading" class="loading">
-  <mat-icon>hourglass_empty</mat-icon>
-  <p>Cargando...</p>
-</div>
+<div class="page-container">
 
-<!-- Estado sin proyectos -->
-<div *ngIf="!loading && !hasProjects" class="empty-container">
+  <!-- Título -->
+  <div class="header-row">
+    <h1>Mis Proyectos</h1>
+  </div>
 
-  <h1 class="title">Todavía no tienes ningún proyecto</h1>
+  <!-- Cargando -->
+  <div class="loading" *ngIf="loading">
+    <mat-icon>sync</mat-icon>
+    <p>Cargando proyectos...</p>
+  </div>
 
-  <p class="subtitle">
-    Crea tu primer proyecto para empezar a recibir resultados de clipping.
-  </p>
+  <!-- Sin proyectos -->
+  <div class="empty" *ngIf="!loading && projects.length === 0">
+    <div class="empty-content">
+      <div class="empty-icon-wrapper">
+        <mat-icon class="empty-icon">folder_open</mat-icon>
+      </div>
+      <h2 class="empty-title">No tienes proyectos aún</h2>
+      <p class="empty-description">Crea tu primer proyecto para comenzar a recopilar y analizar noticias.</p>
+      <button mat-raised-button color="primary" routerLink="/projects/new" class="empty-cta">
+        <mat-icon>add</mat-icon>
+        Crear primer proyecto
+      </button>
+    </div>
+  </div>
 
-  <button mat-raised-button color="primary" class="create-btn" (click)="createProject()">
+  <!-- Grid de proyectos -->
+  <div class="grid" *ngIf="!loading && projects.length > 0">
+
+    <div
+      class="card"
+      *ngFor="let project of projects"
+      (click)="selectProject(project)"
+    >
+      <!-- Icono + Título + Acciones -->
+      <div class="card-header">
+        <div class="header-content">
+          <mat-icon class="icon">folder</mat-icon>
+          <h3>{{ project.name }}</h3>
+        </div>
+        <div class="card-actions">
+          <button
+            mat-icon-button
+            (click)="manageKeywords(project, $event)"
+            title="Gestionar palabras clave"
+          >
+            <mat-icon>label</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="manageMembers(project, $event)"
+            title="Gestionar miembros"
+          >
+            <mat-icon>people</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="editProject(project, $event)"
+            title="Editar proyecto"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteProject(project, $event)"
+            title="Eliminar proyecto"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Topic -->
+      <span class="topic-pill">{{ project.topic }}</span>
+
+      <!-- Descripción -->
+      <p class="description">
+        {{ project.description }}
+      </p>
+    </div>
+
+  </div>
+
+  <!-- FAB flotante -->
+  <button
+    mat-fab
+    color="primary"
+    routerLink="/projects/new"
+    class="fab-btn"
+    *ngIf="projects.length > 0"
+  >
     <mat-icon>add</mat-icon>
-    Crear proyecto
   </button>
+
 </div>
