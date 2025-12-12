@@ -60,7 +60,7 @@ export class NewProjectComponent {
   this.projectsService.createProject(payload).subscribe({
     next: (project) => {
       console.log("Proyecto creado:", project);
-      this.router.navigate(['/projects-page']);
+      this.router.navigate(['/projects']);
     },
     error: (err) => {
       console.error("Error creando proyecto", err);
@@ -70,6 +70,6 @@ export class NewProjectComponent {
 }
 
   cancel() {
-    this.router.navigate(['/projects-page']);
+    this.router.navigate(['/projects']);
   }
 }

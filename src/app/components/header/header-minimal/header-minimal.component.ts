@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ThemeService } from '../../../services/theme.service';
+import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,10 +15,15 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderMinimalComponent {
   private themeService = inject(ThemeService);
+  private authService = inject(AuthService);
   currentTheme = this.themeService.theme;
   actualTheme = this.themeService.actualTheme;
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

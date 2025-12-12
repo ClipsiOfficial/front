@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -16,13 +15,12 @@ import { ProjectsService } from '../../services/projects.service';
 import { Project } from '../../models/project.model';
 
 @Component({
-  selector: 'app-projects-page',
+  selector: 'app-projects',
   standalone: true,
-  templateUrl: './projects-page.page.html',
-  styleUrls: ['./projects-page.page.css'],
+  templateUrl: './projects.page.html',
+  styleUrls: ['./projects.page.css'],
   imports: [
     CommonModule,
-    RouterLink,
     MatIconModule,
     MatButtonModule,
     MatDialogModule,

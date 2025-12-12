@@ -30,7 +30,7 @@ export class LoginPage {
       this.authService.login({ email: this.email, password: this.password }).subscribe({
         next: () => {
           this.layout.showFullHeader();
-          this.router.navigate(['/results']);
+          this.router.navigate(['/projects']);
         },
         error: (err) => {
           console.error('Login error', err);
