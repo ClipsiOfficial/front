@@ -86,6 +86,7 @@
     color="primary"
     routerLink="/projects/new"
     class="fab-btn"
+    *ngIf="projects.length > 0"
   >
     <mat-icon>add</mat-icon>
   </button>

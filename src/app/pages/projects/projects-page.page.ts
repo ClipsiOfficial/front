@@ -26,9 +26,6 @@ import { Project } from '../../models/project.model';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
-    EditProjectDialogComponent,
-    ManageMembersDialogComponent,
-    ManageKeywordsDialogComponent
   ]
 })
 export class ProjectsPage implements OnInit {
@@ -76,7 +73,7 @@ export class ProjectsPage implements OnInit {
 
   editProject(project: Project, event: Event): void {
     event.stopPropagation();
-    
+
     this.dialog.open(EditProjectDialogComponent, {
       data: { project },
       width: '500px'
@@ -96,7 +93,7 @@ export class ProjectsPage implements OnInit {
 
   deleteProject(project: Project, event: Event): void {
     event.stopPropagation();
-    
+
     if (confirm(`¿Estás seguro de que deseas eliminar "${project.name}"?`)) {
       this.projectsService.deleteProject(project.id).subscribe({
         next: () => {
@@ -121,7 +118,7 @@ export class ProjectsPage implements OnInit {
 
   manageKeywords(project: Project, event: Event): void {
     event.stopPropagation();
-    
+
     this.dialog.open(ManageKeywordsDialogComponent, {
       data: { project },
       width: '600px'
