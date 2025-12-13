@@ -48,6 +48,11 @@ export const routes: Routes = [
       import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
   },
   {
+    path: 'profile',
+    loadComponent: () =>
+      import('./pages/profile/profile.page').then((m) => m.ProfilePage),
+  },
+  {
     path: '**',
     redirectTo: '/login',
   },

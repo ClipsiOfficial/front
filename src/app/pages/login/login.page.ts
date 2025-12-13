@@ -34,11 +34,11 @@ export class LoginPage {
         },
         error: (err) => {
           console.error('Login error', err);
-          this.errorMessage = 'Credenciales inválidas o error en el servidor';
+          this.errorMessage = 'Invalid credentials or server error';
         }
       });
     } else {
-      this.errorMessage = 'Por favor, completa todos los campos';
+      this.errorMessage = 'Please fill in all fields';
     }
   }
 }
