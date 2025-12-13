@@ -18,12 +18,10 @@
       </button>
 
       <!-- User Button -->
-      <button
-        mat-icon-button
-        matTooltip="Perfil de usuario"
-        class="!bg-primary !text-primary-foreground">
-        <mat-icon>account_circle</mat-icon>
-      </button>
+      <button mat-icon-button [routerLink]="'/profile'" matTooltip="Perfil de usuario"
+            class="!bg-primary !text-primary-foreground user-btn">
+      <mat-icon>account_circle</mat-icon>
+    </button>
 
       <!-- Logout -->
       <button
