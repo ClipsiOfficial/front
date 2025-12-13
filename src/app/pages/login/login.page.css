@@ -3,11 +3,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--app-background); /* sigue usando tu fondo global */
+  background: var(--background);
 }
 
 .login-card {
-  background: var(--app-background);
+  background: var(--card);
   padding: 60px;
   border-radius: var(--radius-lg);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
