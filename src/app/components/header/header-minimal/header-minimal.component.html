@@ -5,11 +5,6 @@
   </div>
 
   <div class="flex items-center gap-3">
-    <!-- Proyectos -->
-    <button mat-icon-button [routerLink]="['/projects-page']" matTooltip="Mis proyectos">
-      <mat-icon>folder_open</mat-icon>
-    </button>
-
     <!-- Desktop Actions (hidden on mobile) -->
     <div class="hidden md:flex items-center gap-3">
       <!-- Theme Toggle -->
@@ -23,11 +18,17 @@
       </button>
 
       <!-- User Button -->
+      <button mat-icon-button [routerLink]="'/profile'" matTooltip="Perfil de usuario"
+            class="!bg-primary !text-primary-foreground user-btn">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+      <!-- Logout -->
       <button
         mat-icon-button
-        matTooltip="Perfil de usuario"
-        class="!bg-primary !text-primary-foreground">
-        <mat-icon>account_circle</mat-icon>
+        (click)="logout()"
+        matTooltip="Cerrar sesión">
+        <mat-icon>logout</mat-icon>
       </button>
     </div>
 
@@ -41,6 +42,14 @@
         <mat-icon *ngIf="currentTheme() === 'system'">monitor</mat-icon>
         <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() === 'dark'">dark_mode</mat-icon>
         <mat-icon *ngIf="currentTheme() !== 'system' && actualTheme() !== 'dark'">light_mode</mat-icon>
+      </button>
+
+      <!-- Logout Mobile -->
+      <button
+        mat-icon-button
+        (click)="logout()"
+        matTooltip="Cerrar sesión">
+        <mat-icon>logout</mat-icon>
       </button>
     </div>
   </div>

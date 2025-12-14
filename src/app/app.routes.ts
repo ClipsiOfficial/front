@@ -5,7 +5,7 @@ import { guestGuard } from './guards/guest.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/results',
+    redirectTo: '/login',
     pathMatch: 'full',
   },
   {
@@ -26,36 +26,21 @@ export const routes: Routes = [
       import('./pages/statistics/statistics.page').then((m) => m.StatisticsPage),
     canActivate: [authGuard],
   },
-  // {
-  //   path: 'projects',
-  //   loadComponent: () =>
-  //     import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
-  // },
-  // {
-  //   path: 'projects/new',
-  //   loadComponent: () =>
-  //     import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
-  // },
-  // {
-  // path: 'projects-page',
-  // loadComponent: () =>
-  //   import('./pages/projects/projects-page.page').then((m) => m.ProjectsPage)
-  // },
+  {
+    path: 'projects/new',
+    loadComponent: () =>
+      import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
+  },
+  {
+    path: 'projects',
+    loadComponent: () =>
+      import('./pages/projects/projects.page').then((m) => m.ProjectsPage)
+  },
   {
     path: 'login',
     loadComponent: () =>
-    import('./pages/login/login.page').then((m) => m.LoginPage),
+      import('./pages/login/login.page').then((m) => m.LoginPage),
     canActivate: [guestGuard],
-  },
-  {
-    path: 'projects',
-    loadComponent: () =>
-      import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
-  },
-  {
-    path: 'projects',
-    loadComponent: () =>
-      import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
   },
   {
     path: 'projects/new',
@@ -63,9 +48,9 @@ export const routes: Routes = [
       import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
   },
   {
-  path: 'projects-page',
-  loadComponent: () =>
-    import('./pages/projects/projects-page.page').then((m) => m.ProjectsPage)
+    path: 'profile',
+    loadComponent: () =>
+      import('./pages/profile/profile.page').then((m) => m.ProfilePage),
   },
   {
     path: '**',

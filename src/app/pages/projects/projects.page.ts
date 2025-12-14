@@ -1,42 +1,130 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { LayoutService } from '../../services/layout.service'; // <--- IMPORTAR SERVICIO
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { EditProjectDialogComponent } from '../../components/edit-project-dialog.component';
+import { ManageMembersDialogComponent } from '../../components/manage-members-dialog.component';
+import { ManageKeywordsDialogComponent } from '../../components/manage-keywords-dialog.component';
+
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+import { LayoutService } from '../../services/layout.service';
+import { ProjectsService } from '../../services/projects.service';
+import { Project } from '../../models/project.model';
 
 @Component({
-  selector: 'app-projects-page',
+  selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule],
   templateUrl: './projects.page.html',
-  styleUrls: ['./projects.page.css']
+  styleUrls: ['./projects.page.css'],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+  ]
 })
-export class ProjectsPage implements OnInit, OnDestroy {
+export class ProjectsPage implements OnInit {
 
-  loading = false;
-  hasProjects = false;
+  private layout = inject(LayoutService);
+  private projectsService = inject(ProjectsService);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
 
-  constructor(
-    private router: Router,
-    private layout: LayoutService // <--- INYECTAR SERVICIO
-  ) {
+  projects: Project[] = [];
+  loading = true;
+
+  constructor(private cdr: ChangeDetectorRef) {
     this.layout.showMinimalHeader();
+
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        filter((event: NavigationEnd) => event.urlAfterRedirects === '/projects')
+      )
+      .subscribe(() => {
+        this.loadProjects();
+      });
   }
 
-  ngOnInit() {
-  
-    setTimeout(() => {
-      this.hasProjects = false;
-      this.loading = false;
-    }, 700);
+  ngOnInit(): void {
+    this.loadProjects();
   }
 
-  ngOnDestroy() {
-    
+  loadProjects(): void {
+    this.loading = true;
+
+    this.projectsService.getProjects().subscribe({
+      next: (data) => {
+        this.projects = data;
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
-  createProject() {
-    this.router.navigate(['/projects/new']);
+  editProject(project: Project, event: Event): void {
+    event.stopPropagation();
+
+    this.dialog.open(EditProjectDialogComponent, {
+      data: { project },
+      width: '500px'
+    }).afterClosed().subscribe((result) => {
+      if (result) {
+        this.projectsService.updateProject(project.id, result).subscribe({
+          next: () => {
+            this.loadProjects();
+          },
+          error: () => {
+            alert('Error al actualizar el proyecto');
+          }
+        });
+      }
+    });
+  }
+
+  deleteProject(project: Project, event: Event): void {
+    event.stopPropagation();
+
+    if (confirm(`¿Estás seguro de que deseas eliminar "${project.name}"?`)) {
+      this.projectsService.deleteProject(project.id).subscribe({
+        next: () => {
+          this.loadProjects();
+        },
+        error: () => {
+          alert('Error al eliminar el proyecto');
+        }
+      });
+    }
+  }
+
+  manageMembers(project: Project, event: Event): void {
+    event.stopPropagation();
+    this.dialog.open(ManageMembersDialogComponent, {
+      data: { project },
+      width: '600px'
+    }).afterClosed().subscribe(() => {
+      this.loadProjects();
+    });
+  }
+
+  manageKeywords(project: Project, event: Event): void {
+    event.stopPropagation();
+
+    this.dialog.open(ManageKeywordsDialogComponent, {
+      data: { project },
+      width: '600px'
+    });
+  }
+
+  selectProject(project: Project): void {
+    this.layout.setCurrentProject(project);
+    this.router.navigate(['/results']);
   }
 }

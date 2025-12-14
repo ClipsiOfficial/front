@@ -1,0 +1,84 @@
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  background: var(--app-background);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  min-height: 96px;
+}
+
+.user-icon {
+  font-size: 64px;
+  color: var(--primary);
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+}
+
+.username {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-left: 8px;
+}
+
+.profile-field {
+  margin-bottom: 40px;
+}
+
+.field-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--muted-foreground);
+}
+
+.field-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--input);
+  color: var(--foreground);
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 4px var(--primary);
+}
+
+.field-static {
+  padding: 10px;
+  background: var(--muted);
+  border-radius: var(--radius-md);
+  color: var(--foreground);
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+/* Hover effect para el botón */
+button[mat-raised-button] {
+  background: var(--muted);
+  color: var(--foreground);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+button[mat-raised-button]:hover {
+  background: #f97316;
+  color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}

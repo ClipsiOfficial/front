@@ -6,6 +6,7 @@ import { FilterState } from '../../models/news.model';
 import { LayoutService } from '../../services/layout.service';
 import { ResultsNewsCardComponent } from '../../components/results-news-card/results-news-card.component';
 import { MatIconModule } from '@angular/material/icon';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-results-page',
@@ -33,9 +34,12 @@ export class ResultsPage {
   totalPages = computed(() => {
     return Math.ceil(this.filteredNews().length / this.pageSize);
   });
+  
+  currentProject = toSignal(this.layout.currentProject$);
 
   ngOnInit(): void {
     this.layout.showFullHeader();
+    // El título se establece automáticamente cuando se selecciona un proyecto
   }
 
   onFiltersChange(filters: FilterState): void {

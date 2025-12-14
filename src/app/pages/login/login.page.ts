@@ -30,15 +30,15 @@ export class LoginPage {
       this.authService.login({ email: this.email, password: this.password }).subscribe({
         next: () => {
           this.layout.showFullHeader();
-          this.router.navigate(['/results']);
+          this.router.navigate(['/projects']);
         },
         error: (err) => {
           console.error('Login error', err);
-          this.errorMessage = 'Credenciales inválidas o error en el servidor';
+          this.errorMessage = 'Invalid credentials or server error';
         }
       });
     } else {
-      this.errorMessage = 'Por favor, completa todos los campos';
+      this.errorMessage = 'Please fill in all fields';
     }
   }
 }
