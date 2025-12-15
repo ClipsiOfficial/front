@@ -15,7 +15,6 @@ import { ProjectsService } from '../../services/projects.service';
   selector: 'app-new-project',
   standalone: true,
   templateUrl: './new-project.page.html',
-  styleUrls: ['./new-project.page.css'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -32,7 +31,7 @@ export class NewProjectComponent {
     private fb: FormBuilder,
     private router: Router,
     private layout: LayoutService,
-    private projectsService: ProjectsService    //  AÑADIDO
+    private projectsService: ProjectsService
   ) {
     this.projectForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(30)]],
@@ -44,30 +43,30 @@ export class NewProjectComponent {
   }
 
   submit() {
-  if (this.projectForm.invalid) {
-    this.projectForm.markAllAsTouched();
-    return;
-  }
-
-  const payload = {
-    name: this.projectForm.value.name,
-    description: this.projectForm.value.description,
-    topic: this.projectForm.value.topic,
-    ownerId: 1,      // <-- TEMPORAL hasta que tengas login real
-    members: null      // <-- requerido por tu servicio
-  };
-
-  this.projectsService.createProject(payload).subscribe({
-    next: (project) => {
-      console.log("Proyecto creado:", project);
-      this.router.navigate(['/projects']);
-    },
-    error: (err) => {
-      console.error("Error creando proyecto", err);
-      alert("Hubo un error al crear el proyecto.");
+    if (this.projectForm.invalid) {
+      this.projectForm.markAllAsTouched();
+      return;
     }
-  });
-}
+
+    const payload = {
+      name: this.projectForm.value.name,
+      description: this.projectForm.value.description,
+      topic: this.projectForm.value.topic,
+      ownerId: 1, // TODO: Remove hardcoded ownerId, is already obtained in backend
+      members: null
+    };
+
+    this.projectsService.createProject(payload).subscribe({
+      next: (project) => {
+        console.log("Proyecto creado:", project);
+        this.router.navigate(['/projects']);
+      },
+      error: (err) => {
+        console.error("Error creando proyecto", err);
+        alert("Hubo un error al crear el proyecto.");
+      }
+    });
+  }
 
   cancel() {
     this.router.navigate(['/projects']);
