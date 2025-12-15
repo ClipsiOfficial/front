@@ -10,7 +10,6 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.css']
 })
 export class LoginPage {
   email: string = '';
