@@ -30,11 +30,13 @@ export const routes: Routes = [
     path: 'projects/new',
     loadComponent: () =>
       import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
+    canActivate: [authGuard],
   },
   {
     path: 'projects',
     loadComponent: () =>
-      import('./pages/projects/projects.page').then((m) => m.ProjectsPage)
+      import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
+    canActivate: [authGuard],
   },
   {
     path: 'login',
@@ -43,14 +45,10 @@ export const routes: Routes = [
     canActivate: [guestGuard],
   },
   {
-    path: 'projects/new',
-    loadComponent: () =>
-      import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
-  },
-  {
     path: 'profile',
     loadComponent: () =>
       import('./pages/profile/profile.page').then((m) => m.ProfilePage),
+    canActivate: [authGuard],
   },
   {
     path: '**',
