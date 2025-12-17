@@ -51,39 +51,39 @@ export class StatisticsPage {
     return stats.sort((a, b) => b.count - a.count);
   });
 
-  categoryDistribution = computed(() => {
-    const news = this.selectedNews();
-    const categoryCounts: Record<string, number> = {};
+  // categoryDistribution = computed(() => {
+  //   const news = this.selectedNews();
+  //   const categoryCounts: Record<string, number> = {};
 
-    news.forEach((item) => {
-      categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
-    });
+  //   news.forEach((item) => {
+  //     categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
+  //   });
 
-    const total = news.length;
-    return Object.entries(categoryCounts)
-      .map(([name, count]) => ({
-        name,
-        count,
-        percentage: total > 0 ? (count / total) * 100 : 0,
-      }))
-      .sort((a, b) => b.count - a.count);
-  });
+  //   const total = news.length;
+  //   return Object.entries(categoryCounts)
+  //     .map(([name, count]) => ({
+  //       name,
+  //       count,
+  //       percentage: total > 0 ? (count / total) * 100 : 0,
+  //     }))
+  //     .sort((a, b) => b.count - a.count);
+  // });
 
-  topNewsByViews = computed(() => {
-    return [...this.selectedNews()]
-      .filter((item) => item.views !== undefined)
-      .sort((a, b) => (b.views || 0) - (a.views || 0))
-      .slice(0, 5)
-      .map((item) => ({
-        id: item.id,
-        title: item.title,
-        source: item.source,
-        category: item.category,
-        views: item.views || 0,
-      }));
-  });
+  // topNewsByViews = computed(() => {
+  //   return [...this.selectedNews()]
+  //     .filter((item) => item.views !== undefined)
+  //     .sort((a, b) => (b.views || 0) - (a.views || 0))
+  //     .slice(0, 5)
+  //     .map((item) => ({
+  //       id: item.id,
+  //       title: item.title,
+  //       source: item.source,
+  //       category: item.category,
+  //       views: item.views || 0,
+  //     }));
+  // });
 
   totalNews = computed(() => this.selectedNews().length);
   totalSources = computed(() => new Set(this.selectedNews().map((n) => n.source)).size);
-  totalCategories = computed(() => new Set(this.selectedNews().map((n) => n.category)).size);
+  // totalCategories = computed(() => new Set(this.selectedNews().map((n) => n.category)).size);
 }

@@ -24,18 +24,18 @@ export class NewsCardComponent {
 
   isEditing = signal(false);
   editedTitle = signal('');
-  editedExcerpt = signal('');
+  editedSummary = signal('');
   isGeneratingSummary = signal(false);
 
   ngOnInit(): void {
     this.editedTitle.set(this.news().title);
-    this.editedExcerpt.set(this.news().excerpt);
+    this.editedSummary.set(this.news().summary || '');
   }
 
   toggleEdit(): void {
     if (!this.isEditing()) {
       this.editedTitle.set(this.news().title);
-      this.editedExcerpt.set(this.news().excerpt);
+      this.editedSummary.set(this.news().summary || '');
     }
     this.isEditing.update((v) => !v);
   }
@@ -45,7 +45,7 @@ export class NewsCardComponent {
     console.log('Save changes:', {
       id: this.news().id,
       title: this.editedTitle(),
-      excerpt: this.editedExcerpt(),
+      excerpt: this.editedSummary(),
     });
     this.isEditing.set(false);
     // Show success toast
@@ -53,7 +53,7 @@ export class NewsCardComponent {
 
   handleCancel(): void {
     this.editedTitle.set(this.news().title);
-    this.editedExcerpt.set(this.news().excerpt);
+    this.editedSummary.set(this.news().summary || '');
     this.isEditing.set(false);
   }
 
@@ -61,8 +61,8 @@ export class NewsCardComponent {
     this.isGeneratingSummary.set(true);
     // Simulate AI call
     setTimeout(() => {
-      const aiSummary = `[Resumen IA] Este artículo analiza los principales aspectos sobre ${this.news().category.toLowerCase()}, destacando tendencias actuales y su impacto en el sector. Los expertos señalan cambios significativos que podrían transformar el panorama en los próximos meses.`;
-      this.editedExcerpt.set(aiSummary);
+      const aiSummary = `[Resumen IA] Este artículo analiza los principales aspectos, destacando tendencias actuales y su impacto en el sector. Los expertos señalan cambios significativos que podrían transformar el panorama en los próximos meses.`;
+      this.editedSummary.set(aiSummary);
       this.isGeneratingSummary.set(false);
     }, 2000);
   }
@@ -72,7 +72,7 @@ export class NewsCardComponent {
   }
 
   openLink(): void {
-    window.open(this.news().link, '_blank');
+    window.open(this.news().url, '_blank');
   }
 
   formatDate(dateString: string): string {

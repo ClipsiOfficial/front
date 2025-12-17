@@ -51,4 +51,17 @@ export class AuthService {
     const userStr = localStorage.getItem(this.USER_KEY);
     return userStr ? JSON.parse(userStr) : null;
   }
+
+  updateProfile(data: { username?: string; email?: string; password?: string }) {
+    const token = this.getToken();
+    if (!token) throw new Error('No auth token');
+
+    return this.http.patch(`${this.API_URL}/user`, data, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).pipe(
+      tap((updatedUser: any) => {
+        this.currentUser.set(updatedUser);
+      })
+    );
+  }
 }

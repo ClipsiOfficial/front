@@ -1,11 +1,43 @@
-import { Injectable, signal, computed } from '@angular/core';
-import { NewsItem, FilterState } from '../models/news.model';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { NewsItem, FilterState, AVAILABLE_SOURCES } from '../models/news.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NewsService {
-  // All available news
+  private http = inject(HttpClient);
+
+  private API_URL = 'http://localhost:8787/news';
+
+  getNewsByProject(
+    projectId: number,
+    options?: { page?: number; limit?: number; search?: string }
+  ) {
+    const params: any = { projectId: projectId.toString() };
+    if (options?.page) params.page = options.page.toString();
+    if (options?.limit) params.limit = options.limit.toString();
+    if (options?.search) params.search = options.search;
+
+    return this.http.get<{
+      data: NewsItem[];
+      total: number;
+      page: number;
+      limit: number;
+    }>(this.API_URL, { params });
+  }
+
+  /**
+   * Guarda una noticia existente en la tabla saved_news para un proyecto
+   * @param newsId ID de la noticia a guardar
+   * @param projectId ID del proyecto destino
+   */
+  saveNewsToProject(newsId: number, projectId: number) {
+    return this.http.post(`${this.API_URL}/${newsId}/save`, { projectId });
+  }
+
+    // All available news
+    /*
   private readonly allNews: NewsItem[] = [
     {
       id: 1,
@@ -307,7 +339,38 @@ export class NewsService {
       views: 3150,
       exportDate: '2025-10-08',
     },
-  ];
+  ];*/
+
+  extractSourceName(url: string): string {
+    try {
+      const hostname = new URL(url).hostname
+        .replace('www.', '')
+        .toLowerCase();
+
+      const domainKey = hostname
+        .split('.')[0]
+        .replace(/-/g, '');
+
+      const matched = AVAILABLE_SOURCES.find(source =>
+        source
+          .toLowerCase()
+          .replace(/\s+/g, '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '') === domainKey
+      );
+
+      if (matched) return matched;
+
+      // fallback genérico
+      return hostname
+        .split('.')[0]
+        .split('-')
+        .map(w => w[0].toUpperCase() + w.slice(1))
+        .join(' ');
+    } catch {
+      return 'Unknown';
+    }
+  }
 
   // State signals
   filters = signal<FilterState>({
@@ -319,6 +382,7 @@ export class NewsService {
     dateTo: '',
   });
 
+  remoteNews = signal<NewsItem[]>([]);
   keywords = signal<string[]>([]);
   selectedNewsIds = signal<number[]>([]);
 
@@ -326,14 +390,15 @@ export class NewsService {
   filteredNews = computed(() => {
     const currentFilters = this.filters();
     const currentKeywords = this.keywords();
+    const source = this.remoteNews();
 
-    return this.allNews.filter((news) => {
+    return source.filter((news) => {
       // Filter by search term
       if (currentFilters.searchTerm) {
         const searchTerm = currentFilters.searchTerm.toLowerCase();
         const matchesSearch =
           news.title.toLowerCase().includes(searchTerm) ||
-          news.excerpt.toLowerCase().includes(searchTerm);
+          news.summary?.toLowerCase().includes(searchTerm);
         if (!matchesSearch) return false;
       }
 
@@ -342,7 +407,7 @@ export class NewsService {
         const keywords = currentFilters.keywords.toLowerCase();
         const matchesKeywords =
           news.title.toLowerCase().includes(keywords) ||
-          news.excerpt.toLowerCase().includes(keywords);
+          news.summary?.toLowerCase().includes(keywords);
         if (!matchesKeywords) return false;
       }
 
@@ -351,7 +416,7 @@ export class NewsService {
         const matchesAnyKeyword = currentKeywords.some(
           (keyword) =>
             news.title.toLowerCase().includes(keyword.toLowerCase()) ||
-            news.excerpt.toLowerCase().includes(keyword.toLowerCase())
+            news.summary?.toLowerCase().includes(keyword.toLowerCase())
         );
         if (!matchesAnyKeyword) return false;
       }
@@ -361,31 +426,31 @@ export class NewsService {
         return false;
       }
 
-      // Filter by category
-      if (
-        currentFilters.categories.length > 0 &&
-        !currentFilters.categories.includes(news.category)
-      ) {
-        return false;
-      }
-
       // Filter by date from
-      if (currentFilters.dateFrom && news.date < currentFilters.dateFrom) {
-        return false;
+      if (currentFilters.dateFrom) {
+        const from = new Date(currentFilters.dateFrom);
+        const newsDate = new Date(news.timestamp);
+        if (newsDate < from) return false;
       }
 
       // Filter by date to
-      if (currentFilters.dateTo && news.date > currentFilters.dateTo) {
-        return false;
+      if (currentFilters.dateTo) {
+        const to = new Date(currentFilters.dateTo);
+        const newsDate = new Date(news.timestamp);
+        if (newsDate > to) return false;
       }
 
       return true;
     });
+    // Siempre mostramos solo las noticias remotas (de la API)
+    //////return this.remoteNews();
   });
 
   selectedNews = computed(() => {
     const selectedIds = this.selectedNewsIds();
-    return this.allNews.filter((news) => selectedIds.includes(news.id));
+    return this.remoteNews().filter((news) =>
+      selectedIds.includes(news.id)
+    );
   });
 
   // Methods
@@ -419,6 +484,11 @@ export class NewsService {
   }
 
   getAllNews(): NewsItem[] {
-    return [...this.allNews];
+    return [...this.remoteNews()];
+  }
+
+  clearNews(): void {
+    this.remoteNews.set([]);
+    this.selectedNewsIds.set([]);
   }
 }

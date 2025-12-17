@@ -7,6 +7,11 @@
   <div class="flex items-center gap-3">
     <!-- Desktop Actions (hidden on mobile) -->
     <div class="hidden md:flex items-center gap-3">
+      <!-- Proyectos -->
+      <button mat-icon-button [routerLink]="['/projects']" matTooltip="My projects">
+        <mat-icon>folder_open</mat-icon>
+      </button>
+
       <!-- Theme Toggle -->
       <button
         mat-icon-button
@@ -18,7 +23,7 @@
       </button>
 
       <!-- User Button -->
-      <button mat-icon-button [routerLink]="'/profile'" matTooltip="Perfil de usuario"
+      <button mat-icon-button [routerLink]="'/profile'" matTooltip="User profile"
             class="!bg-primary !text-primary-foreground user-btn">
       <mat-icon>account_circle</mat-icon>
     </button>

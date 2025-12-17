@@ -1,8 +1,8 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, effect } from '@angular/core';
 
 import { NewsService } from '../../services/news.service';
 import { NewsFiltersComponent } from '../../components/news-filters/news-filters.component';
-import { FilterState } from '../../models/news.model';
+import { NewsItem, FilterState } from '../../models/news.model';
 import { LayoutService } from '../../services/layout.service';
 import { ResultsNewsCardComponent } from '../../components/results-news-card/results-news-card.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +25,8 @@ export class ResultsPage {
   pageSize = 10;
   currentPage = signal(1);
 
+  currentProject = toSignal(this.layout.currentProject$);
+
   paginatedNews = computed(() => {
     const all = this.filteredNews();
     const start = (this.currentPage() - 1) * this.pageSize;
@@ -35,7 +37,39 @@ export class ResultsPage {
     return Math.ceil(this.filteredNews().length / this.pageSize);
   });
   
-  currentProject = toSignal(this.layout.currentProject$);
+  constructor() {
+    effect(() => {
+      const project = this.currentProject();
+
+      console.log('CURRENT PROJECT:', project);
+
+      if (!project?.id) return;
+
+      this.newsService
+        .getNewsByProject(project.id, {
+          page: 1,
+          limit: 10,
+        })
+        .subscribe((response) => {
+          console.log('NEWS RESPONSE:', response);
+          const mappedNews: NewsItem[] = response.data.map((news: any) => ({
+            id: news.id,
+            title: news.title,
+            summary: news.summary,
+            url: news.url,
+            timestamp: news.timestamp,
+            rssAtomId: news.rssAtomId,
+            source: this.newsService.extractSourceName(news.url),
+          }));
+
+          console.log('MAPPED NEWS:', mappedNews);
+
+          this.newsService.remoteNews.set(mappedNews);
+          //this.newsService.remoteNews.set(response.data);
+        });
+    });
+  }
+
 
   ngOnInit(): void {
     this.layout.showFullHeader();

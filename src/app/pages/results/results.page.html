@@ -1,30 +1,39 @@
-<div>
-  <app-news-filters [filters]="filters()" [keywords]="keywords()" 
-    (filtersChange)="onFiltersChange($event)"
-    (keywordsChange)="onKeywordsChange($event)" />
 
-  <!-- Grid de tarjetas -->
-  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-    @for (news of paginatedNews(); track news.id) {
-      <app-results-news-card [news]="news"
-                            [isSelected]="selectedNewsIds().includes(news.id)"
-                            (bookmark)="onToggleNews($event)" />
-    }
+<div class="flex flex-col md:flex-row gap-6 p-6">
+  <!-- Sidebar de filtros -->
+  <div class="md:w-72 w-full flex-shrink-0">
+    <app-news-filters [filters]="filters()" [keywords]="keywords()"
+      (filtersChange)="onFiltersChange($event)"
+      (keywordsChange)="onKeywordsChange($event)" />
   </div>
 
+  <!-- Contenido principal: noticias y paginación -->
+  <div class="flex-1 flex flex-col">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      @if (paginatedNews().length === 0) {
+        <div class="col-span-full text-center text-muted-foreground py-8">
+          No news available.
+        </div>
+      } @else {
+        @for (news of paginatedNews(); track news.id) {
+          <app-results-news-card [news]="news"
+                                [isSelected]="selectedNewsIds().includes(news.id)"
+                                (bookmark)="onToggleNews($event)" />
+        }
+      }
+    </div>
 
-  <!-- Controles de paginación -->
-  <div class="flex justify-center items-center gap-2 mt-8">
-    <button mat-icon-button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1">
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-
-    <span class="px-4 py-2 rounded-md bg-muted text-foreground font-semibold">
-      Page {{ currentPage() }} of {{ totalPages() }}
-    </span>
-
-    <button mat-icon-button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()">
-    <mat-icon>chevron_right</mat-icon>
-  </button>
+    <!-- Controles de paginación -->
+    <div class="flex justify-center items-center gap-2 mt-8">
+      <button mat-icon-button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <span class="px-4 py-2 rounded-md bg-muted text-foreground font-semibold">
+        Page {{ currentPage() }} of {{ totalPages() }}
+      </span>
+      <button mat-icon-button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
   </div>
 </div>

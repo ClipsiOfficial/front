@@ -13,17 +13,17 @@
       <a routerLink="/results" routerLinkActive="bg-background text-foreground shadow"
          [routerLinkActiveOptions]="{ exact: false }"
          class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
-        Resultados
+        Results
       </a>
       <a routerLink="/my-news" routerLinkActive="bg-background text-foreground shadow"
          [routerLinkActiveOptions]="{ exact: false }"
          class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
-        Mis Noticias
+        My News
       </a>
       <a routerLink="/statistics" routerLinkActive="bg-background text-foreground shadow"
          [routerLinkActiveOptions]="{ exact: false }"
          class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
-        Estadísticas
+        Statistics
       </a>
     </div>
   </nav>
@@ -31,7 +31,7 @@
   <!-- ACCIONES DESKTOP -->
   <div class="hidden md:flex items-center gap-3">
     <!-- Proyectos -->
-    <button mat-icon-button [routerLink]="['/projects']" matTooltip="Mis proyectos">
+    <button mat-icon-button [routerLink]="['/projects']" matTooltip="My projects">
       <mat-icon>folder_open</mat-icon>
     </button>
 
@@ -44,7 +44,7 @@
     </button>
 
     <!-- Usuario -->
-    <button mat-icon-button [routerLink]="'/profile'" matTooltip="Perfil de usuario"
+    <button mat-icon-button [routerLink]="'/profile'" matTooltip="User Profile"
             class="!bg-primary !text-primary-foreground user-btn">
       <mat-icon>account_circle</mat-icon>
     </button>
@@ -85,21 +85,21 @@
     <a routerLink="/results" routerLinkActive="bg-primary text-primary-foreground"
       [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
       class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
-      Resultados
+      Results
     </a>
     <a routerLink="/my-news" routerLinkActive="bg-primary text-primary-foreground"
       [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
       class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
-      Mis Noticias
+      My News
     </a>
     <a routerLink="/statistics" routerLinkActive="bg-primary text-primary-foreground"
       [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
       class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
-      Estadísticas
+      Statistics
     </a>
     <button (click)="logout(); closeMobileMenu()"
       class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent text-red-500">
-      Cerrar Sesión
+      Logout
     </button>
   </div>
 </nav>

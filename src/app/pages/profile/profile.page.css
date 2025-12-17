@@ -4,7 +4,6 @@
   padding: 48px 24px;
   background: var(--app-background);
   border-radius: var(--radius-lg);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .profile-header {

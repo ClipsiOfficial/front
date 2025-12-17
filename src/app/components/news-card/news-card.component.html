@@ -2,10 +2,10 @@
   <!-- Header -->
   <div class="p-6 space-y-4">
     <div class="flex items-start justify-between gap-2 mb-2">
-      <span
+      <!-- <span
         class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-secondary text-secondary-foreground shrink-0">
         {{ news().category }}
-      </span>
+      </span> -->
       <div class="flex gap-1">
         <button
           mat-icon-button
@@ -35,7 +35,7 @@
     }
 
     <p class="text-sm text-muted-foreground">
-      {{ news().source }} · {{ formatDate(news().date) }}
+      {{ news().source }} · {{ formatDate(news().timestamp) }}
     </p>
   </div>
 
@@ -44,17 +44,17 @@
     @if (isEditing()) {
     <div class="space-y-2">
       <div class="flex justify-between items-center mb-2">
-        <label class="text-sm text-muted-foreground">Resumen</label>
+        <label class="text-sm text-muted-foreground">Summary</label>
         <button mat-stroked-button (click)="handleGenerateAISummary()" [disabled]="isGeneratingSummary()">
           <mat-icon>auto_awesome</mat-icon>
-          {{ isGeneratingSummary() ? 'Generando...' : 'Generar con IA' }}
+          {{ isGeneratingSummary() ? 'Generating...' : 'Generate with AI' }}
         </button>
       </div>
-      <textarea [(ngModel)]="editedExcerpt" rows="4"
+      <textarea [(ngModel)]="editedSummary" rows="4"
         class="flex min-h-[80px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"></textarea>
     </div>
     } @else {
-    <p class="text-muted-foreground line-clamp-3">{{ news().excerpt }}</p>
+    <p class="text-muted-foreground line-clamp-3">{{ news().summary }}</p>
     }
   </div>
 
@@ -63,15 +63,15 @@
     @if (isEditing()) {
     <button mat-raised-button color="primary" (click)="handleSave()" class="flex-1">
       <mat-icon>save</mat-icon>
-      Guardar
+      Save
     </button>
     <button mat-stroked-button (click)="handleCancel()" class="flex-1">
-      Cancelar
+      Cancel
     </button>
     } @else {
     <button mat-stroked-button (click)="openLink()" class="w-full">
       <mat-icon>open_in_new</mat-icon>
-      Leer más
+      Read more
     </button>
     }
   </div>
