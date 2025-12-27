@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -17,6 +18,7 @@ export class ProfilePage {
   private http = inject(HttpClient);
   private auth = inject(AuthService);
   private snackBar = inject(MatSnackBar);
+  private layout = inject(LayoutService);
 
   username: string = '';
   email: string = '';
@@ -25,6 +27,7 @@ export class ProfilePage {
   private API_URL = 'http://localhost:8787/user';
 
   constructor() {
+    this.layout.showMinimalHeader();
     const user = this.auth.currentUser();
     console.log('Current user from AuthService:', user);
 

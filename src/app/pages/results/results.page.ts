@@ -6,7 +6,7 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { NewsService } from '../../services/news.service';
 import { NewsFiltersComponent } from '../../components/news-filters/news-filters.component';
-import { NewsItem, FilterState } from '../../models/news.model';
+import { FilterState } from '../../models/news.model';
 import { LayoutService } from '../../services/layout.service';
 import { ResultsNewsCardComponent } from '../../components/results-news-card/results-news-card.component';
 import { MatIconModule } from '@angular/material/icon';
