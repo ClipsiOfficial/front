@@ -10,32 +10,20 @@
       </button>
       @if (sourcesExpanded()) {
       <div class="flex flex-col gap-2">
-        @for (source of availableSources; track source) {
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" [checked]="filters().sources.includes(source)" (change)="toggleSource(source)"
-            class="h-4 w-4" />
-          <span class="text-sm">{{ source }}</span>
-        </label>
+        @if (availableSources().length === 0) {
+        <p class="text-xs text-muted-foreground">No sources available</p>
+        } @else {
+          @for (source of availableSources(); track source) {
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" [checked]="filters().sources.includes(source)" (change)="toggleSource(source)"
+              class="h-4 w-4" />
+            <span class="text-sm">{{ source }}</span>
+          </label>
+          }
         }
       </div>
       }
     </div>
-    <!-- <div class="space-y-2">
-      <button (click)="toggleCategoriesExpanded()" class="w-full flex items-center justify-between text-sm font-medium">
-        <span>Categories</span>
-      </button>
-      @if (categoriesExpanded()) {
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        @for (category of availableCategories; track category) {
-        <label class="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" [checked]="filters().categories.includes(category)" (change)="toggleCategory(category)"
-            class="h-4 w-4" />
-          <span class="text-sm">{{ category }}</span>
-        </label>
-        }
-      </div>
-      }
-    </div> -->
     <div class="grid grid-cols-1 gap-4">
       <div class="space-y-1.5">
         <label class="text-sm font-medium" for="date-from">Date from</label>
@@ -77,39 +65,6 @@
     }
   </aside>
 </div>
-
-@if (filters().sources.length > 0 || keywords().length > 0 || filters().dateFrom ||
-filters().dateTo) {
-<div class="flex flex-wrap gap-2">
-  @for (source of filters().sources; track source) {
-  <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary text-xs rounded-full">
-    {{ source }}
-    <button (click)="toggleSource(source)">×</button>
-  </span>
-  }
-
-  <!-- @for (category of filters().categories; track category) {
-  <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary text-xs rounded-full">
-    {{ category }}
-    <button (click)="toggleCategory(category)">×</button>
-  </span>
-  } -->
-
-  @if (filters().dateFrom) {
-  <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary text-xs rounded-full">
-    Desde: {{ formatDateLabel(filters().dateFrom) }}
-    <button (click)="clearDateFrom()">×</button>
-  </span>
-  }
-
-  @if (filters().dateTo) {
-  <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary text-xs rounded-full">
-    Hasta: {{ formatDateLabel(filters().dateTo) }}
-    <button (click)="clearDateTo()">×</button>
-  </span>
-  }
-</div>
-}
 
 @if (showKeywordsManager()) {
 <div class="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">

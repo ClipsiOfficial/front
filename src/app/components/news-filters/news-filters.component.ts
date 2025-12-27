@@ -11,6 +11,7 @@ import { FilterState, AVAILABLE_SOURCES, AVAILABLE_CATEGORIES } from '../../mode
 export class NewsFiltersComponent {
   filters = input.required<FilterState>();
   keywords = input.required<string[]>();
+  availableSources = input<string[]>([]);
   filtersChange = output<FilterState>();
   keywordsChange = output<string[]>();
 
@@ -21,7 +22,6 @@ export class NewsFiltersComponent {
   sourcesExpanded = signal(true);
   categoriesExpanded = signal(true);
 
-  availableSources = AVAILABLE_SOURCES;
   availableCategories = AVAILABLE_CATEGORIES;
 
   hasActiveFilters = computed(() => {

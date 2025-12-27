@@ -1,10 +1,11 @@
-@if (selectedNews().length === 0) {
-<div class="text-center py-12 text-muted-foreground">
-  <p>No hay noticias seleccionadas para mostrar estadísticas.</p>
-  <p class="mt-2">Selecciona noticias en la pestaña Resultados para ver análisis detallados.</p>
-</div>
-} @else {
-<div class="space-y-6">
+<div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+  @if (selectedNews().length === 0) {
+  <div class="text-center py-12 text-muted-foreground">
+    <p>No hay noticias seleccionadas para mostrar estadísticas.</p>
+    <p class="mt-2">Selecciona noticias en la pestaña Resultados para ver análisis detallados.</p>
+  </div>
+  } @else {
+  <div class="space-y-6">
   <!-- Summary Cards -->
   <div class="grid gap-4 md:grid-cols-3">
     <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
@@ -153,3 +154,4 @@
   </div>
 </div>
 }
+</div>

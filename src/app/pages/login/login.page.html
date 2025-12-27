@@ -28,9 +28,11 @@
         />
       </div>
 
-      <div *ngIf="errorMessage" class="text-red-500 mb-4 text-sm transition-opacity" [class.opacity-0]="!errorMessage" [class.opacity-100]="!!errorMessage">
+      @if (errorMessage) {
+      <div class="text-red-500 mb-4 text-sm">
         {{ errorMessage }}
       </div>
+      }
 
       <button
         class="w-full px-4 py-3 rounded-2xl text-base bg-primary text-primary-foreground border-none cursor-pointer transition transform hover:scale-105 hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed"

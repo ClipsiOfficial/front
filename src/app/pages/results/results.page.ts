@@ -21,6 +21,8 @@ export class ResultsPage {
   selectedNewsIds = this.newsService.selectedNewsIds;
   filters = this.newsService.filters;
   keywords = this.newsService.keywords;
+  totalNews = this.newsService.totalNews;
+  availableSources = this.newsService.availableSources;
 
   pageSize = 10;
   currentPage = signal(1);
@@ -28,45 +30,79 @@ export class ResultsPage {
   currentProject = toSignal(this.layout.currentProject$);
 
   paginatedNews = computed(() => {
-    const all = this.filteredNews();
-    const start = (this.currentPage() - 1) * this.pageSize;
-    return all.slice(start, start + this.pageSize);
+    // News is already paginated from the server
+    return this.filteredNews();
   });
 
   totalPages = computed(() => {
-    return Math.ceil(this.filteredNews().length / this.pageSize);
+    return Math.ceil(this.totalNews() / this.pageSize);
   });
-  
+
   constructor() {
     effect(() => {
       const project = this.currentProject();
+      const filters = this.filters();
+      const page = this.currentPage();
 
-      console.log('CURRENT PROJECT:', project);
+      console.log('Effect triggered - Project:', project, 'Page:', page);
 
-      if (!project?.id) return;
+      if (!project?.id) {
+        console.warn('No project ID, skipping fetch');
+        return;
+      }
 
+      // Build filter options
+      const options: any = {
+        page,
+        limit: this.pageSize,
+      };
+
+      if (filters.searchTerm) {
+        options.search = filters.searchTerm;
+      }
+
+      if (filters.sources.length > 0) {
+        options.sources = filters.sources.join(',');
+      }
+
+      if (filters.dateFrom) {
+        options.dateFrom = filters.dateFrom;
+      }
+
+      if (filters.dateTo) {
+        options.dateTo = filters.dateTo;
+      }
+
+      console.log('Fetching news with options:', options);
+
+      // Fetch news with filters
       this.newsService
-        .getNewsByProject(project.id, {
-          page: 1,
-          limit: 10,
-        })
+        .getNewsByProject(project.id, options)
         .subscribe((response) => {
-          console.log('NEWS RESPONSE:', response);
-          const mappedNews: NewsItem[] = response.data.map((news: any) => ({
-            id: news.id,
-            title: news.title,
-            summary: news.summary,
-            url: news.url,
-            timestamp: news.timestamp,
-            rssAtomId: news.rssAtomId,
-            source: this.newsService.extractSourceName(news.url),
-          }));
-
-          console.log('MAPPED NEWS:', mappedNews);
-
-          this.newsService.remoteNews.set(mappedNews);
-          //this.newsService.remoteNews.set(response.data);
+          console.log('News fetched:', response);
+          this.newsService.remoteNews.set(response.data);
+          this.newsService.totalNews.set(response.total);
+        }, (error) => {
+          console.error('Error fetching news:', error);
         });
+    });
+
+    // Load available sources when project changes
+    effect(() => {
+      const project = this.currentProject();
+      if (!project?.id) {
+        console.warn('No project ID for sources, skipping');
+        return;
+      }
+
+      console.log('Fetching sources for project:', project.id);
+
+      this.newsService.getNewsSources(project.id).subscribe((response) => {
+        console.log('Sources fetched:', response);
+        this.newsService.availableSources.set(response.sources);
+      }, (error) => {
+        console.error('Error fetching sources:', error);
+      });
     });
   }
 
@@ -78,6 +114,7 @@ export class ResultsPage {
 
   onFiltersChange(filters: FilterState): void {
     this.newsService.updateFilters(filters);
+    this.currentPage.set(1); // Reset to first page when filters change
   }
 
   onKeywordsChange(keywords: string[]): void {

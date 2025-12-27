@@ -1,16 +1,20 @@
-<!-- Título -->
-<div class="flex justify-between items-center mb-6">
-  <h1 class="text-3xl font-bold text-foreground">Mis Proyectos</h1>
-</div>
+<div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+  <!-- Título -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-foreground">Mis Proyectos</h1>
+  </div>
 
-<!-- Cargando -->
-<div *ngIf="loading" class="h-[70vh] flex flex-col justify-center items-center text-muted-foreground">
-  <mat-icon class="!text-5xl mb-2">sync</mat-icon>
-  <p>Cargando proyectos...</p>
-</div>
+  <!-- Cargando -->
+  @if (loading) {
+  <div class="h-[70vh] flex flex-col justify-center items-center text-muted-foreground">
+    <mat-icon class="!text-5xl mb-2">sync</mat-icon>
+    <p>Cargando proyectos...</p>
+  </div>
+  }
 
-<!-- Sin proyectos -->
-<div *ngIf="!loading && projects.length === 0" class="min-h-[60vh] flex flex-col justify-center items-center px-5 py-10">
+  <!-- Sin proyectos -->
+  @if (!loading && projects.length === 0) {
+  <div class="min-h-[60vh] flex flex-col justify-center items-center px-5 py-10">
   <div class="flex flex-col items-center gap-6 max-w-md animate-fade-in">
     <div class="flex items-center justify-center w-24 h-24 rounded-full bg-primary/10">
       <mat-icon class="!text-6xl !w-14 !h-14 text-primary">folder_open</mat-icon>
@@ -30,15 +34,17 @@
       Crear primer proyecto
     </button>
   </div>
-</div>
+  </div>
+  }
 
-<!-- Grid de proyectos -->
-<div *ngIf="!loading && projects.length > 0" class="grid gap-7 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
-  <div
-    *ngFor="let project of projects"
-    (click)="selectProject(project)"
-    class="bg-card text-card-foreground p-6 rounded-2xl border border-border cursor-pointer transition-all duration-200 min-h-48 flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg group"
-  >
+  <!-- Grid de proyectos -->
+  @if (!loading && projects.length > 0) {
+  <div class="grid gap-7 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+    @for (project of projects; track project.id) {
+    <div
+      (click)="selectProject(project)"
+      class="bg-card text-card-foreground p-6 rounded-2xl border border-border cursor-pointer transition-all duration-200 min-h-48 flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg group"
+    >
     <!-- Icono + Título + Acciones -->
     <div class="flex items-center justify-between gap-3">
       <div class="flex items-center gap-3 flex-1">
@@ -87,16 +93,20 @@
     <p class="mt-3 opacity-90 text-sm leading-snug">
       {{ project.description }}
     </p>
+    </div>
+    }
   </div>
-</div>
+  }
 
-<!-- FAB flotante -->
-<button
-  mat-fab
-  color="primary"
-  routerLink="/projects/new"
-  class="!fixed !bottom-6 !right-6 !z-[2000]"
-  *ngIf="projects.length > 0"
->
-  <mat-icon>add</mat-icon>
-</button>
+  <!-- FAB flotante -->
+  @if (projects.length > 0) {
+  <button
+    mat-fab
+    color="primary"
+    routerLink="/projects/new"
+    class="!fixed !bottom-6 !right-6 !z-[2000]"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+  }
+</div>
