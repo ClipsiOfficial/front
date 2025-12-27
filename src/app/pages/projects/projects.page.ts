@@ -125,7 +125,6 @@ export class ProjectsPage implements OnInit {
   }
 
   selectProject(project: Project): void {
-    this.layout.setCurrentProject(project);
-    this.router.navigate(['/results']);
+    this.router.navigate(['/results', project.id]);
   }
 }

@@ -19,9 +19,11 @@
         </div>
       } @else {
         @for (news of paginatedNews(); track news.id) {
-          <app-results-news-card [news]="news"
-                                [isSelected]="selectedNewsIds().includes(news.id)"
-                                (bookmark)="onToggleNews($event)" />
+          <app-results-news-card
+            [news]="news"
+            [isSelected]="selectedNewsIds().includes(news.id)"
+            [bookmarkLoading]="newsBeingSaved() === news.id"
+            (bookmark)="onToggleNews($event)" />
         }
       }
     </div>

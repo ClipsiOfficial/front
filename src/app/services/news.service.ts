@@ -42,12 +42,20 @@ export class NewsService {
   }
 
   /**
-   * Guarda una noticia existente en la tabla saved_news para un proyecto
-   * @param newsId ID de la noticia a guardar
-   * @param projectId ID del proyecto destino
+   * Saves an existing news to the saved_news table for a project
+   * @param newsId ID of the news to save
+   * @param projectId ID of the destination project
    */
   saveNewsToProject(newsId: number, projectId: number) {
-    return this.api.post(`/news/${newsId}/save`, { projectId });
+    return this.api.post<{ id: number }>(`/news/${newsId}/save`, { projectId });
+  }
+
+  /**
+   * Deletes a saved news record
+   * @param savedNewsId ID of the saved news record to delete
+   */
+  deleteSavedNews(savedNewsId: number) {
+    return this.api.delete(`/saved-news/${savedNewsId}`);
   }
 
   // State signals

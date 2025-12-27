@@ -9,19 +9,19 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'results',
+    path: 'results/:projectId',
     loadComponent: () =>
       import('./pages/results/results.page').then((m) => m.ResultsPage),
     canActivate: [authGuard],
   },
   {
-    path: 'my-news',
+    path: 'my-news/:projectId',
     loadComponent: () =>
       import('./pages/my-news/my-news.page').then((m) => m.MyNewsPage),
     canActivate: [authGuard],
   },
   {
-    path: 'statistics',
+    path: 'statistics/:projectId',
     loadComponent: () =>
       import('./pages/statistics/statistics.page').then((m) => m.StatisticsPage),
     canActivate: [authGuard],

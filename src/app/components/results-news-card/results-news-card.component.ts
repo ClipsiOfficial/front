@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,11 +14,18 @@ import { NewsItem } from '../../models/news.model';
 export class ResultsNewsCardComponent {
   news = input.required<NewsItem>();
   isSelected = input<boolean>(false);
+  bookmarkLoading = input<boolean>(false);
   bookmark = output<number>();
+
+  // Tailwind-based fade: when bookmarkLoading is true, opacity transitions to 0
+  @HostBinding('class')
+  get hostClasses() {
+    return `transition-opacity duration-200 ease-out${this.bookmarkLoading() ? ' opacity-0' : ''}`;
+  }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('es-ES', {
+    return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',

@@ -10,17 +10,17 @@
   <!-- NAV DESKTOP -->
   <nav class="hidden md:flex flex-1 justify-center">
     <div class="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground max-w-2xl">
-      <a routerLink="/results" routerLinkActive="bg-background text-foreground shadow"
+      <a [routerLink]="projectId() ? ['/results', projectId()] : ['/projects']" routerLinkActive="bg-background text-foreground shadow"
          [routerLinkActiveOptions]="{ exact: false }"
          class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
         Results
       </a>
-      <a routerLink="/my-news" routerLinkActive="bg-background text-foreground shadow"
+      <a [routerLink]="projectId() ? ['/my-news', projectId()] : ['/projects']" routerLinkActive="bg-background text-foreground shadow"
          [routerLinkActiveOptions]="{ exact: false }"
          class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
         My News
       </a>
-      <a routerLink="/statistics" routerLinkActive="bg-background text-foreground shadow"
+      <a [routerLink]="projectId() ? ['/statistics', projectId()] : ['/projects']" routerLinkActive="bg-background text-foreground shadow"
          [routerLinkActiveOptions]="{ exact: false }"
          class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
         Statistics
@@ -82,17 +82,17 @@
 <!-- MENÚ MÓVIL DESPLEGABLE -->
 <nav *ngIf="mobileMenuOpen()" class="md:hidden pb-4 border-t border-border mt-4 pt-4 w-full">
   <div class="space-y-1">
-    <a routerLink="/results" routerLinkActive="bg-primary text-primary-foreground"
+    <a [routerLink]="projectId() ? ['/results', projectId()] : ['/projects']" routerLinkActive="bg-primary text-primary-foreground"
       [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
       class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
       Results
     </a>
-    <a routerLink="/my-news" routerLinkActive="bg-primary text-primary-foreground"
+    <a [routerLink]="projectId() ? ['/my-news', projectId()] : ['/projects']" routerLinkActive="bg-primary text-primary-foreground"
       [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
       class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
       My News
     </a>
-    <a routerLink="/statistics" routerLinkActive="bg-primary text-primary-foreground"
+    <a [routerLink]="projectId() ? ['/statistics', projectId()] : ['/projects']" routerLinkActive="bg-primary text-primary-foreground"
       [routerLinkActiveOptions]="{ exact: false }" (click)="closeMobileMenu()"
       class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
       Statistics
