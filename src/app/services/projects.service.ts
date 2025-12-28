@@ -21,8 +21,6 @@ export class ProjectsService {
     name: string;
     description?: string;
     topic: string;
-    ownerId: number;
-    members: number[]|null;
   }): Observable<Project> {
     return this.api.post<Project>('/projects', data);
   }

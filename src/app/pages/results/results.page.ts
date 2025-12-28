@@ -24,7 +24,6 @@ export class ResultsPage {
   private route = inject(ActivatedRoute);
   private projectsService = inject(ProjectsService);
 
-  // Track news being saved (no longer used for fade-out once Angular animations handle leave)
   newsBeingSaved = signal<number | null>(null);
 
   filteredNews = this.newsService.filteredNews;
@@ -47,11 +46,6 @@ export class ResultsPage {
       })
     )
   );
-
-  paginatedNews = computed(() => {
-    // News is already paginated from the server
-    return this.filteredNews();
-  });
 
   totalPages = computed(() => {
     return Math.ceil(this.totalNews() / this.pageSize);

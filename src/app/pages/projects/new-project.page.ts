@@ -52,8 +52,6 @@ export class NewProjectComponent {
       name: this.projectForm.value.name,
       description: this.projectForm.value.description,
       topic: this.projectForm.value.topic,
-      ownerId: 1, // TODO: Remove hardcoded ownerId, is already obtained in backend
-      members: null
     };
 
     this.projectsService.createProject(payload).subscribe({
