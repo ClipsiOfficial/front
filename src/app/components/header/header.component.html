@@ -1,16 +1,144 @@
 <header class="border-b border-border bg-card sticky top-0 z-50">
-  <div class="container mx-auto px-4">
-      <!-- Components based on mode -->
-      @switch (mode()) {
-        @case ('login') {
-          <app-header-login />
+  <div class="w-full px-4 sm:px-6 lg:px-8">
+    <div class="h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="/clipsi-logo.png" alt="Clipsi" class="h-7 md:h-8" />
+        @if (showNav() && projectTitle()) {
+          <button mat-button [matMenuTriggerFor]="projectMenu" (menuOpened)="loadProjects()"
+                  class="hidden md:inline-flex !py-1.5 rounded-md bg-muted text-sm font-medium hover:bg-muted/80 transition-colors">
+            <span class="flex items-center justify-between gap-2 min-w-[100px]">
+              <span>{{ projectTitle() }}</span>
+              <mat-icon class="!w-4 !h-4 !text-base">expand_more</mat-icon>
+            </span>
+          </button>
+          <mat-menu #projectMenu="matMenu" class="max-h-96 mt-1 rounded-md">
+            @for (project of projects(); track project.id) {
+              <button mat-menu-item (click)="navigateToProject(project.id)"
+                      [class.bg-accent]="projectId() === project.id.toString()">
+                <mat-icon>folder</mat-icon>
+                <span>{{ project.name }}</span>
+              </button>
+            }
+            @if (projects().length === 0) {
+              <div class="px-4 py-3 text-sm text-muted-foreground text-center">
+                Loading projects...
+              </div>
+            }
+            <div class="border-t border-border">
+              <button mat-menu-item [routerLink]="['/projects']">
+                <mat-icon>dashboard</mat-icon>
+                <span>All Projects</span>
+              </button>
+            </div>
+          </mat-menu>
         }
-        @case ('minimal') {
-          <app-header-minimal />
-        }
-        @case ('full') {
-          <app-header-full />
-        }
+      </div>
+
+      @if (showNav()) {
+        <nav class="hidden md:flex flex-1 justify-center">
+          <div class="inline-flex h-10 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground max-w-2xl gap-1">
+            <a [routerLink]="projectId() ? ['/results', projectId()] : ['/projects']"
+               routerLinkActive="bg-background text-foreground shadow"
+               [routerLinkActiveOptions]="{ exact: false }"
+               class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
+              Results
+            </a>
+            <a [routerLink]="projectId() ? ['/my-news', projectId()] : ['/projects']"
+               routerLinkActive="bg-background text-foreground shadow"
+               [routerLinkActiveOptions]="{ exact: false }"
+               class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
+              My News
+            </a>
+            <a [routerLink]="projectId() ? ['/statistics', projectId()] : ['/projects']"
+               routerLinkActive="bg-background text-foreground shadow"
+               [routerLinkActiveOptions]="{ exact: false }"
+               class="inline-flex items-center justify-center whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background/50">
+              Statistics
+            </a>
+          </div>
+        </nav>
       }
+
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-3">
+          @if (isLoggedIn() && !isProjectsPage()) {
+            <button mat-icon-button [routerLink]="['/projects']" matTooltip="My projects">
+              <mat-icon>folder_open</mat-icon>
+            </button>
+          }
+
+          <button mat-icon-button (click)="toggleTheme()" [matTooltip]="themeTooltip()">
+            <mat-icon>{{ themeIcon() }}</mat-icon>
+          </button>
+
+          @if (isLoggedIn()) {
+            <button mat-icon-button [routerLink]="'/profile'" matTooltip="User profile"
+                    class="!bg-primary !text-primary-foreground user-btn">
+              <mat-icon>account_circle</mat-icon>
+            </button>
+            <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión">
+              <mat-icon>logout</mat-icon>
+            </button>
+          }
+        </div>
+
+        <div class="flex md:hidden items-center gap-2">
+          @if (isLoggedIn() && !isProjectsPage()) {
+            <button mat-icon-button [routerLink]="['/projects']" matTooltip="Mis proyectos">
+              <mat-icon>folder_open</mat-icon>
+            </button>
+          }
+
+          <button mat-icon-button (click)="toggleTheme()" [matTooltip]="themeTooltip()">
+            <mat-icon>{{ themeIcon() }}</mat-icon>
+          </button>
+
+          @if (isLoggedIn()) {
+            @if (showNav()) {
+              <button mat-icon-button (click)="toggleMobileMenu()"
+                      [attr.aria-label]="mobileMenuOpen() ? 'Cerrar menú' : 'Abrir menú'">
+                <mat-icon>{{ mobileMenuOpen() ? 'close' : 'menu' }}</mat-icon>
+              </button>
+            } @else {
+              <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión">
+                <mat-icon>logout</mat-icon>
+              </button>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (showNav() && mobileMenuOpen()) {
+      <nav class="md:hidden pb-4 border-t border-border mt-4 pt-4 w-full">
+        <div class="space-y-1">
+          <a [routerLink]="projectId() ? ['/results', projectId()] : ['/projects']"
+             routerLinkActive="bg-primary text-primary-foreground"
+             [routerLinkActiveOptions]="{ exact: false }"
+             (click)="closeMobileMenu()"
+             class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
+            Results
+          </a>
+          <a [routerLink]="projectId() ? ['/my-news', projectId()] : ['/projects']"
+             routerLinkActive="bg-primary text-primary-foreground"
+             [routerLinkActiveOptions]="{ exact: false }"
+             (click)="closeMobileMenu()"
+             class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
+            My News
+          </a>
+          <a [routerLink]="projectId() ? ['/statistics', projectId()] : ['/projects']"
+             routerLinkActive="bg-primary text-primary-foreground"
+             [routerLinkActiveOptions]="{ exact: false }"
+             (click)="closeMobileMenu()"
+             class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent">
+            Statistics
+          </a>
+          <button (click)="logout(); closeMobileMenu()"
+                  class="block w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors hover:bg-accent text-red-500">
+            Logout
+          </button>
+        </div>
+      </nav>
+    }
   </div>
 </header>

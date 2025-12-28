@@ -7,7 +7,7 @@ import { EditProjectDialogComponent } from '../../components/edit-project-dialog
 import { ManageMembersDialogComponent } from '../../components/manage-members-dialog.component';
 import { ManageKeywordsDialogComponent } from '../../components/manage-keywords-dialog.component';
 
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 import { LayoutService } from '../../services/layout.service';
@@ -24,6 +24,7 @@ import { Project } from '../../models/project.model';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
+    RouterModule,
   ]
 })
 export class ProjectsPage implements OnInit {
@@ -124,7 +125,6 @@ export class ProjectsPage implements OnInit {
   }
 
   selectProject(project: Project): void {
-    this.layout.setCurrentProject(project);
-    this.router.navigate(['/results']);
+    this.router.navigate(['/results', project.id]);
   }
 }

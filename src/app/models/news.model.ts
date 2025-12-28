@@ -1,13 +1,12 @@
 export interface NewsItem {
   id: number;
   title: string;
+  summary: string | null;
+  url: string;
+  timestamp: string;
   source: string;
-  date: string;
-  excerpt: string;
-  category: string;
-  link: string;
-  views?: number;
-  exportDate?: string;
+  category?: string;
+  rssAtomId: number | null;
 }
 
 export interface FilterState {

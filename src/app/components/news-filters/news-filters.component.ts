@@ -11,6 +11,7 @@ import { FilterState, AVAILABLE_SOURCES, AVAILABLE_CATEGORIES } from '../../mode
 export class NewsFiltersComponent {
   filters = input.required<FilterState>();
   keywords = input.required<string[]>();
+  availableSources = input<string[]>([]);
   filtersChange = output<FilterState>();
   keywordsChange = output<string[]>();
 
@@ -21,7 +22,6 @@ export class NewsFiltersComponent {
   sourcesExpanded = signal(true);
   categoriesExpanded = signal(true);
 
-  availableSources = AVAILABLE_SOURCES;
   availableCategories = AVAILABLE_CATEGORIES;
 
   hasActiveFilters = computed(() => {
@@ -53,9 +53,9 @@ export class NewsFiltersComponent {
     this.sourcesExpanded.update((v) => !v);
   }
 
-  toggleCategoriesExpanded(): void {
-    this.categoriesExpanded.update((v) => !v);
-  }
+  // toggleCategoriesExpanded(): void {
+  //   this.categoriesExpanded.update((v) => !v);
+  // }
 
   toggleKeywordsManager(): void {
     this.showKeywordsManager.update((v) => !v);
@@ -69,13 +69,13 @@ export class NewsFiltersComponent {
     this.filtersChange.emit({ ...this.filters(), sources: newSources });
   }
 
-  toggleCategory(category: string): void {
-    const currentCategories = this.filters().categories;
-    const newCategories = currentCategories.includes(category)
-      ? currentCategories.filter((c) => c !== category)
-      : [...currentCategories, category];
-    this.filtersChange.emit({ ...this.filters(), categories: newCategories });
-  }
+  // toggleCategory(category: string): void {
+  //   const currentCategories = this.filters().categories;
+  //   const newCategories = currentCategories.includes(category)
+  //     ? currentCategories.filter((c) => c !== category)
+  //     : [...currentCategories, category];
+  //   this.filtersChange.emit({ ...this.filters(), categories: newCategories });
+  // }
 
   onDateFromChange(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -132,9 +132,9 @@ export class NewsFiltersComponent {
     this.toggleSource(source);
   }
 
-  removeCategoryFilter(category: string): void {
-    this.toggleCategory(category);
-  }
+  // removeCategoryFilter(category: string): void {
+  //   this.toggleCategory(category);
+  // }
 
   removeDateFrom(): void {
     this.filtersChange.emit({ ...this.filters(), dateFrom: '' });

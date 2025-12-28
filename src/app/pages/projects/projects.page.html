@@ -1,98 +1,112 @@
-<div class="page-container">
-
+<div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
   <!-- Título -->
-  <div class="header-row">
-    <h1>Mis Proyectos</h1>
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-foreground">Mis Proyectos</h1>
   </div>
 
   <!-- Cargando -->
-  <div class="loading" *ngIf="loading">
-    <mat-icon>sync</mat-icon>
+  @if (loading) {
+  <div class="h-[70vh] flex flex-col justify-center items-center text-muted-foreground">
+    <mat-icon class="!text-5xl mb-2">sync</mat-icon>
     <p>Cargando proyectos...</p>
   </div>
+  }
 
   <!-- Sin proyectos -->
-  <div class="empty" *ngIf="!loading && projects.length === 0">
-    <div class="empty-content">
-      <div class="empty-icon-wrapper">
-        <mat-icon class="empty-icon">folder_open</mat-icon>
-      </div>
-      <h2 class="empty-title">No tienes proyectos aún</h2>
-      <p class="empty-description">Crea tu primer proyecto para comenzar a recopilar y analizar noticias.</p>
-      <button mat-raised-button color="primary" routerLink="/projects/new" class="empty-cta">
-        <mat-icon>add</mat-icon>
-        Crear primer proyecto
-      </button>
+  @if (!loading && projects.length === 0) {
+  <div class="min-h-[60vh] flex flex-col justify-center items-center px-5 py-10">
+  <div class="flex flex-col items-center gap-6 max-w-md animate-fade-in">
+    <div class="flex items-center justify-center w-24 h-24 rounded-full bg-primary/10">
+      <mat-icon class="!text-6xl !w-14 !h-14 text-primary">folder_open</mat-icon>
     </div>
+    <h2 class="text-2xl md:text-3xl font-bold text-foreground m-0 text-center -tracking-tight">
+      No tienes proyectos aún
+    </h2>
+    <p class="text-sm md:text-base text-muted-foreground text-center leading-relaxed m-0">
+      Crea tu primer proyecto para comenzar a recopilar y analizar noticias.
+    </p>
+    <button
+      mat-stroked-button
+      color="primary"
+      routerLink="/projects/new"
+      class="!mt-2 !px-7 !py-3 !h-auto !text-base !font-semibold !normal-case !rounded-lg transition-all hover:!-translate-y-0.5 hover:!shadow-lg flex items-center gap-2">
+      <mat-icon>add</mat-icon>
+      Crear primer proyecto
+    </button>
   </div>
+  </div>
+  }
 
   <!-- Grid de proyectos -->
-  <div class="grid" *ngIf="!loading && projects.length > 0">
-
+  @if (!loading && projects.length > 0) {
+  <div class="grid gap-7 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+    @for (project of projects; track project.id) {
     <div
-      class="card"
-      *ngFor="let project of projects"
       (click)="selectProject(project)"
+      class="bg-card text-card-foreground p-6 rounded-2xl border border-border cursor-pointer transition-all duration-200 min-h-48 flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg group"
     >
-      <!-- Icono + Título + Acciones -->
-      <div class="card-header">
-        <div class="header-content">
-          <mat-icon class="icon">folder</mat-icon>
-          <h3>{{ project.name }}</h3>
-        </div>
-        <div class="card-actions">
-          <button
-            mat-icon-button
-            (click)="manageKeywords(project, $event)"
-            title="Gestionar palabras clave"
-          >
-            <mat-icon>label</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            (click)="manageMembers(project, $event)"
-            title="Gestionar miembros"
-          >
-            <mat-icon>people</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            (click)="editProject(project, $event)"
-            title="Editar proyecto"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            color="warn"
-            (click)="deleteProject(project, $event)"
-            title="Eliminar proyecto"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
+    <!-- Icono + Título + Acciones -->
+    <div class="flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 flex-1">
+        <mat-icon class="!text-4xl">folder</mat-icon>
+        <h3 class="text-xl font-semibold text-foreground m-0">{{ project.name }}</h3>
       </div>
-
-      <!-- Topic -->
-      <span class="topic-pill">{{ project.topic }}</span>
-
-      <!-- Descripción -->
-      <p class="description">
-        {{ project.description }}
-      </p>
+      <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button
+          mat-icon-button
+          (click)="manageKeywords(project, $event)"
+          title="Gestionar palabras clave"
+        >
+          <mat-icon>label</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="manageMembers(project, $event)"
+          title="Gestionar miembros"
+        >
+          <mat-icon>people</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="editProject(project, $event)"
+          title="Editar proyecto"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="deleteProject(project, $event)"
+          title="Eliminar proyecto"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </div>
 
+    <!-- Topic -->
+    <span class="inline-block mt-2.5 bg-accent text-accent-foreground px-3 py-1 text-xs rounded-xl w-fit font-medium">
+      {{ project.topic }}
+    </span>
+
+    <!-- Descripción -->
+    <p class="mt-3 opacity-90 text-sm leading-snug">
+      {{ project.description }}
+    </p>
+    </div>
+    }
   </div>
+  }
 
   <!-- FAB flotante -->
+  @if (projects.length > 0) {
   <button
     mat-fab
     color="primary"
     routerLink="/projects/new"
-    class="fab-btn"
-    *ngIf="projects.length > 0"
+    class="!fixed !bottom-6 !right-6 !z-[2000]"
   >
     <mat-icon>add</mat-icon>
   </button>
-
+  }
 </div>

@@ -7,21 +7,21 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { LayoutService } from '../../services/layout.service';
 import { ProjectsService } from '../../services/projects.service';
 
 @Component({
   selector: 'app-new-project',
-  standalone: true,
   templateUrl: './new-project.page.html',
-  styleUrls: ['./new-project.page.css'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ]
 })
 export class NewProjectComponent {
@@ -32,7 +32,8 @@ export class NewProjectComponent {
     private fb: FormBuilder,
     private router: Router,
     private layout: LayoutService,
-    private projectsService: ProjectsService    //  AÑADIDO
+    private projectsService: ProjectsService,
+    private snackBar: MatSnackBar
   ) {
     this.projectForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(30)]],
@@ -44,30 +45,32 @@ export class NewProjectComponent {
   }
 
   submit() {
-  if (this.projectForm.invalid) {
-    this.projectForm.markAllAsTouched();
-    return;
-  }
-
-  const payload = {
-    name: this.projectForm.value.name,
-    description: this.projectForm.value.description,
-    topic: this.projectForm.value.topic,
-    ownerId: 1,      // <-- TEMPORAL hasta que tengas login real
-    members: null      // <-- requerido por tu servicio
-  };
-
-  this.projectsService.createProject(payload).subscribe({
-    next: (project) => {
-      console.log("Proyecto creado:", project);
-      this.router.navigate(['/projects']);
-    },
-    error: (err) => {
-      console.error("Error creando proyecto", err);
-      alert("Hubo un error al crear el proyecto.");
+    if (this.projectForm.invalid) {
+      this.projectForm.markAllAsTouched();
+      return;
     }
-  });
-}
+
+    const payload = {
+      name: this.projectForm.value.name,
+      description: this.projectForm.value.description,
+      topic: this.projectForm.value.topic,
+    };
+
+    this.projectsService.createProject(payload).subscribe({
+      next: (_) => {
+        this.router.navigate(['/projects']);
+      },
+      error: (err) => {
+        console.error("Error creando proyecto", err);
+        this.snackBar.open('Error creating project', 'Close', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          panelClass: ['error-snackbar'],
+        });
+      }
+    });
+  }
 
   cancel() {
     this.router.navigate(['/projects']);

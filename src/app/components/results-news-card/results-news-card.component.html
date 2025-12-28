@@ -1,0 +1,26 @@
+<div class="rounded-lg border border-border bg-card p-4 shadow-sm flex flex-col gap-4">
+  <!-- Título -->
+  <h3 class="font-semibold text-lg line-clamp-2">{{ news().title }}</h3>
+
+  <!-- Descripción -->
+  <p class="text-sm text-muted-foreground line-clamp-3">{{ news().summary }}</p>
+
+  <!-- Metadata -->
+  <div class="flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
+    <span class="px-2 py-0.5 rounded-md font-medium"
+          [ngStyle]="getSourceStyle(news().source)">
+      {{ news().source }}
+    </span>
+    <!-- <span class="border px-2 py-0.5 rounded-md">{{ news().category }}</span> -->
+    <span>{{ formatDate(news().timestamp) }}</span>
+  </div>
+
+
+  <!-- Acciones -->
+  <div class="flex justify-between items-center mt-auto">
+    <button mat-button color="primary" (click)="openLink()">Read more</button>
+    <button mat-icon-button (click)="handleBookmark()" matTooltip="Save news">
+      <mat-icon>{{ isSelected() ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+    </button>
+  </div>
+</div>

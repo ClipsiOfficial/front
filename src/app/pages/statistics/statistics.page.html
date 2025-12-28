@@ -1,10 +1,11 @@
-@if (selectedNews().length === 0) {
-<div class="text-center py-12 text-muted-foreground">
-  <p>No hay noticias seleccionadas para mostrar estadísticas.</p>
-  <p class="mt-2">Selecciona noticias en la pestaña Resultados para ver análisis detallados.</p>
-</div>
-} @else {
-<div class="space-y-6">
+<div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+  @if (selectedNews().length === 0) {
+  <div class="text-center py-12 text-muted-foreground">
+    <p>No hay noticias seleccionadas para mostrar estadísticas.</p>
+    <p class="mt-2">Selecciona noticias en la pestaña Resultados para ver análisis detallados.</p>
+  </div>
+  } @else {
+  <div class="space-y-6">
   <!-- Summary Cards -->
   <div class="grid gap-4 md:grid-cols-3">
     <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
@@ -31,7 +32,7 @@
       </div>
     </div>
 
-    <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
+    <!-- <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
       <div class="p-6 pb-3">
         <p class="text-sm text-muted-foreground">Categorías</p>
       </div>
@@ -41,7 +42,7 @@
           <span class="text-3xl font-bold">{{ totalCategories() }}</span>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <div class="grid gap-6 md:grid-cols-2">
@@ -77,7 +78,7 @@
     </div>
 
     <!-- Category Distribution -->
-    <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
+    <!-- <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
       <div class="p-6">
         <h3 class="text-xl font-semibold">Distribución por Categorías</h3>
         <p class="text-sm text-muted-foreground mt-1">
@@ -105,18 +106,18 @@
         <p class="text-center text-muted-foreground py-12">No hay datos disponibles</p>
         }
       </div>
-    </div>
+    </div> -->
   </div>
 
   <!-- Top News by Views -->
   <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
-    <div class="p-6">
+    <!-- <div class="p-6">
       <h3 class="text-xl font-semibold">Top Noticias por Visitas</h3>
       <p class="text-sm text-muted-foreground mt-1">
         Las 5 noticias más vistas de tu selección
       </p>
-    </div>
-    <div class="p-6 pt-0">
+    </div> -->
+    <!-- <div class="p-6 pt-0">
       @if (topNewsByViews().length > 0) {
       <div class="space-y-4">
         @for (newsItem of topNewsByViews(); track newsItem.id; let idx = $index) {
@@ -149,7 +150,8 @@
         No hay datos de visitas disponibles
       </p>
       }
-    </div>
+    </div> -->
   </div>
 </div>
 }
+</div>
