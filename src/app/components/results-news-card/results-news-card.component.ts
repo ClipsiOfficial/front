@@ -1,4 +1,4 @@
-import { Component, input, output, HostBinding } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +9,9 @@ import { NewsItem } from '../../models/news.model';
   selector: 'app-results-news-card',
   imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
   templateUrl: './results-news-card.component.html',
-  standalone: true
+  host: {
+    '[class]': 'hostClasses()'
+  }
 })
 export class ResultsNewsCardComponent {
   news = input.required<NewsItem>();
@@ -18,8 +20,7 @@ export class ResultsNewsCardComponent {
   bookmark = output<number>();
 
   // Tailwind-based fade: when bookmarkLoading is true, opacity transitions to 0
-  @HostBinding('class')
-  get hostClasses() {
+  hostClasses() {
     return `transition-opacity duration-200 ease-out${this.bookmarkLoading() ? ' opacity-0' : ''}`;
   }
 

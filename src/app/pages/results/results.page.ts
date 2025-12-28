@@ -51,6 +51,32 @@ export class ResultsPage {
     return Math.ceil(this.totalNews() / this.pageSize);
   });
 
+  private buildFilterOptions(page: number = this.currentPage()): any {
+    const filters = this.filters();
+    const options: any = {
+      page,
+      limit: this.pageSize,
+    };
+
+    if (filters.searchTerm) {
+      options.search = filters.searchTerm;
+    }
+
+    if (filters.sources.length > 0) {
+      options.sources = filters.sources.join(',');
+    }
+
+    if (filters.dateFrom) {
+      options.dateFrom = filters.dateFrom;
+    }
+
+    if (filters.dateTo) {
+      options.dateTo = filters.dateTo;
+    }
+
+    return options;
+  }
+
   constructor() {
     // Update project title in layout service
     effect(() => {
@@ -62,45 +88,19 @@ export class ResultsPage {
 
     effect(() => {
       const project = this.currentProject();
-      const filters = this.filters();
       const page = this.currentPage();
-
-      console.log('Effect triggered - Project:', project, 'Page:', page);
 
       if (!project?.id) {
         console.warn('No project ID, skipping fetch');
         return;
       }
 
-      // Build filter options
-      const options: any = {
-        page,
-        limit: this.pageSize,
-      };
-
-      if (filters.searchTerm) {
-        options.search = filters.searchTerm;
-      }
-
-      if (filters.sources.length > 0) {
-        options.sources = filters.sources.join(',');
-      }
-
-      if (filters.dateFrom) {
-        options.dateFrom = filters.dateFrom;
-      }
-
-      if (filters.dateTo) {
-        options.dateTo = filters.dateTo;
-      }
-
-      console.log('Fetching news with options:', options);
+      const options = this.buildFilterOptions(page);
 
       // Fetch news with filters
       this.newsService
         .getNewsByProject(project.id, options)
         .subscribe((response) => {
-          console.log('News fetched:', response);
           this.newsService.remoteNews.set(response.data);
           this.newsService.totalNews.set(response.total);
         }, (error) => {
@@ -116,10 +116,8 @@ export class ResultsPage {
         return;
       }
 
-      console.log('Fetching sources for project:', project.id);
 
       this.newsService.getNewsSources(project.id).subscribe((response) => {
-        console.log('Sources fetched:', response);
         this.newsService.availableSources.set(response.sources);
       }, (error) => {
         console.error('Error fetching sources:', error);
@@ -186,16 +184,7 @@ export class ResultsPage {
           // Undo: delete the saved record then refresh list
           this.newsService.deleteSavedNews(savedNewsId).subscribe({
             next: () => {
-              const currentFilters = this.filters();
-              const options: any = {
-                page: this.currentPage(),
-                limit: this.pageSize,
-              };
-
-              if (currentFilters.searchTerm) options.search = currentFilters.searchTerm;
-              if (currentFilters.sources.length > 0) options.sources = currentFilters.sources.join(',');
-              if (currentFilters.dateFrom) options.dateFrom = currentFilters.dateFrom;
-              if (currentFilters.dateTo) options.dateTo = currentFilters.dateTo;
+              const options = this.buildFilterOptions();
 
               this.newsService.getNewsByProject(project.id, options).subscribe((resp) => {
                 this.newsService.remoteNews.set(resp.data);
