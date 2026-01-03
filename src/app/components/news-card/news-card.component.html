@@ -10,7 +10,7 @@
         <button
           mat-icon-button
           (click)="toggleEdit()"
-          [matTooltip]="isEditing() ? 'Cancelar' : 'Editar'">
+          [matTooltip]="isEditing() ? 'Cancel' : 'Edit'">
           @if (isEditing()) {
             <mat-icon>close</mat-icon>
           } @else {
@@ -20,7 +20,7 @@
         <button
           mat-icon-button
           (click)="handleRemove()"
-          matTooltip="Eliminar"
+          matTooltip="Delete"
           class="!text-destructive">
           <mat-icon>delete</mat-icon>
         </button>
@@ -35,7 +35,7 @@
     }
 
     <p class="text-sm text-muted-foreground">
-      {{ news().source }} · {{ formatDate(news().timestamp) }}
+      {{ getSource() }} · {{ formatDate(getTimestamp()) }}
     </p>
   </div>
 
@@ -45,10 +45,19 @@
     <div class="space-y-2">
       <div class="flex justify-between items-center mb-2">
         <label class="text-sm text-muted-foreground">Summary</label>
-        <button mat-stroked-button (click)="handleGenerateAISummary()" [disabled]="isGeneratingSummary()">
-          <mat-icon>auto_awesome</mat-icon>
-          {{ isGeneratingSummary() ? 'Generating...' : 'Generate with AI' }}
-        </button>
+        <div class="flex gap-2 items-center">
+          <mat-form-field appearance="outline" class="!text-sm" style="width: 140px;">
+            <mat-select [(ngModel)]="selectedLanguage" [disabled]="isTranslating()">
+              @for (lang of availableLanguages; track lang.code) {
+                <mat-option [value]="lang.code">{{ lang.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <button mat-stroked-button (click)="handleTranslate()" [disabled]="isTranslating()">
+            <mat-icon>translate</mat-icon>
+            {{ isTranslating() ? 'Translating...' : 'Translate' }}
+          </button>
+        </div>
       </div>
       <textarea [(ngModel)]="editedSummary" rows="4"
         class="flex min-h-[80px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"></textarea>
@@ -69,10 +78,12 @@
       Cancel
     </button>
     } @else {
+    @if (hasUrl()) {
     <button mat-stroked-button (click)="openLink()" class="w-full">
       <mat-icon>open_in_new</mat-icon>
       Read more
     </button>
+    }
     }
   </div>
 </div>

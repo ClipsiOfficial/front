@@ -1,25 +1,50 @@
 <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+  <!-- Search Bar -->
+  <div class="mb-6">
+    <div class="relative">
+      <mat-icon class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">search</mat-icon>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        placeholder="Search by title or summary..."
+        class="flex h-12 w-full rounded-lg border border-border bg-background pl-11 pr-11 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+      @if (searchTerm()) {
+        <button
+          mat-icon-button
+          (click)="searchTerm.set(''); onSearchChange()"
+          class="!absolute right-1 top-1/2 -translate-y-1/2">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </div>
+  </div>
+
   <div class="flex items-center justify-end mb-6">
-    @if (selectedNews().length > 0) {
+    @if (savedNews().length > 0) {
     <button
       mat-raised-button
       color="primary"
       (click)="handleExport()">
       <mat-icon>download</mat-icon>
-      Exportar ({{ selectedNews().length }})
+      Export ({{ savedNews().length }})
     </button>
     }
   </div>
 
-  @if (selectedNews().length === 0) {
+  @if (isLoading()) {
   <div class="text-center py-12 text-muted-foreground">
-    <p>No has seleccionado ninguna noticia aún.</p>
-    <p class="mt-2">Marca las noticias que te interesen en la pestaña Resultados.</p>
+    <p>Loading saved news...</p>
+  </div>
+  } @else if (savedNews().length === 0) {
+  <div class="text-center py-12 text-muted-foreground">
+    <p>You haven't saved any news yet.</p>
+    <p class="mt-2">Save the news you're interested in from the Results tab.</p>
   </div>
   } @else {
   <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-    @for (news of selectedNews(); track news.id) {
-    <app-news-card [news]="news" (remove)="onRemove($event)" />
+    @for (news of savedNews(); track news.id) {
+    <app-news-card [news]="news" (remove)="onRemove($event)" (updated)="onUpdate($event)" />
     }
   </div>
   }

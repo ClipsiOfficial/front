@@ -9,6 +9,19 @@ export interface NewsItem {
   rssAtomId: number | null;
 }
 
+export interface SavedNews {
+  id: number;
+  title: string;
+  summary: string | null;
+  projectId: number;
+  sourceNewId: number;
+  category: string | null;
+  views: number;
+  url?: string;
+  source?: string;
+  timestamp?: string;
+}
+
 export interface FilterState {
   searchTerm: string;
   keywords: string;
