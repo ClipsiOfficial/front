@@ -12,6 +12,7 @@ export class NewsFiltersComponent {
   filters = input.required<FilterState>();
   keywords = input.required<string[]>();
   availableSources = input<string[]>([]);
+  showKeywords = input<boolean>(true);
   filtersChange = output<FilterState>();
   keywordsChange = output<string[]>();
 
@@ -21,6 +22,11 @@ export class NewsFiltersComponent {
   newKeywordInput = '';
   sourcesExpanded = signal(true);
   categoriesExpanded = signal(true);
+
+  // Limit logic
+  readonly INITIAL_LIMIT = 5;
+  showAllSources = signal(false);
+  showAllCategories = signal(false);
 
   availableCategories = AVAILABLE_CATEGORIES;
 
@@ -33,6 +39,22 @@ export class NewsFiltersComponent {
       f.dateFrom ||
       f.dateTo
     );
+  });
+
+  displayedSources = computed(() => {
+    const sources = this.availableSources();
+    if (this.showAllSources()) {
+      return sources;
+    }
+    return sources.slice(0, this.INITIAL_LIMIT);
+  });
+
+  displayedCategories = computed(() => {
+    const categories = this.availableCategories;
+    if (this.showAllCategories()) {
+      return categories;
+    }
+    return categories.slice(0, this.INITIAL_LIMIT);
   });
 
   onSearchChange(event: Event): void {
@@ -53,9 +75,17 @@ export class NewsFiltersComponent {
     this.sourcesExpanded.update((v) => !v);
   }
 
-  // toggleCategoriesExpanded(): void {
-  //   this.categoriesExpanded.update((v) => !v);
-  // }
+  toggleShowAllSources(): void {
+    this.showAllSources.update((v) => !v);
+  }
+
+  toggleShowAllCategories(): void {
+    this.showAllCategories.update((v) => !v);
+  }
+
+  toggleCategoriesExpanded(): void {
+    this.categoriesExpanded.update((v) => !v);
+  }
 
   toggleKeywordsManager(): void {
     this.showKeywordsManager.update((v) => !v);
@@ -69,13 +99,14 @@ export class NewsFiltersComponent {
     this.filtersChange.emit({ ...this.filters(), sources: newSources });
   }
 
-  // toggleCategory(category: string): void {
-  //   const currentCategories = this.filters().categories;
-  //   const newCategories = currentCategories.includes(category)
-  //     ? currentCategories.filter((c) => c !== category)
-  //     : [...currentCategories, category];
-  //   this.filtersChange.emit({ ...this.filters(), categories: newCategories });
-  // }
+  toggleCategory(category: string): void {
+    const currentCategories = this.filters().categories;
+    const newCategories = currentCategories.includes(category)
+      ? currentCategories.filter((c) => c !== category)
+      : [...currentCategories, category];
+
+    this.filtersChange.emit({ ...this.filters(), categories: newCategories });
+  }
 
   onDateFromChange(event: Event): void {
     const input = event.target as HTMLInputElement;

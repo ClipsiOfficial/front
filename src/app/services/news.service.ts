@@ -1,5 +1,5 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
-import { NewsItem, FilterState } from '../models/news.model';
+import { NewsItem, FilterState, SavedNews } from '../models/news.model';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -15,6 +15,7 @@ export class NewsService {
       limit?: number;
       search?: string;
       sources?: string;
+      categories?: string;
       dateFrom?: string;
       dateTo?: string;
     }
@@ -24,6 +25,7 @@ export class NewsService {
     if (options?.limit) params.limit = options.limit.toString();
     if (options?.search) params.search = options.search;
     if (options?.sources) params.sources = options.sources;
+    if (options?.categories) params.categories = options.categories;
     if (options?.dateFrom) params.dateFrom = options.dateFrom;
     if (options?.dateTo) params.dateTo = options.dateTo;
 
@@ -56,6 +58,49 @@ export class NewsService {
    */
   deleteSavedNews(savedNewsId: number) {
     return this.api.delete(`/saved-news/${savedNewsId}`);
+  }
+
+  /**
+   * Updates a saved news record
+   * @param savedNewsId ID of the saved news record to update
+   * @param data Updated fields (title, summary, category, views)
+   */
+  updateSavedNews(savedNewsId: number, data: { title?: string; summary?: string; category?: string | null; views?: number }) {
+    return this.api.patch<SavedNews>(`/saved-news/${savedNewsId}`, data);
+  }
+
+  /**
+   * Gets saved news for a project
+   * @param projectId ID of the project
+   * @param options Query options for pagination and filtering
+   */
+  getSavedNews(
+    projectId: number,
+    options?: {
+      page?: number;
+      limit?: number;
+      search?: string;
+      categories?: string;
+      sources?: string;
+      dateFrom?: string;
+      dateTo?: string;
+    }
+  ) {
+    const params: any = { projectId: projectId.toString() };
+    if (options?.page) params.page = options.page.toString();
+    if (options?.limit) params.limit = options.limit.toString();
+    if (options?.search) params.search = options.search;
+    if (options?.categories) params.categories = options.categories;
+    if (options?.sources) params.sources = options.sources;
+    if (options?.dateFrom) params.dateFrom = options.dateFrom;
+    if (options?.dateTo) params.dateTo = options.dateTo;
+
+    return this.api.get<{
+      data: SavedNews[];
+      total: number;
+      page: number;
+      limit: number;
+    }>('/saved-news', { params });
   }
 
   // State signals

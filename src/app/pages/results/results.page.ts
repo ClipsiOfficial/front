@@ -66,6 +66,10 @@ export class ResultsPage {
       options.sources = filters.sources.join(',');
     }
 
+    if (filters.categories.length > 0) {
+      options.categories = filters.categories.join(',');
+    }
+
     if (filters.dateFrom) {
       options.dateFrom = filters.dateFrom;
     }
