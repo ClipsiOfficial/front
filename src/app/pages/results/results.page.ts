@@ -32,7 +32,7 @@ export class ResultsPage {
   totalNews = this.newsService.totalNews;
   availableSources = this.newsService.availableSources;
 
-  pageSize = 10;
+  pageSize = 9;
   currentPage = signal(1);
   reloadTrigger = signal(0);
 
@@ -48,7 +48,9 @@ export class ResultsPage {
   );
 
   totalPages = computed(() => {
-    return Math.ceil(this.totalNews() / this.pageSize);
+    const total = this.totalNews();
+    if (total === 0) return 1;
+    return Math.ceil(total / this.pageSize);
   });
 
   private buildFilterOptions(page: number = this.currentPage()): any {
@@ -139,6 +141,7 @@ export class ResultsPage {
   }
 
   onKeywordsChanged(): void {
+    this.currentPage.set(1);
     this.reloadTrigger.update(v => v + 1);
   }
 
@@ -168,7 +171,18 @@ export class ResultsPage {
         // Remove after the 200ms Tailwind transition completes
         setTimeout(() => {
           this.newsService.remoteNews.update((list) => list.filter((n) => n.id !== id));
+          this.newsService.totalNews.update(t => Math.max(0, t - 1));
           this.newsBeingSaved.set(null);
+
+          // Check pagination consistency or reload to fill gaps
+          const current = this.currentPage();
+          const total = this.totalPages();
+
+          if (current > total && current > 1) {
+             this.currentPage.set(current - 1);
+          } else {
+             this.reloadTrigger.update(v => v + 1);
+          }
         }, 200);
 
         // Show snackbar with undo option

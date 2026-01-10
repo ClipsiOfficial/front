@@ -16,7 +16,7 @@
       <!-- Export Header -->
       <div class="flex items-center justify-between mb-6 h-10">
         <h2 class="text-xl font-semibold">Saved News</h2>
-        @if (savedNews().length > 0) {
+        <!-- @if (savedNews().length > 0) {
         <button
           mat-raised-button
           color="primary"
@@ -24,7 +24,7 @@
           <mat-icon>download</mat-icon>
           Export ({{ savedNews().length }})
         </button>
-        }
+        } -->
       </div>
 
       <!-- Content -->
@@ -49,6 +49,21 @@
           </app-news-card>
         }
       </div>
+
+      <!-- Pagination -->
+      @if (totalPages() > 1) {
+        <div class="flex justify-center items-center gap-2 mt-8">
+          <button mat-icon-button (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <span class="px-4 py-2 rounded-md bg-muted text-foreground font-semibold">
+            Page {{ currentPage() }} of {{ totalPages() }}
+          </span>
+          <button mat-icon-button (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      }
       }
     </div>
   </div>

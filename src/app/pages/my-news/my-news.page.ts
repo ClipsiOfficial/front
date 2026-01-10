@@ -1,4 +1,4 @@
-import { Component, inject, effect, signal } from '@angular/core';
+import { Component, inject, effect, signal, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
@@ -35,6 +35,16 @@ export class MyNewsPage {
   savedNews = signal<NewsItem[]>([]);
   totalSavedNews = signal<number>(0);
   isLoading = signal<boolean>(false);
+  reloadTrigger = signal(0);
+
+  // Pagination
+  pageSize = 9;
+  currentPage = signal(1);
+  totalPages = computed(() => {
+    const total = this.totalSavedNews();
+    if (total === 0) return 1;
+    return Math.ceil(total / this.pageSize);
+  });
 
   // Filters state
   filters = signal<FilterState>({
@@ -81,6 +91,8 @@ export class MyNewsPage {
     effect(() => {
       const project = this.currentProject();
       const currentFilters = this.filters(); // dependence
+      const page = this.currentPage(); // dependence
+      this.reloadTrigger(); // dependence
 
       if (project?.id) {
         this.loadSavedNews(project.id, currentFilters);
@@ -96,7 +108,7 @@ export class MyNewsPage {
     this.isLoading.set(true);
 
     // Convert FilterState to API options
-    const options: any = { page: 1, limit: 100 };
+    const options: any = { page: this.currentPage(), limit: this.pageSize };
 
     if (filters.searchTerm) options.search = filters.searchTerm;
     if (filters.sources?.length) options.sources = filters.sources.join(','); // API expects comma separated
@@ -123,6 +135,7 @@ export class MyNewsPage {
 
   onFiltersChange(newFilters: FilterState): void {
     this.filters.set(newFilters);
+    this.currentPage.set(1);
   }
 
   onRemove(id: number): void {
@@ -131,6 +144,18 @@ export class MyNewsPage {
       next: () => {
         this.savedNews.update(news => news.filter(n => n.id !== id));
         this.totalSavedNews.update(total => total - 1);
+
+        // Check pagination consistency or reload to fill gaps
+        const current = this.currentPage();
+        const total = this.totalPages();
+
+        if (current > total && current > 1) {
+            // If we are past the last page, go back
+            this.currentPage.set(current - 1);
+        } else {
+            // Otherwise reload to fill the gap
+            this.reloadTrigger.update(v => v + 1);
+        }
       },
       error: (error) => {
         console.error('Error deleting saved news:', error);
@@ -181,5 +206,11 @@ export class MyNewsPage {
 
   handleExport(): void {
     console.log('Export', this.savedNews().length, 'news');
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages()) {
+      this.currentPage.set(page);
+    }
   }
 }

@@ -30,7 +30,7 @@ export class NewsCardComponent {
 
   // Tailwind-based fade: when bookmarkLoading is true, opacity transitions to 0
   hostClasses() {
-    return `transition-opacity duration-200 ease-out${this.bookmarkLoading() ? ' opacity-0' : ''}`;
+    return `h-full transition-opacity duration-200 ease-out${this.bookmarkLoading() ? ' opacity-0' : ''}`;
   }
 
   formatDate(dateString: string): string {
