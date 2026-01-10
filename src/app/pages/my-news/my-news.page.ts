@@ -91,7 +91,7 @@ export class MyNewsPage {
     effect(() => {
       const project = this.currentProject();
       const currentFilters = this.filters(); // dependence
-      const page = this.currentPage(); // dependence
+      this.currentPage(); // dependence
       this.reloadTrigger(); // dependence
 
       if (project?.id) {
