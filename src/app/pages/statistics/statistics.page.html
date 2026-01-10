@@ -1,155 +1,177 @@
-@if (selectedNews().length === 0) {
-<div class="text-center py-12 text-muted-foreground">
-  <p>No hay noticias seleccionadas para mostrar estadísticas.</p>
-  <p class="mt-2">Selecciona noticias en la pestaña Resultados para ver análisis detallados.</p>
-</div>
-} @else {
-<div class="space-y-6">
-  <!-- Summary Cards -->
-  <div class="grid gap-4 md:grid-cols-3">
-    <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
-      <div class="p-6 pb-3">
-        <p class="text-sm text-muted-foreground">Total de Noticias</p>
-      </div>
-      <div class="p-6 pt-0">
-        <div class="flex items-center gap-2">
-          <mat-icon class="text-primary !text-[32px] !w-8 !h-8">trending_up</mat-icon>
-          <span class="text-3xl font-bold">{{ totalNews() }}</span>
-        </div>
-      </div>
-    </div>
+<div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 relative min-h-[800px]">
 
-    <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
-      <div class="p-6 pb-3">
-        <p class="text-sm text-muted-foreground">Fuentes Diferentes</p>
+  <!-- "Coming Soon" Overlay -->
+  <div class="absolute inset-0 z-50 flex items-start justify-center pt-32 sm:pt-48">
+    <div class="max-w-md w-full text-center bg-card/90 backdrop-blur-sm border border-border rounded-xl shadow-2xl p-8 mx-4">
+      <div class="mb-6 inline-flex p-4 rounded-full bg-primary/10 text-primary animate-bounce-slow">
+        <mat-icon class="!w-12 !h-12 !text-[48px]">construction</mat-icon>
       </div>
-      <div class="p-6 pt-0">
-        <div class="flex items-center gap-2">
-          <mat-icon class="text-primary !text-[32px] !w-8 !h-8">trending_up</mat-icon>
-          <span class="text-3xl font-bold">{{ totalSources() }}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
-      <div class="p-6 pb-3">
-        <p class="text-sm text-muted-foreground">Categorías</p>
-      </div>
-      <div class="p-6 pt-0">
-        <div class="flex items-center gap-2">
-          <mat-icon class="text-primary !text-[32px] !w-8 !h-8">trending_up</mat-icon>
-          <span class="text-3xl font-bold">{{ totalCategories() }}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="grid gap-6 md:grid-cols-2">
-    <!-- Source Distribution -->
-    <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
-      <div class="p-6">
-        <h3 class="text-xl font-semibold">Distribución por Fuentes</h3>
-        <p class="text-sm text-muted-foreground mt-1">
-          Distribución de las {{ totalNews() }} noticias seleccionadas por fuente
-        </p>
-      </div>
-      <div class="p-6 pt-0">
-        @if (sourceDistribution().length > 0) {
-        <div class="space-y-4">
-          @for (stat of sourceDistribution(); track stat.name) {
-          <div class="space-y-2">
-            <div class="flex items-center justify-between text-sm">
-              <span class="font-medium">{{ stat.name }}</span>
-              <span class="text-muted-foreground">
-                {{ stat.count }} ({{ stat.percentage.toFixed(1) }}%)
-              </span>
-            </div>
-            <div class="h-2 bg-muted rounded-full overflow-hidden">
-              <div class="h-full bg-primary transition-all" [style.width.%]="stat.percentage"></div>
-            </div>
-          </div>
-          }
-        </div>
-        } @else {
-        <p class="text-center text-muted-foreground py-12">No hay datos disponibles</p>
-        }
-      </div>
-    </div>
-
-    <!-- Category Distribution -->
-    <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
-      <div class="p-6">
-        <h3 class="text-xl font-semibold">Distribución por Categorías</h3>
-        <p class="text-sm text-muted-foreground mt-1">
-          Distribución de las {{ totalNews() }} noticias por categoría
-        </p>
-      </div>
-      <div class="p-6 pt-0">
-        @if (categoryDistribution().length > 0) {
-        <div class="space-y-4">
-          @for (stat of categoryDistribution(); track stat.name) {
-          <div class="space-y-2">
-            <div class="flex items-center justify-between text-sm">
-              <span class="font-medium">{{ stat.name }}</span>
-              <span class="text-muted-foreground">
-                {{ stat.count }} ({{ stat.percentage.toFixed(1) }}%)
-              </span>
-            </div>
-            <div class="h-2 bg-muted rounded-full overflow-hidden">
-              <div class="h-full bg-chart-2 transition-all" [style.width.%]="stat.percentage"></div>
-            </div>
-          </div>
-          }
-        </div>
-        } @else {
-        <p class="text-center text-muted-foreground py-12">No hay datos disponibles</p>
-        }
-      </div>
-    </div>
-  </div>
-
-  <!-- Top News by Views -->
-  <div class="rounded-lg border border-border bg-card text-card-foreground shadow-sm">
-    <div class="p-6">
-      <h3 class="text-xl font-semibold">Top Noticias por Visitas</h3>
-      <p class="text-sm text-muted-foreground mt-1">
-        Las 5 noticias más vistas de tu selección
+      <h2 class="text-3xl font-bold tracking-tight mb-3">Statistics</h2>
+      <p class="text-muted-foreground text-lg mb-8">
+        We are working on an advanced analytics dashboard for your news.<br>
+        <span class="text-sm opacity-80 mt-2 block">(Coming soon)</span>
       </p>
-    </div>
-    <div class="p-6 pt-0">
-      @if (topNewsByViews().length > 0) {
-      <div class="space-y-4">
-        @for (newsItem of topNewsByViews(); track newsItem.id; let idx = $index) {
-        <div class="flex items-start gap-4 p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors">
-          <div
-            class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground shrink-0">
-            {{ idx + 1 }}
-          </div>
-          <div class="flex-1 min-w-0">
-            <h4 class="line-clamp-2 mb-2">{{ newsItem.title }}</h4>
-            <div class="flex items-center gap-2 flex-wrap">
-              <span
-                class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-secondary text-secondary-foreground">
-                {{ newsItem.source }}
-              </span>
-              <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium border border-border">
-                {{ newsItem.category }}
-              </span>
-            </div>
-          </div>
-          <div class="flex items-center gap-2 text-muted-foreground shrink-0">
-            <mat-icon class="!text-base">visibility</mat-icon>
-            <span class="font-medium">{{ newsItem.views.toLocaleString() }}</span>
-          </div>
-        </div>
-        }
+
+      <div class="flex gap-4 justify-center">
+        <button mat-stroked-button [routerLink]="['/results', currentProject()?.id]">Back to Results</button>
       </div>
-      } @else {
-      <p class="text-center text-muted-foreground py-12">
-        No hay datos de visitas disponibles
-      </p>
-      }
+    </div>
+  </div>
+
+  <!-- Blurred Content (The "Filling") -->
+  <div class="filter blur-[8px] opacity-60 select-none pointer-events-none" aria-hidden="true">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight">Project Analytics</h2>
+        <p class="text-muted-foreground mt-1">Insights and performance metrics for your collected news.</p>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <!-- KPI Grid (Mocked/Safe structure for background) -->
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <!-- We repeat simple cards to simulate a filled dashboard -->
+        <mat-card class="bg-card">
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between space-y-0 pb-2">
+              <span class="text-sm font-medium text-muted-foreground">Total Collected</span>
+              <mat-icon class="text-blue-500">library_books</mat-icon>
+            </div>
+            <div class="flex items-baseline space-x-2">
+              <div class="text-2xl font-bold">1,234</div>
+              <span class="text-xs text-muted-foreground">All time news</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="bg-card">
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between space-y-0 pb-2">
+              <span class="text-sm font-medium text-muted-foreground">Collected Today</span>
+              <mat-icon class="text-green-500">today</mat-icon>
+            </div>
+            <div class="flex items-baseline space-x-2">
+              <div class="text-2xl font-bold">42</div>
+              <span class="text-xs text-muted-foreground">News added today</span>
+            </div>
+            <div class="mt-2 text-xs font-medium text-green-500">↗ Increasing</div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="bg-card">
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between space-y-0 pb-2">
+              <span class="text-sm font-medium text-muted-foreground">Impact Score</span>
+              <mat-icon class="text-orange-500">insights</mat-icon>
+            </div>
+            <div class="flex items-baseline space-x-2">
+              <div class="text-2xl font-bold">85</div>
+              <span class="text-xs text-muted-foreground">High Engagement</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="bg-card">
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between space-y-0 pb-2">
+              <span class="text-sm font-medium text-muted-foreground">Total Views</span>
+              <mat-icon class="text-purple-500">visibility</mat-icon>
+            </div>
+            <div class="flex items-baseline space-x-2">
+              <div class="text-2xl font-bold">45.2k</div>
+              <span class="text-xs text-muted-foreground">Across all news</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="bg-card">
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between space-y-0 pb-2">
+              <span class="text-sm font-medium text-muted-foreground">Active Sources</span>
+              <mat-icon class="text-gray-500">dns</mat-icon>
+            </div>
+            <div class="flex items-baseline space-x-2">
+              <div class="text-2xl font-bold">12</div>
+              <span class="text-xs text-muted-foreground">Unique domains</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+        <!-- Source Distribution Fake -->
+        <mat-card class="col-span-4 bg-card">
+          <mat-card-header>
+            <mat-card-title>Source Distribution</mat-card-title>
+            <mat-card-subtitle>Where your news are coming from</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content class="pt-6">
+            <div class="space-y-6">
+                <div class="space-y-2">
+                  <div class="flex justify-between text-sm">
+                    <span class="font-medium">El Pais</span>
+                    <span class="text-muted-foreground">45%</span>
+                  </div>
+                  <div class="h-2.5 bg-secondary/50 rounded-full w-full"><div class="h-full bg-primary w-[45%] rounded-full"></div></div>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex justify-between text-sm">
+                    <span class="font-medium">TechCrunch</span>
+                    <span class="text-muted-foreground">30%</span>
+                  </div>
+                  <div class="h-2.5 bg-secondary/50 rounded-full w-full"><div class="h-full bg-primary w-[30%] rounded-full"></div></div>
+                </div>
+                 <div class="space-y-2">
+                  <div class="flex justify-between text-sm">
+                    <span class="font-medium">Hacker News</span>
+                    <span class="text-muted-foreground">15%</span>
+                  </div>
+                  <div class="h-2.5 bg-secondary/50 rounded-full w-full"><div class="h-full bg-primary w-[15%] rounded-full"></div></div>
+                </div>
+                 <div class="space-y-2">
+                  <div class="flex justify-between text-sm">
+                    <span class="font-medium">Other</span>
+                    <span class="text-muted-foreground">10%</span>
+                  </div>
+                  <div class="h-2.5 bg-secondary/50 rounded-full w-full"><div class="h-full bg-primary w-[10%] rounded-full"></div></div>
+                </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Category Distribution Fake -->
+        <mat-card class="col-span-3 bg-card">
+          <mat-card-header>
+            <mat-card-title>Categories</mat-card-title>
+            <mat-card-subtitle>Topic breakdown</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content class="pt-6">
+            <div class="space-y-4">
+               <div class="flex items-center justify-between p-3 rounded-lg border border-border">
+                   <div class="flex items-center gap-3">
+                     <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">40%</div>
+                     <span class="font-medium">Technology</span>
+                   </div>
+                   <span class="text-sm text-muted-foreground">120</span>
+               </div>
+               <div class="flex items-center justify-between p-3 rounded-lg border border-border">
+                   <div class="flex items-center gap-3">
+                     <div class="w-10 h-10 rounded-full bg-chart-1/10 flex items-center justify-center text-chart-1 font-bold text-sm">35%</div>
+                     <span class="font-medium">Business</span>
+                   </div>
+                   <span class="text-sm text-muted-foreground">95</span>
+               </div>
+                <div class="flex items-center justify-between p-3 rounded-lg border border-border">
+                   <div class="flex items-center gap-3">
+                     <div class="w-10 h-10 rounded-full bg-chart-2/10 flex items-center justify-center text-chart-2 font-bold text-sm">25%</div>
+                     <span class="font-medium">Science</span>
+                   </div>
+                   <span class="text-sm text-muted-foreground">45</span>
+               </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
 </div>
-}

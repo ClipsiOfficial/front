@@ -1,20 +1,114 @@
-<!-- Cargando -->
-<div *ngIf="loading" class="loading">
-  <mat-icon>hourglass_empty</mat-icon>
-  <p>Cargando...</p>
-</div>
+<div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+  <!-- Title -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-foreground">My Projects</h1>
+  </div>
 
-<!-- Estado sin proyectos -->
-<div *ngIf="!loading && !hasProjects" class="empty-container">
+  <!-- Loading -->
+  @if (loading) {
+  <div class="h-[70vh] flex flex-col justify-center items-center text-muted-foreground">
+    <mat-icon class="!text-5xl mb-2">sync</mat-icon>
+    <p>Loading projects...</p>
+  </div>
+  }
 
-  <h1 class="title">Todavía no tienes ningún proyecto</h1>
+  <!-- No projects -->
+  @if (!loading && projects.length === 0) {
+  <div class="min-h-[60vh] flex flex-col justify-center items-center px-5 py-10">
+  <div class="flex flex-col items-center gap-6 max-w-md animate-fade-in">
+    <div class="flex items-center justify-center w-24 h-24 rounded-full bg-primary/10">
+      <mat-icon class="!text-6xl !w-14 !h-14 text-primary">folder_open</mat-icon>
+    </div>
+    <h2 class="text-2xl md:text-3xl font-bold text-foreground m-0 text-center -tracking-tight">
+      You don't have any projects yet
+    </h2>
+    <p class="text-sm md:text-base text-muted-foreground text-center leading-relaxed m-0">
+      Create your first project to start collecting and analyzing news.
+    </p>
+    <button
+      mat-stroked-button
+      color="primary"
+      routerLink="/projects/new"
+      class="!mt-2 !px-7 !py-3 !h-auto !text-base !font-semibold !normal-case !rounded-lg transition-all hover:!-translate-y-0.5 hover:!shadow-lg flex items-center gap-2">
+      <mat-icon>add</mat-icon>
+      Create first project
+    </button>
+  </div>
+  </div>
+  }
 
-  <p class="subtitle">
-    Crea tu primer proyecto para empezar a recibir resultados de clipping.
-  </p>
+  <!-- Grid of projects -->
+  @if (!loading && projects.length > 0) {
+  <div class="grid gap-7 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+    @for (project of projects; track project.id) {
+    <div
+      (click)="selectProject(project)"
+      class="bg-card text-card-foreground p-5 rounded-xl border border-border cursor-pointer transition-all duration-200 min-h-[220px] flex flex-col hover:-translate-y-1 hover:shadow-lg group"
+    >
+      <!-- Header -->
+      <div class="flex items-start gap-3 mb-3">
+        <div class="p-2 bg-primary/10 rounded-lg text-primary">
+            <mat-icon class="!w-6 !h-6 !text-2xl">folder</mat-icon>
+        </div>
+        <div class="flex-1 min-w-0">
+            <h3 class="text-lg font-semibold text-foreground leading-tight truncate">{{ project.name }}</h3>
+            <span class="inline-block mt-1 bg-accent text-accent-foreground px-2 py-0.5 text-xs rounded-md font-medium">
+              {{ project.topic }}
+            </span>
+        </div>
+      </div>
 
-  <button mat-raised-button color="primary" class="create-btn" (click)="createProject()">
+      <!-- Description -->
+      <p class="text-sm text-muted-foreground line-clamp-3 mb-4 flex-1">
+        {{ project.description }}
+      </p>
+
+      <!-- Actions -->
+      <div class="flex items-center justify-end gap-1 mt-auto pt-2 border-t border-border/50">
+        <button
+          mat-icon-button
+          (click)="manageKeywords(project, $event)"
+          matTooltip="Manage keywords"
+        >
+          <mat-icon>label</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="manageMembers(project, $event)"
+          matTooltip="Manage members"
+        >
+          <mat-icon>people</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="editProject(project, $event)"
+          matTooltip="Edit project"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="deleteProject(project, $event)"
+          matTooltip="Delete project"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+  }
+
+  <!-- Floating FAB -->
+  @if (projects.length > 0) {
+  <button
+    mat-fab
+    color="primary"
+    routerLink="/projects/new"
+    class="!fixed !bottom-6 !right-6 !z-[2000]"
+  >
     <mat-icon>add</mat-icon>
-    Crear proyecto
   </button>
+  }
 </div>

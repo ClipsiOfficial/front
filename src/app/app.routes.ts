@@ -5,67 +5,50 @@ import { guestGuard } from './guards/guest.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/results',
+    redirectTo: '/login',
     pathMatch: 'full',
   },
   {
-    path: 'results',
+    path: 'results/:projectId',
     loadComponent: () =>
       import('./pages/results/results.page').then((m) => m.ResultsPage),
     canActivate: [authGuard],
   },
   {
-    path: 'my-news',
+    path: 'my-news/:projectId',
     loadComponent: () =>
       import('./pages/my-news/my-news.page').then((m) => m.MyNewsPage),
     canActivate: [authGuard],
   },
   {
-    path: 'statistics',
+    path: 'statistics/:projectId',
     loadComponent: () =>
       import('./pages/statistics/statistics.page').then((m) => m.StatisticsPage),
     canActivate: [authGuard],
-  },
-  // {
-  //   path: 'projects',
-  //   loadComponent: () =>
-  //     import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
-  // },
-  // {
-  //   path: 'projects/new',
-  //   loadComponent: () =>
-  //     import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
-  // },
-  // {
-  // path: 'projects-page',
-  // loadComponent: () =>
-  //   import('./pages/projects/projects-page.page').then((m) => m.ProjectsPage)
-  // },
-  {
-    path: 'login',
-    loadComponent: () =>
-    import('./pages/login/login.page').then((m) => m.LoginPage),
-    canActivate: [guestGuard],
-  },
-  {
-    path: 'projects',
-    loadComponent: () =>
-      import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
-  },
-  {
-    path: 'projects',
-    loadComponent: () =>
-      import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
   },
   {
     path: 'projects/new',
     loadComponent: () =>
       import('./pages/projects/new-project.page').then((m) => m.NewProjectComponent),
+    canActivate: [authGuard],
   },
   {
-  path: 'projects-page',
-  loadComponent: () =>
-    import('./pages/projects/projects-page.page').then((m) => m.ProjectsPage)
+    path: 'projects',
+    loadComponent: () =>
+      import('./pages/projects/projects.page').then((m) => m.ProjectsPage),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./pages/login/login.page').then((m) => m.LoginPage),
+    canActivate: [guestGuard],
+  },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./pages/profile/profile.page').then((m) => m.ProfilePage),
+    canActivate: [authGuard],
   },
   {
     path: '**',

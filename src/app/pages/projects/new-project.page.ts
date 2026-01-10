@@ -7,19 +7,21 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { LayoutService } from '../../services/layout.service'; 
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { LayoutService } from '../../services/layout.service';
+import { ProjectsService } from '../../services/projects.service';
 
 @Component({
   selector: 'app-new-project',
-  standalone: true,
   templateUrl: './new-project.page.html',
-  styleUrls: ['./new-project.page.css'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule
   ]
 })
 export class NewProjectComponent {
@@ -29,13 +31,16 @@ export class NewProjectComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private layout: LayoutService
+    private layout: LayoutService,
+    private projectsService: ProjectsService,
+    private snackBar: MatSnackBar
   ) {
     this.projectForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(30)]],
       description: [''],
       topic: ['', Validators.required],
     });
+
     this.layout.showMinimalHeader();
   }
 
@@ -45,14 +50,26 @@ export class NewProjectComponent {
       return;
     }
 
-    const payload = this.projectForm.value;
-    console.log("Proyecto creado:", payload);
+    const payload = {
+      name: this.projectForm.value.name,
+      description: this.projectForm.value.description,
+      topic: this.projectForm.value.topic,
+    };
 
-    // Aquí harás: this.projectService.createProject(payload).subscribe(...)
-    
-    // Simulación:
-    alert("Proyecto creado con éxito!");
-    this.router.navigate(['/projects']);
+    this.projectsService.createProject(payload).subscribe({
+      next: (_) => {
+        this.router.navigate(['/projects']);
+      },
+      error: (err) => {
+        console.error("Error creando proyecto", err);
+        this.snackBar.open('Error creating project', 'Close', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          panelClass: ['error-snackbar'],
+        });
+      }
+    });
   }
 
   cancel() {

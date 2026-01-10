@@ -1,13 +1,25 @@
 export interface NewsItem {
   id: number;
   title: string;
+  summary: string | null;
+  url: string;
+  timestamp: string;
   source: string;
-  date: string;
-  excerpt: string;
-  category: string;
-  link: string;
-  views?: number;
-  exportDate?: string;
+  category?: string;
+  rssAtomId: number | null;
+}
+
+export interface SavedNews {
+  id: number;
+  title: string;
+  summary: string | null;
+  projectId: number;
+  sourceNewId: number;
+  category: string | null;
+  views: number;
+  url?: string;
+  source?: string;
+  timestamp?: string;
 }
 
 export interface FilterState {

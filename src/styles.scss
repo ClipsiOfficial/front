@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@use "@angular/material" as mat;
+
+@import "./tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -122,18 +124,55 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  html {
+    background: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+
+    @include mat.theme((color: (theme-type: light,
+          primary: mat.$azure-palette,
+          tertiary: mat.$blue-palette,
+        ),
+        typography: Roboto,
+        density: 0,
+      ),
+      $overrides: ( // Custom background and foreground colors
+        surface: var(--color-slate-50),
+        on-surface: var(--color-slate-900)));
+  }
+
+  html,
+  body {
+    height: 100%;
+    margin: 0;
   }
 
   body {
-    @apply bg-background text-foreground min-h-screen;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    margin: 0;
   }
-}
 
-html {
-  font-size: var(--font-size);
-}
+    .mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field
+    .mdc-notched-outline__notch {
+    border-right-style: hidden;
+  }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  [type="text"],
+  [type="email"],
+  [type="url"],
+  [type="password"],
+  [type="number"],
+  [type="date"],
+  [type="datetime-local"],
+  [type="month"],
+  [type="search"],
+  [type="tel"],
+  [type="time"],
+  [type="week"],
+  [multiple],
+  textarea,
+  select {
+    padding: 0;
+    border: none;
+  }
+
+}
