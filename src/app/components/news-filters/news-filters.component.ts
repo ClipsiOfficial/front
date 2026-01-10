@@ -18,6 +18,7 @@ export class NewsFiltersComponent {
   project = input<Project>();
   availableSources = input<string[]>([]);
   showCategories = input<boolean>(true);
+  showKeywords = input<boolean>(true);
 
   filtersChange = output<FilterState>();
   keywordsChanged = output<void>();
