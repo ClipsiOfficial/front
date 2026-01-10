@@ -105,4 +105,5 @@ export class NewsCardComponent {
       color: textColor
     };
   }
+
 }
