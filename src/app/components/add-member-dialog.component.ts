@@ -20,32 +20,32 @@ import { Project } from '../models/project.model';
   ],
   template: `
     <div class="dialog-container">
-      <h2 mat-dialog-title>Agregar Miembro</h2>
-      
+      <h2 mat-dialog-title>Add Member</h2>
+
       <mat-dialog-content>
         <form [formGroup]="form">
           <mat-form-field class="full-width">
-            <mat-label>Email del usuario</mat-label>
-            <input matInput formControlName="email" placeholder="usuario@ejemplo.com" type="email">
+            <mat-label>User email</mat-label>
+            <input matInput formControlName="email" placeholder="user@example.com" type="email">
             <mat-error *ngIf="form.get('email')?.hasError('required')">
-              El email es requerido
+              Email is required
             </mat-error>
             <mat-error *ngIf="form.get('email')?.hasError('email')">
-              Email inválido
+              Invalid email
             </mat-error>
           </mat-form-field>
         </form>
       </mat-dialog-content>
 
       <mat-dialog-actions>
-        <button mat-stroked-button (click)="onCancel()">Cancelar</button>
-        <button 
-          mat-raised-button 
-          color="primary" 
+        <button mat-stroked-button (click)="onCancel()">Cancel</button>
+        <button
+          mat-raised-button
+          color="primary"
           (click)="onAdd()"
           [disabled]="form.invalid"
         >
-          Agregar
+          Add
         </button>
       </mat-dialog-actions>
     </div>

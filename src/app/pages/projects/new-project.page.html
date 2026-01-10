@@ -1,17 +1,17 @@
 <div class="flex justify-center items-center w-full min-h-[calc(100vh-4rem)] px-5">
   <div class="w-full max-w-md p-8 rounded-2xl bg-card border border-border text-foreground">
 
-    <h2 class="text-2xl font-semibold mb-6 text-center text-foreground">Crear nuevo proyecto</h2>
+    <h2 class="text-2xl font-semibold mb-6 text-center text-foreground">Create new project</h2>
 
     <form [formGroup]="projectForm" class="flex flex-col gap-5">
 
       <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Nombre del proyecto</mat-label>
+        <mat-label>Project name</mat-label>
         <input matInput formControlName="name">
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Descripción</mat-label>
+        <mat-label>Description</mat-label>
         <textarea matInput rows="3" formControlName="description"></textarea>
       </mat-form-field>
 
@@ -20,15 +20,15 @@
         <input matInput formControlName="topic">
       </mat-form-field>
 
-      <!-- Botones -->
+      <!-- Buttons -->
       <div class="flex justify-between items-center mt-2">
         <button mat-stroked-button color="basic" class="!rounded-lg !bg-muted !text-muted-foreground"
           (click)="cancel()">
-          Cancelar
+          Cancel
         </button>
 
         <button mat-flat-button color="primary" class="!rounded-lg !px-6 !py-2.5 !text-base" (click)="submit()">
-          Crear proyecto
+          Create project
         </button>
       </div>
 

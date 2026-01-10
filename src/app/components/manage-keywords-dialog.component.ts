@@ -24,27 +24,27 @@ interface Keyword {
     <div class="bg-card w-full">
       <div class="p-6 space-y-4">
         <div class="flex items-center justify-between">
-          <h2 class="text-lg font-semibold">Palabras clave - {{ data.project.name }}</h2>
+          <h2 class="text-lg font-semibold">Keywords - {{ data.project.name }}</h2>
           <button (click)="close()" class="hover:bg-secondary/50 p-1 rounded-full transition-colors">
             <mat-icon class="text-foreground w-5 h-5 flex items-center justify-center text-base">close</mat-icon>
           </button>
         </div>
 
         <p class="text-sm text-muted-foreground">
-          Añade o elimina palabras clave para filtrar noticias.
+          Add or remove keywords to filter news.
         </p>
-        
+
         <!-- Input para añadir nueva palabra clave -->
         <div class="flex gap-2">
-          <input 
+          <input
             type="text"
             class="flex-1 px-3 py-2 bg-input border border-border rounded-lg text-sm"
             [(ngModel)]="newKeywordInput"
             (keyup.enter)="addKeyword()"
-            placeholder="Escribe y presiona Enter"
+            placeholder="Type and press Enter"
             [disabled]="loading"
           >
-          <button 
+          <button
             class="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
             (click)="addKeyword()"
             [disabled]="!newKeywordInput.trim() || loading"
@@ -62,7 +62,7 @@ interface Keyword {
         <div class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar" *ngIf="keywords.length > 0">
           <div *ngFor="let keyword of keywords" class="flex items-center justify-between p-2 bg-secondary/50 rounded-lg group">
             <span class="text-sm">{{ keyword.content }}</span>
-            <button 
+            <button
               (click)="removeKeyword(keyword)"
               class="text-destructive hover:bg-destructive/10 p-1 rounded transition-colors opacity-70 group-hover:opacity-100"
               [disabled]="loading"
@@ -71,14 +71,14 @@ interface Keyword {
             </button>
           </div>
         </div>
-          
+
         <p *ngIf="!loading && keywords.length === 0" class="text-sm text-muted-foreground text-center py-4">
-          No hay palabras clave añadidas.
+          No keywords added.
         </p>
 
         <div class="flex justify-end pt-2">
           <button (click)="close()" class="px-4 py-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg transition-colors text-sm font-medium">
-            Cerrar
+            Close
           </button>
         </div>
       </div>
@@ -138,7 +138,7 @@ export class ManageKeywordsDialogComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error adding keyword:', err);
-        alert('Error al añadir la palabra clave');
+        alert('Error adding keyword');
         this.loading = false;
         this.cdr.markForCheck();
       }
@@ -158,7 +158,7 @@ export class ManageKeywordsDialogComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error removing keyword:', err);
-        alert('Error al eliminar la palabra clave');
+        alert('Error removing keyword');
         this.loading = false;
         this.cdr.markForCheck();
       }

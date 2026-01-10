@@ -20,34 +20,34 @@ import { Project } from '../models/project.model';
   ],
   template: `
     <div class="dialog-container">
-      <h2 mat-dialog-title>Editar Proyecto</h2>
+      <h2 mat-dialog-title>Edit Project</h2>
       
       <mat-dialog-content>
         <form [formGroup]="form">
           <mat-form-field class="full-width">
-            <mat-label>Nombre</mat-label>
-            <input matInput formControlName="name" placeholder="Nombre del proyecto">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" placeholder="Project name">
             <mat-error *ngIf="form.get('name')?.hasError('required')">
-              El nombre es requerido
+              Name is required
             </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <mat-label>Descripción</mat-label>
-            <textarea matInput formControlName="description" placeholder="Descripción del proyecto" rows="4"></textarea>
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" placeholder="Project description" rows="4"></textarea>
           </mat-form-field>
         </form>
       </mat-dialog-content>
 
       <mat-dialog-actions>
-        <button mat-stroked-button (click)="onCancel()">Cancelar</button>
+        <button mat-stroked-button (click)="onCancel()">Cancel</button>
         <button 
           mat-raised-button 
           color="primary" 
           (click)="onSave()"
           [disabled]="form.invalid"
         >
-          Guardar
+          Save
         </button>
       </mat-dialog-actions>
     </div>

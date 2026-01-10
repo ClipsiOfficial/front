@@ -76,7 +76,7 @@
                     class="!bg-primary !text-primary-foreground user-btn">
               <mat-icon>account_circle</mat-icon>
             </button>
-            <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión">
+            <button mat-icon-button (click)="logout()" matTooltip="Logout">
               <mat-icon>logout</mat-icon>
             </button>
           }
@@ -84,7 +84,7 @@
 
         <div class="flex md:hidden items-center gap-2">
           @if (isLoggedIn() && !isProjectsPage()) {
-            <button mat-icon-button [routerLink]="['/projects']" matTooltip="Mis proyectos">
+            <button mat-icon-button [routerLink]="['/projects']" matTooltip="My projects">
               <mat-icon>folder_open</mat-icon>
             </button>
           }
@@ -96,11 +96,11 @@
           @if (isLoggedIn()) {
             @if (showNav()) {
               <button mat-icon-button (click)="toggleMobileMenu()"
-                      [attr.aria-label]="mobileMenuOpen() ? 'Cerrar menú' : 'Abrir menú'">
+                      [attr.aria-label]="mobileMenuOpen() ? 'Close menu' : 'Open menu'">
                 <mat-icon>{{ mobileMenuOpen() ? 'close' : 'menu' }}</mat-icon>
               </button>
             } @else {
-              <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión">
+              <button mat-icon-button (click)="logout()" matTooltip="Logout">
                 <mat-icon>logout</mat-icon>
               </button>
             }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { EditProjectDialogComponent } from '../../components/edit-project-dialog.component';
 import { ManageMembersDialogComponent } from '../../components/manage-members-dialog.component';
 import { ManageKeywordsDialogComponent } from '../../components/manage-keywords-dialog.component';
@@ -24,6 +25,7 @@ import { Project } from '../../models/project.model';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
+    MatTooltipModule,
     RouterModule,
   ]
 })
@@ -83,7 +85,7 @@ export class ProjectsPage implements OnInit {
             this.loadProjects();
           },
           error: () => {
-            alert('Error al actualizar el proyecto');
+            alert('Error updating project');
           }
         });
       }
@@ -93,13 +95,13 @@ export class ProjectsPage implements OnInit {
   deleteProject(project: Project, event: Event): void {
     event.stopPropagation();
 
-    if (confirm(`¿Estás seguro de que deseas eliminar "${project.name}"?`)) {
+    if (confirm(`Are you sure you want to delete "${project.name}"?`)) {
       this.projectsService.deleteProject(project.id).subscribe({
         next: () => {
           this.loadProjects();
         },
         error: () => {
-          alert('Error al eliminar el proyecto');
+          alert('Error deleting project');
         }
       });
     }
