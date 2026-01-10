@@ -1,51 +1,55 @@
-<div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-  <!-- Search Bar -->
-  <div class="mb-6">
-    <div class="relative">
-      <mat-icon class="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">search</mat-icon>
-      <input
-        type="text"
-        [(ngModel)]="searchTerm"
-        (ngModelChange)="onSearchChange()"
-        placeholder="Search by title or summary..."
-        class="flex h-12 w-full rounded-lg border border-border bg-background pl-11 pr-11 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-      @if (searchTerm()) {
+<div class="w-full py-6">
+  <div class="flex flex-col md:flex-row gap-6 px-4 sm:px-6 lg:px-8">
+    <!-- Sidebar Filters -->
+    <div class="md:w-72 w-full flex-shrink-0">
+      <app-news-filters
+        [filters]="filters()"
+        [keywords]="dummyKeywords()"
+        [availableSources]="availableSources()"
+        [showKeywords]="false"
+        (filtersChange)="onFiltersChange($event)">
+      </app-news-filters>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+      <!-- Export Header -->
+      <div class="flex items-center justify-between mb-6 h-10">
+        <h2 class="text-xl font-semibold">Saved News</h2>
+        @if (savedNews().length > 0) {
         <button
-          mat-icon-button
-          (click)="searchTerm.set(''); onSearchChange()"
-          class="!absolute right-1 top-1/2 -translate-y-1/2">
-          <mat-icon>close</mat-icon>
+          mat-raised-button
+          color="primary"
+          (click)="handleExport()">
+          <mat-icon>download</mat-icon>
+          Export ({{ savedNews().length }})
         </button>
+        }
+      </div>
+
+      <!-- Content -->
+      @if (isLoading()) {
+      <div class="text-center py-12 text-muted-foreground">
+        <p>Loading saved news...</p>
+      </div>
+      } @else if (savedNews().length === 0) {
+      <div class="text-center py-12 text-muted-foreground border rounded-lg bg-card p-8">
+        <p>You haven't saved any news yet matching these filters.</p>
+        <p class="mt-2 text-sm">Save news from the Results tab or adjust your filters.</p>
+      </div>
+      } @else {
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        @for (news of savedNews(); track news.id) {
+          <app-results-news-card
+            [news]="news"
+            [isSelected]="true"
+            [showEditButton]="true"
+            (bookmark)="onRemove($event)"
+            (edit)="onNewsEdit($event)">
+          </app-results-news-card>
+        }
+      </div>
       }
     </div>
   </div>
-
-  <div class="flex items-center justify-end mb-6">
-    @if (savedNews().length > 0) {
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="handleExport()">
-      <mat-icon>download</mat-icon>
-      Export ({{ savedNews().length }})
-    </button>
-    }
-  </div>
-
-  @if (isLoading()) {
-  <div class="text-center py-12 text-muted-foreground">
-    <p>Loading saved news...</p>
-  </div>
-  } @else if (savedNews().length === 0) {
-  <div class="text-center py-12 text-muted-foreground">
-    <p>You haven't saved any news yet.</p>
-    <p class="mt-2">Save the news you're interested in from the Results tab.</p>
-  </div>
-  } @else {
-  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-    @for (news of savedNews(); track news.id) {
-    <app-news-card [news]="news" (remove)="onRemove($event)" (updated)="onUpdate($event)" />
-    }
-  </div>
-  }
 </div>

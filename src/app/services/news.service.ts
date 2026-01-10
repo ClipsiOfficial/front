@@ -63,7 +63,7 @@ export class NewsService {
    * @param savedNewsId ID of the saved news record to update
    * @param data Updated fields (title, summary, category, views)
    */
-  updateSavedNews(savedNewsId: number, data: { title?: string; summary?: string; category?: string; views?: number }) {
+  updateSavedNews(savedNewsId: number, data: { title?: string; summary?: string; category?: string | null; views?: number }) {
     return this.api.patch<SavedNews>(`/saved-news/${savedNewsId}`, data);
   }
 
@@ -79,6 +79,9 @@ export class NewsService {
       limit?: number;
       search?: string;
       category?: string;
+      sources?: string;
+      dateFrom?: string;
+      dateTo?: string;
     }
   ) {
     const params: any = { projectId: projectId.toString() };
@@ -86,6 +89,9 @@ export class NewsService {
     if (options?.limit) params.limit = options.limit.toString();
     if (options?.search) params.search = options.search;
     if (options?.category) params.category = options.category;
+    if (options?.sources) params.sources = options.sources;
+    if (options?.dateFrom) params.dateFrom = options.dateFrom;
+    if (options?.dateTo) params.dateTo = options.dateTo;
 
     return this.api.get<{
       data: SavedNews[];

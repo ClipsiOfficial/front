@@ -3,21 +3,30 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { NewsItem } from '../../models/news.model';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { NewsItem, SavedNews } from '../../models/news.model';
+import { inject } from '@angular/core';
+import { EditNewsDialogComponent } from '../edit-news-dialog.component';
 
 @Component({
   selector: 'app-results-news-card',
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, MatSnackBarModule],
   templateUrl: './results-news-card.component.html',
   host: {
     '[class]': 'hostClasses()'
   }
 })
 export class ResultsNewsCardComponent {
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+
   news = input.required<NewsItem>();
   isSelected = input<boolean>(false);
   bookmarkLoading = input<boolean>(false);
+  showEditButton = input<boolean>(false); // Whether to show edit button (only for My News page)
   bookmark = output<number>();
+  edit = output<Partial<SavedNews>>();
 
   // Tailwind-based fade: when bookmarkLoading is true, opacity transitions to 0
   hostClasses() {
@@ -39,6 +48,36 @@ export class ResultsNewsCardComponent {
 
   handleBookmark(): void {
     this.bookmark.emit(this.news().id);
+  }
+
+  handleEdit(): void {
+    // Open edit dialog - cast news to SavedNews for display
+    const newsItem = this.news() as unknown as SavedNews;
+    const dialogRef = this.dialog.open(EditNewsDialogComponent, {
+      data: { news: newsItem },
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Emit only the edited fields
+        this.edit.emit({
+          id: this.news().id,
+          title: result.title,
+          summary: result.summary,
+          category: result.category,
+        });
+      }
+    });
+  }
+
+  handleTranslate(): void {
+    this.snackBar.open('🌐 Translation feature coming soon!', 'Close', {
+      duration: 5000,
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom',
+      panelClass: ['info-snackbar'],
+    });
   }
 
   getSourceStyle(source: string): { [key: string]: string } {

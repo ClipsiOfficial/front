@@ -6,21 +6,46 @@
   <p class="text-sm text-muted-foreground line-clamp-3">{{ news().summary }}</p>
 
   <!-- Metadata -->
-  <div class="flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
-    <span class="px-2 py-0.5 rounded-md font-medium"
-          [ngStyle]="getSourceStyle(news().source)">
-      {{ news().source }}
-    </span>
-    <!-- <span class="border px-2 py-0.5 rounded-md">{{ news().category }}</span> -->
+  <div class="flex items-center gap-2 text-xs text-muted-foreground">
     <span>{{ formatDate(news().timestamp) }}</span>
+    <div class="flex-1"></div>
+    <div class="flex items-center gap-2 flex-nowrap">
+      <span class="px-2 py-0.5 rounded-md font-medium"
+            [ngStyle]="getSourceStyle(news().source)">
+        {{ news().source }}
+      </span>
+      @if (news().category) {
+        <span class="border border-border px-2 py-0.5 rounded-md font-medium bg-muted text-muted-foreground">
+          {{ news().category }}
+        </span>
+      }
+    </div>
   </div>
 
 
-  <!-- Acciones -->
-  <div class="flex justify-between items-center mt-auto">
+  <!-- Actions -->
+  <div class="flex justify-between items-center mt-auto gap-2 flex-wrap">
     <button mat-button color="primary" (click)="openLink()">Read more</button>
-    <button mat-icon-button (click)="handleBookmark()" matTooltip="Save news">
-      <mat-icon>{{ isSelected() ? 'bookmark' : 'bookmark_border' }}</mat-icon>
-    </button>
+
+    <div class="flex gap-1 ml-auto">
+      <!-- Translate button - only show on My News page -->
+      @if (showEditButton()) {
+      <button mat-icon-button (click)="handleTranslate()" matTooltip="Translate">
+        <mat-icon>language</mat-icon>
+      </button>
+      }
+
+      <!-- Edit button - only show on My News page -->
+      @if (showEditButton()) {
+      <button mat-icon-button (click)="handleEdit()" matTooltip="Edit news">
+        <mat-icon>edit</mat-icon>
+      </button>
+      }
+
+      <!-- Remove/Save button -->
+      <button mat-icon-button (click)="handleBookmark()" [matTooltip]="isSelected() ? 'Remove' : 'Save news'">
+        <mat-icon>{{ isSelected() ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+      </button>
+    </div>
   </div>
 </div>
