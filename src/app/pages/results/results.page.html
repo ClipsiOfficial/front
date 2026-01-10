@@ -25,7 +25,7 @@
       } @else {
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           @for (news of filteredNews(); track news.id) {
-            <app-results-news-card
+            <app-news-card
               [news]="news"
               [isSelected]="selectedNewsIds().includes(news.id)"
               [bookmarkLoading]="newsBeingSaved() === news.id"

@@ -8,13 +8,13 @@ import { NewsService } from '../../services/news.service';
 import { NewsFiltersComponent } from '../../components/news-filters/news-filters.component';
 import { FilterState } from '../../models/news.model';
 import { LayoutService } from '../../services/layout.service';
-import { ResultsNewsCardComponent } from '../../components/results-news-card/results-news-card.component';
+import { NewsCardComponent } from '../../components/news-card/news-card.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ProjectsService } from '../../services/projects.service';
 
 @Component({
   selector: 'app-results-page',
-  imports: [NewsFiltersComponent, ResultsNewsCardComponent, MatIconModule, MatSnackBarModule],
+  imports: [NewsFiltersComponent, NewsCardComponent, MatIconModule, MatSnackBarModule],
   templateUrl: './results.page.html',
 })
 export class ResultsPage {

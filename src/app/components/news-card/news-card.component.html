@@ -1,89 +1,51 @@
-<div class="flex flex-col h-full rounded-lg border border-border bg-card hover:shadow-lg transition-shadow">
-  <!-- Header -->
-  <div class="p-6 space-y-4">
-    <div class="flex items-start justify-between gap-2 mb-2">
-      <!-- <span
-        class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-secondary text-secondary-foreground shrink-0">
-        {{ news().category }}
-      </span> -->
-      <div class="flex gap-1">
-        <button
-          mat-icon-button
-          (click)="toggleEdit()"
-          [matTooltip]="isEditing() ? 'Cancel' : 'Edit'">
-          @if (isEditing()) {
-            <mat-icon>close</mat-icon>
-          } @else {
-            <mat-icon>edit</mat-icon>
-          }
-        </button>
-        <button
-          mat-icon-button
-          (click)="handleRemove()"
-          matTooltip="Delete"
-          class="!text-destructive">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>
+<div class="rounded-lg border border-border bg-card p-4 shadow-sm flex flex-col gap-4">
+  <!-- Título -->
+  <h3 class="font-semibold text-lg line-clamp-2">{{ news().title }}</h3>
+
+  <!-- Descripción -->
+  <p class="text-sm text-muted-foreground line-clamp-3">{{ news().summary }}</p>
+
+  <!-- Metadata -->
+  <div class="flex items-center gap-2 text-xs text-muted-foreground">
+    <span>{{ formatDate(news().timestamp) }}</span>
+    <div class="flex-1"></div>
+    <div class="flex items-center gap-2 flex-nowrap">
+      <span class="px-2 py-0.5 rounded-md font-medium"
+            [ngStyle]="getSourceStyle(news().source)">
+        {{ news().source }}
+      </span>
+      @if (news().category) {
+        <span class="border border-border px-2 py-0.5 rounded-md font-medium bg-muted text-muted-foreground">
+          {{ news().category }}
+        </span>
+      }
     </div>
-
-    @if (isEditing()) {
-    <input type="text" [(ngModel)]="editedTitle"
-      class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mb-2" />
-    } @else {
-    <h3 class="text-xl font-semibold line-clamp-2">{{ news().title }}</h3>
-    }
-
-    <p class="text-sm text-muted-foreground">
-      {{ getSource() }} · {{ formatDate(getTimestamp()) }}
-    </p>
   </div>
 
-  <!-- Content -->
-  <div class="px-6 pb-6 flex-1">
-    @if (isEditing()) {
-    <div class="space-y-2">
-      <div class="flex justify-between items-center mb-2">
-        <label class="text-sm text-muted-foreground">Summary</label>
-        <div class="flex gap-2 items-center">
-          <mat-form-field appearance="outline" class="!text-sm" style="width: 140px;">
-            <mat-select [(ngModel)]="selectedLanguage" [disabled]="isTranslating()">
-              @for (lang of availableLanguages; track lang.code) {
-                <mat-option [value]="lang.code">{{ lang.name }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <button mat-stroked-button (click)="handleTranslate()" [disabled]="isTranslating()">
-            <mat-icon>translate</mat-icon>
-            {{ isTranslating() ? 'Translating...' : 'Translate' }}
-          </button>
-        </div>
-      </div>
-      <textarea [(ngModel)]="editedSummary" rows="4"
-        class="flex min-h-[80px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"></textarea>
-    </div>
-    } @else {
-    <p class="text-muted-foreground line-clamp-3">{{ news().summary }}</p>
-    }
-  </div>
 
-  <!-- Footer -->
-  <div class="p-6 pt-0 flex gap-2">
-    @if (isEditing()) {
-    <button mat-raised-button color="primary" (click)="handleSave()" class="flex-1">
-      <mat-icon>save</mat-icon>
-      Save
-    </button>
-    <button mat-stroked-button (click)="handleCancel()" class="flex-1">
-      Cancel
-    </button>
-    } @else {
-    @if (hasUrl()) {
-    <button mat-stroked-button (click)="openLink()" class="w-full">
-      <mat-icon>open_in_new</mat-icon>
-      Read more
-    </button>
-    }
-    }
+  <!-- Actions -->
+  <div class="flex justify-between items-center mt-auto gap-2 flex-wrap">
+    <button mat-button color="primary" (click)="openLink()">Read more</button>
+
+    <div class="flex gap-1 ml-auto">
+      <!-- Translate button - only show on My News page -->
+      @if (showEditButton()) {
+      <button mat-icon-button (click)="handleTranslate()" matTooltip="Translate">
+        <mat-icon>language</mat-icon>
+      </button>
+      }
+
+      <!-- Edit button - only show on My News page -->
+      @if (showEditButton()) {
+      <button mat-icon-button (click)="handleEdit()" matTooltip="Edit news">
+        <mat-icon>edit</mat-icon>
+      </button>
+      }
+
+      <!-- Remove/Save button -->
+      <button mat-icon-button (click)="handleBookmark()" [matTooltip]="isSelected() ? 'Remove' : 'Save news'">
+        <mat-icon>{{ isSelected() ? 'bookmark' : 'bookmark_border' }}</mat-icon>
+      </button>
+    </div>
   </div>
 </div>

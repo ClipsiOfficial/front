@@ -7,7 +7,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NewsService } from '../../services/news.service';
-import { ResultsNewsCardComponent } from '../../components/results-news-card/results-news-card.component';
+import { NewsCardComponent } from '../../components/news-card/news-card.component';
 import { NewsFiltersComponent } from '../../components/news-filters/news-filters.component';
 import { LayoutService } from '../../services/layout.service';
 import { ProjectsService } from '../../services/projects.service';
@@ -15,7 +15,7 @@ import { NewsItem, FilterState, SavedNews } from '../../models/news.model';
 
 @Component({
   selector: 'app-my-news-page',
-  imports: [ResultsNewsCardComponent, NewsFiltersComponent, MatButtonModule, MatIconModule, MatSnackBarModule],
+  imports: [NewsCardComponent, NewsFiltersComponent, MatButtonModule, MatIconModule, MatSnackBarModule],
   templateUrl: './my-news.page.html',
 })
 export class MyNewsPage {
