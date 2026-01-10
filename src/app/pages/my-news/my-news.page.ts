@@ -66,7 +66,14 @@ export class MyNewsPage {
           next: (response) => {
             this.availableSources.set(response.sources);
           },
-          error: (err) => console.error('Error fetching sources:', err)
+          error: (err) => {
+            console.error('Error fetching sources:', err);
+            this.snackBar.open(
+              'Failed to load news sources. Some filters may be unavailable.',
+              'Dismiss',
+              { duration: 5000 }
+            );
+          }
         });
       }
     });
@@ -94,8 +101,7 @@ export class MyNewsPage {
 
     if (filters.searchTerm) options.search = filters.searchTerm;
     if (filters.sources?.length) options.sources = filters.sources.join(','); // API expects comma separated
-    // API expects single string for 'category'
-    if (filters.categories?.length) options.category = filters.categories[0];
+    if (filters.categories?.length) options.categories = filters.categories.join(',');
     if (filters.dateFrom) options.dateFrom = filters.dateFrom;
     if (filters.dateTo) options.dateTo = filters.dateTo;
 
@@ -108,6 +114,9 @@ export class MyNewsPage {
       },
       error: (error) => {
         console.error('Error loading saved news:', error);
+        this.snackBar.open('Failed to load saved news. Please try again.', 'Dismiss', {
+          duration: 5000
+        });
         this.isLoading.set(false);
       }
     });
@@ -118,8 +127,6 @@ export class MyNewsPage {
   }
 
   onRemove(id: number): void {
-    // Optimistic update?
-    // Or wait for server?
     // Current logic: wait for server.
     this.newsService.deleteSavedNews(id).subscribe({
       next: () => {
@@ -128,6 +135,9 @@ export class MyNewsPage {
       },
       error: (error) => {
         console.error('Error deleting saved news:', error);
+        this.snackBar.open('Failed to remove saved news. Please try again.', 'Dismiss', {
+          duration: 5000
+        });
       }
     });
   }
@@ -151,6 +161,12 @@ export class MyNewsPage {
           verticalPosition: 'bottom',
           panelClass: ['success-snackbar'],
         });
+
+        // Refetch to ensure the item still matches current filters
+        const project = this.currentProject();
+        if (project?.id) {
+          this.loadSavedNews(project.id, this.filters());
+        }
       },
       error: (error) => {
         console.error('Error updating news:', error);

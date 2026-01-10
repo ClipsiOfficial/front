@@ -101,10 +101,9 @@ export class NewsFiltersComponent {
 
   toggleCategory(category: string): void {
     const currentCategories = this.filters().categories;
-    const isSelected = currentCategories.includes(category);
-
-    // Toggle: if selected, remove. If not, set as THE ONLY category.
-    const newCategories = isSelected ? [] : [category];
+    const newCategories = currentCategories.includes(category)
+      ? currentCategories.filter((c) => c !== category)
+      : [...currentCategories, category];
 
     this.filtersChange.emit({ ...this.filters(), categories: newCategories });
   }

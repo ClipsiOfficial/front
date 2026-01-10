@@ -15,6 +15,7 @@ export class NewsService {
       limit?: number;
       search?: string;
       sources?: string;
+      categories?: string;
       dateFrom?: string;
       dateTo?: string;
     }
@@ -24,6 +25,7 @@ export class NewsService {
     if (options?.limit) params.limit = options.limit.toString();
     if (options?.search) params.search = options.search;
     if (options?.sources) params.sources = options.sources;
+    if (options?.categories) params.categories = options.categories;
     if (options?.dateFrom) params.dateFrom = options.dateFrom;
     if (options?.dateTo) params.dateTo = options.dateTo;
 
@@ -78,7 +80,7 @@ export class NewsService {
       page?: number;
       limit?: number;
       search?: string;
-      category?: string;
+      categories?: string;
       sources?: string;
       dateFrom?: string;
       dateTo?: string;
@@ -88,7 +90,7 @@ export class NewsService {
     if (options?.page) params.page = options.page.toString();
     if (options?.limit) params.limit = options.limit.toString();
     if (options?.search) params.search = options.search;
-    if (options?.category) params.category = options.category;
+    if (options?.categories) params.categories = options.categories;
     if (options?.sources) params.sources = options.sources;
     if (options?.dateFrom) params.dateFrom = options.dateFrom;
     if (options?.dateTo) params.dateTo = options.dateTo;

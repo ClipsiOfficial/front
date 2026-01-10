@@ -60,7 +60,6 @@ export class ResultsNewsCardComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Emit only the edited fields
         this.edit.emit({
           id: this.news().id,
           title: result.title,
