@@ -4,9 +4,7 @@
     <div class="md:w-72 w-full flex-shrink-0">
       <app-news-filters
         [filters]="filters()"
-        [keywords]="dummyKeywords()"
         [availableSources]="availableSources()"
-        [showKeywords]="false"
         (filtersChange)="onFiltersChange($event)">
       </app-news-filters>
     </div>

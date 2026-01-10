@@ -47,7 +47,6 @@ export class MyNewsPage {
   });
 
   availableSources = signal<string[]>([]);
-  dummyKeywords = signal<string[]>([]); // To pass to component
 
   constructor() {
     // Update project title in layout service

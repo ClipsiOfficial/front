@@ -1,7 +1,10 @@
-import { Component, input, output, signal, computed } from '@angular/core';
+import { Component, input, output, signal, computed, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { FormsModule } from '@angular/forms';
 import { FilterState, AVAILABLE_SOURCES, AVAILABLE_CATEGORIES } from '../../models/news.model';
+import { Project } from '../../models/project.model';
+import { ManageKeywordsDialogComponent } from '../manage-keywords-dialog.component';
 
 @Component({
   selector: 'app-news-filters',
@@ -9,17 +12,17 @@ import { FilterState, AVAILABLE_SOURCES, AVAILABLE_CATEGORIES } from '../../mode
   templateUrl: './news-filters.component.html',
 })
 export class NewsFiltersComponent {
+  private dialog = inject(MatDialog);
+
   filters = input.required<FilterState>();
-  keywords = input.required<string[]>();
+  project = input<Project>();
   availableSources = input<string[]>([]);
-  showKeywords = input<boolean>(true);
+  showCategories = input<boolean>(true);
+
   filtersChange = output<FilterState>();
-  keywordsChange = output<string[]>();
+  keywordsChanged = output<void>();
 
   showFilters = signal(false);
-  showKeywordsManager = signal(false);
-  newKeyword = signal('');
-  newKeywordInput = '';
   sourcesExpanded = signal(true);
   categoriesExpanded = signal(true);
 
@@ -62,11 +65,6 @@ export class NewsFiltersComponent {
     this.filtersChange.emit({ ...this.filters(), searchTerm: input.value });
   }
 
-  onKeywordsInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.filtersChange.emit({ ...this.filters(), keywords: input.value });
-  }
-
   toggleFilters(): void {
     this.showFilters.update((v) => !v);
   }
@@ -88,7 +86,19 @@ export class NewsFiltersComponent {
   }
 
   toggleKeywordsManager(): void {
-    this.showKeywordsManager.update((v) => !v);
+    const project = this.project();
+    if (project) {
+      this.dialog.open(ManageKeywordsDialogComponent, {
+        data: { project },
+        width: '500px'
+      }).afterClosed().subscribe((result: { content: string }[] | undefined) => {
+        if (result) {
+          this.keywordsChanged.emit();
+        }
+      });
+    } else {
+      console.warn('Cannot manage keywords without a project instance.');
+    }
   }
 
   toggleSource(source: string): void {
@@ -137,17 +147,7 @@ export class NewsFiltersComponent {
     this.filtersChange.emit({ ...this.filters(), dateTo: '' });
   }
 
-  addKeyword(): void {
-    const keyword = this.newKeywordInput.trim();
-    if (keyword && !this.keywords().includes(keyword)) {
-      this.keywordsChange.emit([...this.keywords(), keyword]);
-      this.newKeywordInput = '';
-    }
-  }
 
-  removeKeyword(keyword: string): void {
-    this.keywordsChange.emit(this.keywords().filter((k) => k !== keyword));
-  }
 
   formatDateLabel(dateString: string): string {
     if (!dateString) return 'Seleccionar';

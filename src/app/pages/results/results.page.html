@@ -4,10 +4,11 @@
     <div class="md:w-72 w-full flex-shrink-0">
       <app-news-filters
         [filters]="filters()"
-        [keywords]="keywords()"
+        [project]="currentProject()"
         [availableSources]="availableSources()"
+        [showCategories]="false"
         (filtersChange)="onFiltersChange($event)"
-        (keywordsChange)="onKeywordsChange($event)" />
+        (keywordsChanged)="onKeywordsChanged()" />
     </div>
 
     <!-- Contenido principal: noticias y paginación -->

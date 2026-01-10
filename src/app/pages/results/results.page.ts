@@ -29,12 +29,12 @@ export class ResultsPage {
   filteredNews = this.newsService.filteredNews;
   selectedNewsIds = this.newsService.selectedNewsIds;
   filters = this.newsService.filters;
-  keywords = this.newsService.keywords;
   totalNews = this.newsService.totalNews;
   availableSources = this.newsService.availableSources;
 
   pageSize = 10;
   currentPage = signal(1);
+  reloadTrigger = signal(0);
 
   // Get project from route params
   currentProject = toSignal(
@@ -93,9 +93,9 @@ export class ResultsPage {
     effect(() => {
       const project = this.currentProject();
       const page = this.currentPage();
+      this.reloadTrigger();
 
       if (!project?.id) {
-        console.warn('No project ID, skipping fetch');
         return;
       }
 
@@ -116,7 +116,6 @@ export class ResultsPage {
     effect(() => {
       const project = this.currentProject();
       if (!project?.id) {
-        console.warn('No project ID for sources, skipping');
         return;
       }
 
@@ -139,8 +138,8 @@ export class ResultsPage {
     this.currentPage.set(1); // Reset to first page when filters change
   }
 
-  onKeywordsChange(keywords: string[]): void {
-    this.newsService.setKeywords(keywords);
+  onKeywordsChanged(): void {
+    this.reloadTrigger.update(v => v + 1);
   }
 
   onToggleNews(id: number): void {

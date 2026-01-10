@@ -11,9 +11,9 @@
         We are working on an advanced analytics dashboard for your news.<br>
         <span class="text-sm opacity-80 mt-2 block">(Coming soon)</span>
       </p>
-      
+
       <div class="flex gap-4 justify-center">
-        <button mat-stroked-button routerLink="../results">Back to Results</button>
+        <button mat-stroked-button [routerLink]="['/results', currentProject()?.id]">Back to Results</button>
       </div>
     </div>
   </div>

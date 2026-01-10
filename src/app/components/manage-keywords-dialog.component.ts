@@ -1,13 +1,8 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
 import { Project } from '../models/project.model';
 import { ProjectsService } from '../services/projects.service';
 
@@ -22,125 +17,78 @@ interface Keyword {
   imports: [
     CommonModule,
     MatDialogModule,
-    MatChipsModule,
     MatIconModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatProgressSpinnerModule
+    FormsModule
   ],
   template: `
-    <h2 mat-dialog-title>Palabras clave - {{ data.project.name }}</h2>
-    
-    <mat-dialog-content>
-      <div class="keywords-container">
+    <div class="bg-card w-full">
+      <div class="p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold">Palabras clave - {{ data.project.name }}</h2>
+          <button (click)="close()" class="hover:bg-secondary/50 p-1 rounded-full transition-colors">
+            <mat-icon class="text-foreground w-5 h-5 flex items-center justify-center text-base">close</mat-icon>
+          </button>
+        </div>
+
+        <p class="text-sm text-muted-foreground">
+          Añade o elimina palabras clave para filtrar noticias.
+        </p>
         
         <!-- Input para añadir nueva palabra clave -->
-        <div class="keyword-input-container">
+        <div class="flex gap-2">
           <input 
             type="text"
-            class="keyword-input"
-            [formControl]="keywordInput"
+            class="flex-1 px-3 py-2 bg-input border border-border rounded-lg text-sm"
+            [(ngModel)]="newKeywordInput"
             (keyup.enter)="addKeyword()"
             placeholder="Escribe y presiona Enter"
             [disabled]="loading"
           >
           <button 
-            mat-icon-button 
+            class="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
             (click)="addKeyword()"
-            [disabled]="!keywordInput.value?.trim() || loading"
+            [disabled]="!newKeywordInput.trim() || loading"
           >
-            <mat-icon>add</mat-icon>
+            +
           </button>
         </div>
 
         <!-- Spinner de carga -->
-        <div *ngIf="loading" style="text-align: center; padding: 20px;">
-          <mat-spinner diameter="40"></mat-spinner>
+        <div *ngIf="loading && keywords.length === 0" class="flex justify-center py-4">
+          <div class="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full"></div>
         </div>
 
         <!-- Lista de palabras clave -->
-        <div class="keywords-list" *ngIf="!loading">
-          <mat-chip-set aria-label="Keywords">
-            <mat-chip 
-              *ngFor="let keyword of keywords"
-              (removed)="removeKeyword(keyword)"
+        <div class="space-y-2 max-h-60 overflow-y-auto custom-scrollbar" *ngIf="keywords.length > 0">
+          <div *ngFor="let keyword of keywords" class="flex items-center justify-between p-2 bg-secondary/50 rounded-lg group">
+            <span class="text-sm">{{ keyword.content }}</span>
+            <button 
+              (click)="removeKeyword(keyword)"
+              class="text-destructive hover:bg-destructive/10 p-1 rounded transition-colors opacity-70 group-hover:opacity-100"
+              [disabled]="loading"
             >
-              {{ keyword.content }}
-              <button matChipRemove>
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </mat-chip>
-          </mat-chip-set>
+              <mat-icon class="w-4 h-4 flex items-center justify-center text-sm">close</mat-icon>
+            </button>
+          </div>
+        </div>
           
-          <p *ngIf="keywords.length === 0" class="empty-message">
-            No hay palabras clave añadidas. Añade algunas para mejorar la búsqueda de noticias.
-          </p>
+        <p *ngIf="!loading && keywords.length === 0" class="text-sm text-muted-foreground text-center py-4">
+          No hay palabras clave añadidas.
+        </p>
+
+        <div class="flex justify-end pt-2">
+          <button (click)="close()" class="px-4 py-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg transition-colors text-sm font-medium">
+            Cerrar
+          </button>
         </div>
       </div>
-    </mat-dialog-content>
-    
-    <mat-dialog-actions align="end">
-      <button mat-button (click)="close()" [disabled]="loading">Cerrar</button>
-    </mat-dialog-actions>
+    </div>
   `,
   styles: [`
-    .keywords-container {
-      min-height: 200px;
-      padding: 10px 0;
-    }
-
-    .keyword-input-container {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      align-items: center;
-    }
-
-    .keyword-input {
-      flex: 1;
-      padding: 12px 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 14px;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .keyword-input:focus {
-      border-color: #3f51b5;
-    }
-
-    .keyword-input::placeholder {
-      color: #999;
-    }
-
-    .keywords-list {
-      margin-top: 10px;
-    }
-
-    mat-chip {
-      margin: 4px;
-    }
-
-    .empty-message {
-      color: rgba(0, 0, 0, 0.6);
-      font-style: italic;
-      text-align: center;
-      padding: 20px;
-    }
-
-    mat-dialog-content {
-      max-height: 500px;
-      overflow-y: auto;
-      border: none !important;
-    }
-
-    ::ng-deep .mat-mdc-dialog-content {
-      border-top: none !important;
-      border-bottom: none !important;
+    :host {
+      display: block;
+      border-radius: 0.5rem;
+      overflow: hidden;
     }
   `]
 })
@@ -150,7 +98,7 @@ export class ManageKeywordsDialogComponent implements OnInit {
   private projectsService = inject(ProjectsService);
   private cdr = inject(ChangeDetectorRef);
 
-  keywordInput = new FormControl('');
+  newKeywordInput = '';
   keywords: Keyword[] = [];
   loading = false;
 
@@ -175,7 +123,7 @@ export class ManageKeywordsDialogComponent implements OnInit {
   }
 
   addKeyword(): void {
-    const value = this.keywordInput.value?.trim();
+    const value = this.newKeywordInput.trim();
     if (!value || this.keywords.some(k => k.content === value)) {
       return;
     }
@@ -184,7 +132,7 @@ export class ManageKeywordsDialogComponent implements OnInit {
     this.projectsService.addKeyword(this.data.project.id, value).subscribe({
       next: (newKeyword) => {
         this.keywords.push(newKeyword);
-        this.keywordInput.reset();
+        this.newKeywordInput = '';
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -218,6 +166,6 @@ export class ManageKeywordsDialogComponent implements OnInit {
   }
 
   close(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.keywords);
   }
 }

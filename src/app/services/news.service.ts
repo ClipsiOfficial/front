@@ -115,7 +115,6 @@ export class NewsService {
 
   remoteNews = signal<NewsItem[]>([]);
   totalNews = signal<number>(0);
-  keywords = signal<string[]>([]);
   selectedNewsIds = signal<number[]>([]);
   availableSources = signal<string[]>([]);
 
@@ -141,21 +140,6 @@ export class NewsService {
 
   updateFilters(filters: FilterState): void {
     this.filters.set(filters);
-  }
-
-  addKeyword(keyword: string): void {
-    const trimmed = keyword.trim();
-    if (trimmed && !this.keywords().includes(trimmed)) {
-      this.keywords.update((keywords) => [...keywords, trimmed]);
-    }
-  }
-
-  removeKeyword(keyword: string): void {
-    this.keywords.update((keywords) => keywords.filter((k) => k !== keyword));
-  }
-
-  setKeywords(keywords: string[]): void {
-    this.keywords.set(keywords);
   }
 
   removeFromSelected(id: number): void {
