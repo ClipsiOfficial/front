@@ -2,6 +2,7 @@ import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { Project } from '../models/project.model';
 import { ProjectsService } from '../services/projects.service';
@@ -18,6 +19,7 @@ interface Keyword {
     CommonModule,
     MatDialogModule,
     MatIconModule,
+    MatSnackBarModule,
     FormsModule
   ],
   template: `
@@ -96,6 +98,7 @@ export class ManageKeywordsDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<ManageKeywordsDialogComponent>);
   readonly data = inject<{ project: Project }>(MAT_DIALOG_DATA);
   private projectsService = inject(ProjectsService);
+  private snackBar = inject(MatSnackBar);
   private cdr = inject(ChangeDetectorRef);
 
   newKeywordInput = '';
@@ -134,11 +137,23 @@ export class ManageKeywordsDialogComponent implements OnInit {
         this.keywords.push(newKeyword);
         this.newKeywordInput = '';
         this.loading = false;
+        this.snackBar.open('✓ Keyword added successfully', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          panelClass: ['success-snackbar'],
+        });
         this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error adding keyword:', err);
-        alert('Error adding keyword');
+        const errorMessage = err?.error?.message || 'Error adding keyword';
+        this.snackBar.open(`❌ ${errorMessage}`, 'Close', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          panelClass: ['error-snackbar'],
+        });
         this.loading = false;
         this.cdr.markForCheck();
       }
@@ -154,11 +169,23 @@ export class ManageKeywordsDialogComponent implements OnInit {
           this.keywords.splice(index, 1);
         }
         this.loading = false;
+        this.snackBar.open('✓ Keyword removed successfully', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          panelClass: ['success-snackbar'],
+        });
         this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error removing keyword:', err);
-        alert('Error removing keyword');
+        const errorMessage = err?.error?.message || 'Error removing keyword';
+        this.snackBar.open(`❌ ${errorMessage}`, 'Close', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'bottom',
+          panelClass: ['error-snackbar'],
+        });
         this.loading = false;
         this.cdr.markForCheck();
       }

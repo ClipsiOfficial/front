@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { EditProjectDialogComponent } from '../../components/edit-project-dialog.component';
 import { ManageMembersDialogComponent } from '../../components/manage-members-dialog.component';
 import { ManageKeywordsDialogComponent } from '../../components/manage-keywords-dialog.component';
@@ -26,6 +27,7 @@ import { Project } from '../../models/project.model';
     MatButtonModule,
     MatDialogModule,
     MatTooltipModule,
+    MatSnackBarModule,
     RouterModule,
   ]
 })
@@ -35,6 +37,7 @@ export class ProjectsPage implements OnInit {
   private projectsService = inject(ProjectsService);
   private router = inject(Router);
   private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
 
   projects: Project[] = [];
   loading = true;
@@ -84,8 +87,14 @@ export class ProjectsPage implements OnInit {
           next: () => {
             this.loadProjects();
           },
-          error: () => {
-            alert('Error updating project');
+          error: (err) => {
+            const errorMessage = err?.error?.message || 'Error updating project';
+            this.snackBar.open(`❌ ${errorMessage}`, 'Close', {
+              duration: 5000,
+              horizontalPosition: 'end',
+              verticalPosition: 'bottom',
+              panelClass: ['error-snackbar'],
+            });
           }
         });
       }
@@ -98,10 +107,22 @@ export class ProjectsPage implements OnInit {
     if (confirm(`Are you sure you want to delete "${project.name}"?`)) {
       this.projectsService.deleteProject(project.id).subscribe({
         next: () => {
+          this.snackBar.open('✓ Project deleted successfully', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+            panelClass: ['success-snackbar'],
+          });
           this.loadProjects();
         },
-        error: () => {
-          alert('Error deleting project');
+        error: (err) => {
+          const errorMessage = err?.error?.message || 'Error deleting project';
+          this.snackBar.open(`❌ ${errorMessage}`, 'Close', {
+            duration: 5000,
+            horizontalPosition: 'end',
+            verticalPosition: 'bottom',
+            panelClass: ['error-snackbar'],
+          });
         }
       });
     }
