@@ -61,11 +61,17 @@ pnpm run build
 # Output: dist/
 ```
 
-
-
 ## 📝 Configuración
 
 - `angular.json` - Configuración Angular
 - `tsconfig.json` - Configuración TypeScript
 - `tailwind.config.js` - Temas y variables
 - `custom-theme.scss` - Tema Material Design
+
+## Equipo
+
+El equipo esta compuesto por:
+- Ariadna Mantilla
+- Eulalia Peiret
+- Ivan Moreno
+- Laura Apolzan
